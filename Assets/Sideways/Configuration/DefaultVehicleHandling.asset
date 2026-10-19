@@ -26,6 +26,9 @@ MonoBehaviour:
   driftEnterAngle: 12
   driftExitAngle: 6
   driftInputThreshold: 0.55
+  handbrakeLateralGrip: 0.45
+  handbrakeYawMultiplier: 2.4
+  handbrakeDeceleration: 2.5
   groundProbeLength: 1.1
   groundProbeRadius: 0.18
   groundProbeHeight: 0.35

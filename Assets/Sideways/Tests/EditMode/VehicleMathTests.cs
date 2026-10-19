@@ -35,6 +35,17 @@ namespace Sideways.Tests
         }
 
         [Test]
+        public void HandlingProfileRejectsHandbrakeWithMoreGripThanDrift()
+        {
+            var profile = ScriptableObject.CreateInstance<VehicleHandlingProfile>();
+            profile.driftLateralGrip = 2f;
+            profile.handbrakeLateralGrip = 3f;
+            Assert.That(profile.IsValid(out var error), Is.False);
+            Assert.That(error, Does.Contain("Handbrake grip"));
+            Object.DestroyImmediate(profile);
+        }
+
+        [Test]
         public void FlipTimerResetsAfterTransientRoll()
         {
             var timer = new FlipTimer(100f, 2f);

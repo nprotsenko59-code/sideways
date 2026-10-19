@@ -25,6 +25,11 @@ namespace Sideways.Configuration
         [Range(0f, 90f)] public float driftExitAngle = 6f;
         [Min(0f)] public float driftInputThreshold = 0.55f;
 
+        [Header("Handbrake drift")]
+        [Min(0f)] public float handbrakeLateralGrip = 0.45f;
+        [Min(1f)] public float handbrakeYawMultiplier = 2.4f;
+        [Min(0f)] public float handbrakeDeceleration = 2.5f;
+
         [Header("Grounding")]
         [Min(0.1f)] public float groundProbeLength = 1.1f;
         [Min(0.01f)] public float groundProbeRadius = 0.18f;
@@ -34,6 +39,7 @@ namespace Sideways.Configuration
         {
             if (maxSpeed <= 0f) { error = "Max speed must be positive."; return false; }
             if (driftExitAngle > driftEnterAngle) { error = "Drift exit angle must not exceed enter angle."; return false; }
+            if (handbrakeLateralGrip > driftLateralGrip) { error = "Handbrake grip must not exceed drift grip."; return false; }
             if (groundProbeLength <= groundProbeHeight) { error = "Ground probe length must exceed its height offset."; return false; }
             error = string.Empty;
             return true;

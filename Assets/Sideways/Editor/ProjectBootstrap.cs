@@ -342,8 +342,14 @@ namespace Sideways.Editor
             safeArea.AddComponent<SafeAreaPanel>();
             var leftZone = CreateUiImage("SteerLeft", safeArea.transform, Vector2.zero, new Vector2(0.5f, 1f), new Color(0f, 0.35f, 1f, 0.025f));
             leftZone.AddComponent<TouchSteeringZone>().Configure(input, -1);
+            leftZone.AddComponent<TouchHandbrakeGesture>().Configure(input);
             var rightZone = CreateUiImage("SteerRight", safeArea.transform, new Vector2(0.5f, 0f), Vector2.one, new Color(1f, 0.35f, 0f, 0.025f));
             rightZone.AddComponent<TouchSteeringZone>().Configure(input, 1);
+            rightZone.AddComponent<TouchHandbrakeGesture>().Configure(input);
+
+            var handbrakeHint = CreateText("HandbrakeHint", safeArea.transform, "SWIPE DOWN + HOLD  •  HANDBRAKE  •  SPACE", 22, TextAnchor.MiddleCenter);
+            SetRect(handbrakeHint.rectTransform, new Vector2(0f, 20f), new Vector2(620f, 48f), new Vector2(0.5f, 0f));
+            handbrakeHint.color = new Color(1f, 1f, 1f, 0.72f);
 
             var debugPanel = CreateUiImage("DebugPanel", safeArea.transform, new Vector2(0f, 1f), new Vector2(0f, 1f), new Color(0f, 0f, 0f, 0.62f));
             SetRect(debugPanel.GetComponent<RectTransform>(), new Vector2(18f, -18f), new Vector2(310f, 290f), new Vector2(0f, 1f));

@@ -12,10 +12,12 @@ Controls:
 
 - A/D or left/right arrows: steer.
 - Hold the left or right half of the screen on touch devices: steer.
+- Hold Space while steering: engage the handbrake and initiate a drift.
+- On touch devices, swipe downward in either steering half and keep holding; releasing ends the handbrake after a short drift-entry pulse.
 - R or the Reset button: return to the last safe road pose.
 - F3: toggle the debug telemetry panel.
 
-The car accelerates automatically. There is no brake or reverse in this prototype. Remaining flipped for two seconds ends the ride; the restart overlay begins a fresh ride.
+The car accelerates automatically. The handbrake is for drift initiation rather than stopping, and there is no reverse. Remaining flipped for two seconds ends the ride; the restart overlay begins a fresh ride.
 
 ## Rebuild generated prototype assets
 

@@ -38,13 +38,14 @@ namespace Sideways.Vehicle
 
             var grounded = TryGetGround(out groundNormal);
             var steering = drivingEnabled && inputSource != null ? inputSource.Steering : 0f;
+            var handbrake = drivingEnabled && inputSource != null && inputSource.Handbrake;
 
             if (drivingEnabled && grounded)
             {
-                ApplyDriveForces(steering);
+                ApplyDriveForces(steering, handbrake);
             }
 
-            UpdateTelemetry(steering, grounded);
+            UpdateTelemetry(steering, handbrake, grounded);
         }
 
         public void Configure(Rigidbody rigidbody, IVehicleInputSource source, MonoBehaviour sourceBehaviour, VehicleHandlingProfile handling, LayerMask roadMask, Vector3 massCenter)
@@ -60,7 +61,7 @@ namespace Sideways.Vehicle
 
         public void SetDrivingEnabled(bool enabled) => drivingEnabled = enabled;
 
-        private void ApplyDriveForces(float steering)
+        private void ApplyDriveForces(float steering, bool handbrake)
         {
             var forward = Vector3.ProjectOnPlane(transform.forward, groundNormal).normalized;
             var right = Vector3.Cross(groundNormal, forward).normalized;
@@ -80,13 +81,22 @@ namespace Sideways.Vehicle
 
             var speedRatio = Mathf.Clamp01(speed / profile.maxSpeed);
             var steeringScale = Mathf.Lerp(1f, profile.minimumSteeringAtMaxSpeed, speedRatio);
-            body.AddTorque(groundNormal * (steering * profile.steeringAcceleration * steeringScale), ForceMode.Acceleration);
+            var yawMultiplier = handbrake ? profile.handbrakeYawMultiplier : 1f;
+            body.AddTorque(groundNormal * (steering * profile.steeringAcceleration * steeringScale * yawMultiplier), ForceMode.Acceleration);
             var yawSpeed = Vector3.Dot(body.angularVelocity, groundNormal);
             body.AddTorque(-groundNormal * yawSpeed * profile.yawDamping, ForceMode.Acceleration);
 
             var driftDemand = speed >= profile.driftMinimumSpeed && Mathf.Abs(steering) >= profile.driftInputThreshold;
-            var grip = driftDemand || drifting ? profile.driftLateralGrip : profile.normalLateralGrip;
+            var grip = handbrake
+                ? profile.handbrakeLateralGrip
+                : driftDemand || drifting
+                    ? profile.driftLateralGrip
+                    : profile.normalLateralGrip;
             body.AddForce(-right * lateralSpeed * grip, ForceMode.Acceleration);
+            if (handbrake && speed > 0.1f)
+            {
+                body.AddForce(-planarVelocity.normalized * profile.handbrakeDeceleration, ForceMode.Acceleration);
+            }
             body.AddForce(-groundNormal * profile.downforce * speedRatio, ForceMode.Acceleration);
         }
 
@@ -103,7 +113,7 @@ namespace Sideways.Vehicle
             return false;
         }
 
-        private void UpdateTelemetry(float steering, bool grounded)
+        private void UpdateTelemetry(float steering, bool handbrake, bool grounded)
         {
             var planarVelocity = VehicleMath.GroundPlaneVelocity(body.linearVelocity, grounded ? groundNormal : Vector3.up);
             var slip = VehicleMath.SlipAngleDegrees(transform.forward, planarVelocity, grounded ? groundNormal : Vector3.up);
@@ -118,6 +128,7 @@ namespace Sideways.Vehicle
                 slip,
                 grounded,
                 drifting,
+                handbrake,
                 Vector3.Angle(transform.up, Vector3.up));
             TelemetryUpdated?.Invoke(telemetry);
         }

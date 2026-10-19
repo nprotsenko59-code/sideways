@@ -38,6 +38,7 @@ namespace Sideways.UI
                 $"SLIP   {telemetry.SlipAngle,5:0.0}°\n" +
                 $"GROUND {(telemetry.Grounded ? "YES" : "NO ")}\n" +
                 $"DRIFT  {(telemetry.Drifting ? "YES" : "NO ")}\n" +
+                $"BRAKE  {(telemetry.Handbrake ? "ON " : "OFF")}\n" +
                 $"TILT   {telemetry.AngleFromUpright,5:0.0}°\n" +
                 $"RESET  {(recovery != null && recovery.CanReset ? "READY" : "WAIT ")}\n" +
                 $"FPS    {(smoothedDelta > 0f ? 1f / smoothedDelta : 0f),5:0}";

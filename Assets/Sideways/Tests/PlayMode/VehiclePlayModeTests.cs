@@ -75,6 +75,47 @@ namespace Sideways.Tests
         }
 
         [UnityTest]
+        public IEnumerator HandbrakeBuildsSlipWhileSteering()
+        {
+            var ground = GameObject.CreatePrimitive(PrimitiveType.Cube);
+            ground.transform.position = new Vector3(0f, -0.5f, 0f);
+            ground.transform.localScale = new Vector3(60f, 1f, 60f);
+
+            var car = new GameObject("HandbrakeTestCar");
+            car.transform.position = new Vector3(0f, 0.7f, 0f);
+            var collider = car.AddComponent<BoxCollider>();
+            collider.size = new Vector3(2f, 1f, 4f);
+            var body = car.AddComponent<Rigidbody>();
+            body.mass = 1000f;
+            body.linearVelocity = Vector3.forward * 12f;
+            var input = car.AddComponent<TestInputSource>();
+            input.SteeringValue = 1f;
+            input.HandbrakeValue = true;
+            var profile = ScriptableObject.CreateInstance<VehicleHandlingProfile>();
+            profile.maxSpeed = 28f;
+            profile.steeringAcceleration = 12f;
+            profile.yawDamping = 1.5f;
+            profile.driftMinimumSpeed = 3f;
+            profile.handbrakeLateralGrip = 0.2f;
+            profile.handbrakeYawMultiplier = 2.5f;
+            var controller = car.AddComponent<VehicleController>();
+            controller.Configure(body, input, input, profile, 1 << 0, new Vector3(0f, -0.3f, 0f));
+
+            for (var i = 0; i < 25; i++) yield return new WaitForFixedUpdate();
+
+            Assert.That(controller.Telemetry.Handbrake, Is.True);
+            Assert.That(Mathf.Abs(controller.Telemetry.SlipAngle), Is.GreaterThan(8f));
+
+            input.HandbrakeValue = false;
+            yield return new WaitForFixedUpdate();
+            Assert.That(controller.Telemetry.Handbrake, Is.False);
+
+            Object.Destroy(car);
+            Object.Destroy(ground);
+            Object.Destroy(profile);
+        }
+
+        [UnityTest]
         public IEnumerator SustainedFlipEndsRideButTransientFlipDoesNot()
         {
             var rules = ScriptableObject.CreateInstance<RideRulesProfile>();
@@ -102,7 +143,10 @@ namespace Sideways.Tests
 
         private sealed class TestInputSource : MonoBehaviour, IVehicleInputSource
         {
-            public float Steering => 0f;
+            public float SteeringValue { get; set; }
+            public bool HandbrakeValue { get; set; }
+            public float Steering => SteeringValue;
+            public bool Handbrake => HandbrakeValue;
             public bool ConsumeResetRequest() => false;
         }
     }
