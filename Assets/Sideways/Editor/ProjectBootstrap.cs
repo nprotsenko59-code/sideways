@@ -5,6 +5,7 @@ using Sideways.CameraSystem;
 using Sideways.Configuration;
 using Sideways.Core;
 using Sideways.EnvironmentSystem;
+using Sideways.Police;
 using Sideways.UI;
 using Sideways.Vehicle;
 using UnityEditor;
@@ -26,6 +27,7 @@ namespace Sideways.Editor
         private const string Root = "Assets/Sideways";
         private const string ScenePath = Root + "/Scenes/DrivingSandbox.unity";
         private const string CarPrefabPath = Root + "/Prefabs/PlayerCar.prefab";
+        private const string PolicePrefabPath = Root + "/Prefabs/PoliceCar.prefab";
 
         [MenuItem("Sideways/Rebuild Prototype")]
         public static void Configure()
@@ -39,6 +41,7 @@ namespace Sideways.Editor
             var materials = EnsureMaterials();
             var physicsMaterial = EnsurePhysicsMaterial();
             BuildCarPrefab(profiles, materials, physicsMaterial);
+            BuildPolicePrefab(profiles, roadGraph, materials, physicsMaterial);
             BuildSandboxScene(profiles, roadGraph, materials, physicsMaterial);
             ConfigureBuildSettings();
             AssetDatabase.SaveAssets();
@@ -167,7 +170,8 @@ namespace Sideways.Editor
                 Vehicle = EnsureAsset<VehicleHandlingProfile>(Root + "/Configuration/DefaultVehicleHandling.asset"),
                 Camera = EnsureAsset<ChaseCameraProfile>(Root + "/Configuration/DefaultChaseCamera.asset"),
                 Ride = EnsureAsset<RideRulesProfile>(Root + "/Configuration/DefaultRideRules.asset"),
-                Scoring = EnsureAsset<ScoringProfile>(Root + "/Configuration/DefaultScoring.asset")
+                Scoring = EnsureAsset<ScoringProfile>(Root + "/Configuration/DefaultScoring.asset"),
+                Police = EnsureAsset<PoliceProfile>(Root + "/Configuration/DefaultPolice.asset")
             };
         }
 
@@ -258,7 +262,9 @@ namespace Sideways.Editor
                 Water = EnsureMaterial(Root + "/Materials/Water.mat", shader, new Color(0.08f, 0.32f, 0.52f)),
                 Marking = EnsureMaterial(Root + "/Materials/RoadMarking.mat", shader, new Color(0.94f, 0.76f, 0.16f)),
                 Car = EnsureMaterial(Root + "/Materials/PlayerCar.mat", shader, new Color(0.12f, 0.55f, 0.92f)),
-                Accent = EnsureMaterial(Root + "/Materials/Accent.mat", shader, new Color(0.95f, 0.80f, 0.18f))
+                Accent = EnsureMaterial(Root + "/Materials/Accent.mat", shader, new Color(0.95f, 0.80f, 0.18f)),
+                Police = EnsureMaterial(Root + "/Materials/PoliceCar.mat", shader, new Color(0.06f, 0.08f, 0.12f)),
+                PoliceLight = EnsureMaterial(Root + "/Materials/PoliceLight.mat", shader, new Color(0.85f, 0.08f, 0.05f))
             };
         }
 
@@ -331,6 +337,36 @@ namespace Sideways.Editor
             Object.DestroyImmediate(root);
         }
 
+        private static void BuildPolicePrefab(Profiles profiles, RoadGraphAsset roadGraph, Materials materials, PhysicsMaterial physicsMaterial)
+        {
+            if (AssetDatabase.LoadAssetAtPath<GameObject>(PolicePrefabPath) != null) AssetDatabase.DeleteAsset(PolicePrefabPath);
+
+            var root = new GameObject("PoliceCar");
+            root.layer = 9;
+            var body = root.AddComponent<Rigidbody>();
+            body.isKinematic = true;
+            body.interpolation = RigidbodyInterpolation.Interpolate;
+            body.collisionDetectionMode = CollisionDetectionMode.ContinuousSpeculative;
+            var collider = root.AddComponent<BoxCollider>();
+            collider.center = new Vector3(0f, 0.55f, 0f);
+            collider.size = new Vector3(2.1f, 1.1f, 4.4f);
+            collider.material = physicsMaterial;
+
+            var visual = CreateVisualBox("Visual", root.transform, new Vector3(0f, 0.58f, 0f), new Vector3(1.95f, 0.82f, 4.15f), materials.Police);
+            visual.transform.localPosition = new Vector3(0f, 0.58f, 0f);
+            var cabin = CreateVisualBox("Cabin", root.transform, Vector3.zero, new Vector3(1.55f, 0.65f, 1.9f), materials.Concrete);
+            cabin.transform.localPosition = new Vector3(0f, 1.25f, -0.1f);
+            var lightBar = CreateVisualBox("LightBar", root.transform, Vector3.zero, new Vector3(1.25f, 0.18f, 0.34f), materials.PoliceLight);
+            lightBar.transform.localPosition = new Vector3(0f, 1.68f, -0.1f);
+
+            var navigator = root.AddComponent<PoliceVehicleController>();
+            navigator.Configure(body, roadGraph, profiles.Police);
+            root.AddComponent<PoliceVisionSensor>();
+
+            PrefabUtility.SaveAsPrefabAsset(root, PolicePrefabPath);
+            Object.DestroyImmediate(root);
+        }
+
         private static void BuildSandboxScene(Profiles profiles, RoadGraphAsset roadGraph, Materials materials, PhysicsMaterial physicsMaterial)
         {
             var scene = EditorSceneManager.NewScene(NewSceneSetup.EmptyScene, NewSceneMode.Single);
@@ -350,6 +386,13 @@ namespace Sideways.Editor
             var recovery = car.GetComponent<VehicleRecovery>();
             var collisionSensor = car.GetComponent<VehicleCollisionSensor>();
 
+            var policePrefab = AssetDatabase.LoadAssetAtPath<GameObject>(PolicePrefabPath);
+            var policeCar = (GameObject)PrefabUtility.InstantiatePrefab(policePrefab, scene);
+            policeCar.transform.SetPositionAndRotation(new Vector3(120f, 0.65f, 100f), Quaternion.Euler(0f, 180f, 0f));
+            var policeVehicle = policeCar.GetComponent<PoliceVehicleController>();
+            var policeVision = policeCar.GetComponent<PoliceVisionSensor>();
+            policeVision.Configure(car.transform, profiles.Police, 1 << 8);
+
             var cameraObject = new GameObject("ChaseCamera");
             cameraObject.tag = "MainCamera";
             var camera = cameraObject.AddComponent<UnityEngine.Camera>();
@@ -363,7 +406,11 @@ namespace Sideways.Editor
 
             var scoring = systems.AddComponent<DriftScoreController>();
             scoring.Configure(controller, collisionSensor, profiles.Scoring);
-            var ui = BuildUi(input, controller, recovery, scoring);
+            var recklessDriving = systems.AddComponent<RecklessDrivingTracker>();
+            recklessDriving.Configure(controller, collisionSensor, profiles.Police);
+            var policeDirector = systems.AddComponent<PoliceDirector>();
+            policeDirector.Configure(car.transform, controller, recovery, policeVehicle, policeVision, recklessDriving, profiles.Police);
+            var ui = BuildUi(input, controller, recovery, scoring, policeDirector);
             var rideSession = systems.AddComponent<RideSessionController>();
             rideSession.Configure(car.transform, controller, profiles.Ride, ui.Results, scoring);
 
@@ -440,7 +487,7 @@ namespace Sideways.Editor
             }
         }
 
-        private static UiReferences BuildUi(VehicleInputSource input, VehicleController controller, VehicleRecovery recovery, DriftScoreController scoring)
+        private static UiReferences BuildUi(VehicleInputSource input, VehicleController controller, VehicleRecovery recovery, DriftScoreController scoring, PoliceDirector policeDirector)
         {
             var canvasObject = new GameObject("HUD", typeof(Canvas), typeof(CanvasScaler), typeof(GraphicRaycaster));
             var canvas = canvasObject.GetComponent<Canvas>();
@@ -484,6 +531,15 @@ namespace Sideways.Editor
             graceFill.fillAmount = 0f;
             var scoreHud = canvasObject.AddComponent<ScoreHud>();
             scoreHud.Configure(scoring, totalScoreText, comboText, graceFill);
+
+            var policePanelObject = CreateUiImage("PolicePanel", safeArea.transform, new Vector2(0.5f, 1f), new Vector2(0.5f, 1f), new Color(0.08f, 0.12f, 0.18f, 0.8f));
+            SetRect(policePanelObject.GetComponent<RectTransform>(), new Vector2(0f, -154f), new Vector2(360f, 54f), new Vector2(0.5f, 1f));
+            policePanelObject.GetComponent<Image>().raycastTarget = false;
+            var policeText = CreateText("PoliceState", policePanelObject.transform, "PATROL", 26, TextAnchor.MiddleCenter);
+            Stretch(policeText.rectTransform, 4f);
+            policeText.raycastTarget = false;
+            var policeHud = canvasObject.AddComponent<PoliceHud>();
+            policeHud.Configure(policeDirector, policeText, policePanelObject.GetComponent<Image>());
 
             var debugPanel = CreateUiImage("DebugPanel", safeArea.transform, new Vector2(0f, 1f), new Vector2(0f, 1f), new Color(0f, 0f, 0f, 0.62f));
             SetRect(debugPanel.GetComponent<RectTransform>(), new Vector2(18f, -18f), new Vector2(330f, 325f), new Vector2(0f, 1f));
@@ -661,6 +717,7 @@ namespace Sideways.Editor
             layers.GetArrayElementAtIndex(6).stringValue = "Vehicle";
             layers.GetArrayElementAtIndex(7).stringValue = "Road";
             layers.GetArrayElementAtIndex(8).stringValue = "Obstacle";
+            layers.GetArrayElementAtIndex(9).stringValue = "Police";
             tagManager.ApplyModifiedPropertiesWithoutUndo();
         }
 
@@ -670,6 +727,7 @@ namespace Sideways.Editor
             public ChaseCameraProfile Camera;
             public RideRulesProfile Ride;
             public ScoringProfile Scoring;
+            public PoliceProfile Police;
         }
 
         private sealed class Materials
@@ -683,6 +741,8 @@ namespace Sideways.Editor
             public Material Marking;
             public Material Car;
             public Material Accent;
+            public Material Police;
+            public Material PoliceLight;
         }
 
         private sealed class UiReferences

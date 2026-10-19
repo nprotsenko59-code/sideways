@@ -96,6 +96,20 @@ namespace Sideways.EnvironmentSystem
             return false;
         }
 
+        public RoadGraphNode FindNearestNode(Vector3 position)
+        {
+            RoadGraphNode nearest = null;
+            var nearestDistance = float.PositiveInfinity;
+            for (var i = 0; i < nodes.Count; i++)
+            {
+                var distance = (nodes[i].Position - position).sqrMagnitude;
+                if (distance >= nearestDistance) continue;
+                nearestDistance = distance;
+                nearest = nodes[i];
+            }
+            return nearest;
+        }
+
         public int GetDegree(string nodeId)
         {
             var degree = 0;

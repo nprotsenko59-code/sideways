@@ -1,0 +1,36 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 357a370b98fe8499bbd0361ae65ff7a9, type: 3}
+  m_Name: DefaultPolice
+  m_EditorClassIdentifier: Sideways.Runtime::Sideways.Configuration.PoliceProfile
+  visionRange: 95
+  visionAngle: 120
+  scanInterval: 0.1
+  driftTriggerDuration: 0.7
+  driftTriggerMinimumSpeed: 9
+  severeCollisionSpeed: 7
+  recklessMemory: 3.5
+  lostSightDelay: 1.25
+  searchDuration: 15
+  escapedDisplayDuration: 2
+  minimumEscapeSpeed: 2
+  patrolSpeed: 11
+  pursuitSpeed: 19
+  searchSpeed: 13
+  acceleration: 10
+  turnRate: 130
+  waypointTolerance: 3.5
+  routeReplanInterval: 0.8
+  interceptLeadTime: 1.1
+  bustedDistance: 4.5
+  bustedMaximumPlayerSpeed: 6
+  bustedHoldDuration: 1.25

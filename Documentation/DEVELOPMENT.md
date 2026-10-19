@@ -9,6 +9,8 @@
 - `DriftScoreController` evaluates telemetry through a deterministic scoring model and exposes the optional ride-score provider.
 - `RoadGraphAsset` is the stable, validated navigation source for both rendered roads and future police/traffic routing.
 - `RoadGraphComponent` exposes the active graph from the scene and draws road-class gizmos when selected.
+- `PoliceDirector` owns pursuit state and penalties; `PoliceVisionSensor` is the only source of sightings, while `PoliceVehicleController` follows the shared road graph.
+- `RecklessDrivingTracker` turns sustained drifts and severe impacts into a short-lived reportable condition without deciding whether police can see them.
 - `RideSessionController` owns the Driving/Ended lifecycle and two-second flip rule.
 - `ChaseCameraController` is a custom damped follow camera with look-ahead and obstruction checks.
 - Handling, camera, ride rules, and drift scoring are ScriptableObject assets under `Assets/Sideways/Configuration`.
@@ -34,6 +36,10 @@
 - [x] Connected road graph with alternate routes and future navigation API.
 - [x] Ocean, hillside, retaining-wall, and industrial boundary fiction.
 - [x] Enforced graybox renderer/collider budgets and asset-import contract.
+- [x] One-unit police patrol with vision-cone and building-occlusion detection.
+- [x] Road-graph pursuit/interception, last-known-position search, reacquisition, and moving escape.
+- [x] Recoverable busted penalty with active-combo cancellation and banked-score preservation.
+- [x] Police state HUD and deterministic pursuit-state tests.
 - [ ] Physical iPhone profiling and touch QA.
 
 ## Manual QA
@@ -55,6 +61,12 @@
 15. From the centre grid, reach the boulevard by at least two different routes.
 16. Drive the scenic perimeter, both diagonal alleys, and all three hill connectors; confirm every route rejoins the network.
 17. Drive for ten minutes while deliberately choosing unfamiliar turns; confirm there are no exposed road endings or accidental map-edge dead ends.
+18. Drift in clear view of the police car; confirm the HUD changes from SPOTTED to PURSUED.
+19. Break line of sight behind a solid building; confirm SEARCHING begins and the unit heads to the last visible position rather than following through the wall.
+20. Reappear during search; confirm pursuit resumes immediately.
+21. Break sight again and keep moving until the search expires; confirm ESCAPED, followed by a return to PATROL.
+22. Stop while hidden during search; confirm the escape countdown pauses.
+23. Allow police to remain close while the car is slow; confirm BUSTED resets the car and cancels only the active combo.
 
 ## Known limitations
 
@@ -62,8 +74,9 @@
 - No reverse or service brake is available; the handbrake only initiates drifts and upright recovery uses the explicit reset action.
 - Sunset Basin remains primitive graybox geometry and represents one compact LA-inspired slice, not a full city.
 - The road graph is junction-level only; lane direction, traffic priority, and police patrol weights are deferred.
-- Drift scoring currently has no discrete U-turn, proximity, traffic, or police bonuses; those systems remain deferred.
-- Audio, haptics, police, traffic, challenges, and progression are deferred.
+- Drift scoring currently has no discrete U-turn, proximity, traffic, or police-escape bonuses; those systems remain deferred.
+- Milestone 4 police is deliberately limited to one unit and one heat level; radio dispatch, roadblocks, damage, and escalation are deferred.
+- Audio, haptics, traffic, challenges, and progression are deferred.
 
 ## Development log
 
@@ -74,3 +87,5 @@
 - 2026-10-19 — Milestone 2 added deterministic drift scoring, combo banking/cancellation, collision severity, score HUD, and local final/best ride results.
 - 2026-10-19 — Milestone 2 verification: 24 EditMode tests and 4 PlayMode tests passed, and Unity produced a successful unsigned iOS Xcode export.
 - 2026-10-19 — Milestone 3 added the Sunset Basin graybox neighborhood and reusable road graph; verification passed with 28 EditMode tests, 4 PlayMode tests, a live editor play check, and a successful unsigned iOS Xcode export.
+- 2026-10-19 — Milestone 4 added sight-based police patrol, graph pursuit, last-known-position search, reacquisition, moving escape, a recoverable busted penalty, and police-state HUD feedback.
+- 2026-10-19 — Milestone 4 verification: 36 EditMode tests and 4 PlayMode tests passed, the live editor check held 60 FPS with the patrol HUD active, and Unity produced a successful unsigned iOS Xcode export.

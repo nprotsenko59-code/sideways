@@ -2,6 +2,7 @@ using NUnit.Framework;
 using Sideways.Configuration;
 using Sideways.Core;
 using Sideways.EnvironmentSystem;
+using Sideways.Police;
 using Sideways.UI;
 using Sideways.Vehicle;
 using UnityEditor;
@@ -19,6 +20,10 @@ namespace Sideways.Tests
             Assert.That(AssetDatabase.LoadAssetAtPath<GameObject>("Assets/Sideways/Prefabs/PlayerCar.prefab"), Is.Not.Null);
             Assert.That(AssetDatabase.LoadAssetAtPath<ScoringProfile>("Assets/Sideways/Configuration/DefaultScoring.asset"), Is.Not.Null);
             Assert.That(AssetDatabase.LoadAssetAtPath<RoadGraphAsset>("Assets/Sideways/Configuration/LAPrototypeRoadGraph.asset"), Is.Not.Null);
+            var policeProfile = AssetDatabase.LoadAssetAtPath<PoliceProfile>("Assets/Sideways/Configuration/DefaultPolice.asset");
+            Assert.That(policeProfile, Is.Not.Null);
+            Assert.That(policeProfile.IsValid(out var policeError), Is.True, policeError);
+            Assert.That(AssetDatabase.LoadAssetAtPath<GameObject>("Assets/Sideways/Prefabs/PoliceCar.prefab"), Is.Not.Null);
         }
 
         [Test]
@@ -30,6 +35,10 @@ namespace Sideways.Tests
             Assert.That(Object.FindFirstObjectByType<DriftScoreController>(), Is.Not.Null);
             Assert.That(Object.FindFirstObjectByType<ScoreHud>(), Is.Not.Null);
             Assert.That(Object.FindFirstObjectByType<VehicleCollisionSensor>(), Is.Not.Null);
+            Assert.That(Object.FindFirstObjectByType<PoliceDirector>(), Is.Not.Null);
+            Assert.That(Object.FindFirstObjectByType<PoliceVehicleController>(), Is.Not.Null);
+            Assert.That(Object.FindFirstObjectByType<PoliceVisionSensor>(), Is.Not.Null);
+            Assert.That(Object.FindFirstObjectByType<PoliceHud>(), Is.Not.Null);
             var roadGraph = Object.FindFirstObjectByType<RoadGraphComponent>();
             Assert.That(roadGraph, Is.Not.Null);
             Assert.That(roadGraph.Graph, Is.Not.Null);

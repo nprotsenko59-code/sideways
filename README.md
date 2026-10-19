@@ -19,6 +19,8 @@ Controls:
 
 The car accelerates automatically. The handbrake is for drift initiation rather than stopping, and there is no reverse. Sustained, controlled slides build a live combo whose multiplier grows with drift time. Brief recovery gaps preserve the combo; the combo banks after the grace window. A road reset, a severe obstacle impact, or ending the ride discards only the unbanked combo and never reduces banked score.
 
+One police unit patrols the road network. If it actually sees a sustained drift or severe crash, it pursues using the shared road graph. Break line of sight behind solid buildings and keep moving through the 15-second search to escape. If the unit catches a slow car, the active combo is cancelled and the car returns to its last safe pose; banked score and the ride continue.
+
 Remaining flipped for two seconds ends the ride. The results overlay shows the run score and locally retained best score, and DRIVE AGAIN starts a fresh ride without leaving the sandbox.
 
 ## Rebuild generated prototype assets
@@ -58,4 +60,4 @@ The iOS module is required. Export an unsigned development Xcode project with:
 
 Open `Builds/iOS/Unity-iPhone.xcodeproj`, choose an Apple developer team and device, then build from Xcode. Device performance claims require an iPhone 15-class or newer profiler capture; Editor and Simulator results do not qualify.
 
-See [Documentation/SCORING.md](Documentation/SCORING.md) for scoring, [Documentation/NEIGHBORHOOD.md](Documentation/NEIGHBORHOOD.md) for the map and road-graph contract, [Documentation/ASSET_IMPORT.md](Documentation/ASSET_IMPORT.md) for asset handoff rules, and [Documentation/DEVELOPMENT.md](Documentation/DEVELOPMENT.md) for architecture and QA.
+See [Documentation/SCORING.md](Documentation/SCORING.md) for scoring, [Documentation/NEIGHBORHOOD.md](Documentation/NEIGHBORHOOD.md) for the map and road-graph contract, [Documentation/POLICE.md](Documentation/POLICE.md) for pursuit rules, [Documentation/ASSET_IMPORT.md](Documentation/ASSET_IMPORT.md) for asset handoff rules, and [Documentation/DEVELOPMENT.md](Documentation/DEVELOPMENT.md) for architecture and QA.

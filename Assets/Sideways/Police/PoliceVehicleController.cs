@@ -1,0 +1,144 @@
+using System;
+using System.Collections.Generic;
+using Sideways.Configuration;
+using Sideways.EnvironmentSystem;
+using UnityEngine;
+
+namespace Sideways.Police
+{
+    [RequireComponent(typeof(Rigidbody))]
+    public sealed class PoliceVehicleController : MonoBehaviour
+    {
+        [SerializeField] private Rigidbody body;
+        [SerializeField] private RoadGraphAsset roadGraph;
+        [SerializeField] private PoliceProfile profile;
+        [SerializeField] private string[] patrolNodeIds = { "G_NE", "G_E", "G_SE", "B_SE", "G_SC", "G_C", "G_NC" };
+
+        private readonly List<RoadGraphEdge> routeEdges = new();
+        private readonly List<Vector3> waypoints = new();
+        private PoliceState state;
+        private string currentGoalNodeId;
+        private int waypointIndex;
+        private int patrolIndex;
+        private float speed;
+        private float nextReplanTime;
+        private bool hasDestination;
+
+        public PoliceState State => state;
+        public int WaypointCount => waypoints.Count;
+
+        private void Awake()
+        {
+            body ??= GetComponent<Rigidbody>();
+        }
+
+        private void FixedUpdate()
+        {
+            if (body == null || roadGraph == null || profile == null) return;
+
+            if (state == PoliceState.Patrol && (!hasDestination || waypointIndex >= waypoints.Count))
+            {
+                RequestNextPatrolNode();
+            }
+
+            if (!hasDestination || waypointIndex >= waypoints.Count)
+            {
+                speed = Mathf.MoveTowards(speed, 0f, profile.acceleration * Time.fixedDeltaTime);
+                return;
+            }
+
+            var target = waypoints[waypointIndex];
+            target.y = body.position.y;
+            var delta = target - body.position;
+            if (delta.sqrMagnitude <= profile.waypointTolerance * profile.waypointTolerance)
+            {
+                waypointIndex++;
+                if (waypointIndex >= waypoints.Count)
+                {
+                    hasDestination = false;
+                    return;
+                }
+                target = waypoints[waypointIndex];
+                target.y = body.position.y;
+                delta = target - body.position;
+            }
+
+            var desiredDirection = Vector3.ProjectOnPlane(delta, Vector3.up).normalized;
+            if (desiredDirection.sqrMagnitude < 0.001f) return;
+            var desiredRotation = Quaternion.LookRotation(desiredDirection, Vector3.up);
+            var rotation = Quaternion.RotateTowards(body.rotation, desiredRotation, profile.turnRate * Time.fixedDeltaTime);
+            var desiredSpeed = state == PoliceState.Pursuit ? profile.pursuitSpeed : state == PoliceState.Search ? profile.searchSpeed : profile.patrolSpeed;
+            speed = Mathf.MoveTowards(speed, desiredSpeed, profile.acceleration * Time.fixedDeltaTime);
+            var alignment = Mathf.Clamp01((Vector3.Dot(rotation * Vector3.forward, desiredDirection) + 0.2f) / 1.2f);
+            body.MoveRotation(rotation);
+            body.MovePosition(body.position + (rotation * Vector3.forward) * (speed * alignment * Time.fixedDeltaTime));
+        }
+
+        public void Configure(Rigidbody rigidbody, RoadGraphAsset graph, PoliceProfile policeProfile, string[] patrolNodes = null)
+        {
+            body = rigidbody;
+            roadGraph = graph;
+            profile = policeProfile;
+            if (patrolNodes != null && patrolNodes.Length > 0) patrolNodeIds = patrolNodes;
+        }
+
+        public void SetState(PoliceState newState)
+        {
+            if (state == newState) return;
+            state = newState;
+            hasDestination = false;
+            nextReplanTime = 0f;
+        }
+
+        public void SetDestination(Vector3 destination, bool force = false)
+        {
+            if (!force && Time.time < nextReplanTime) return;
+            nextReplanTime = Time.time + profile.routeReplanInterval;
+            BuildRoute(destination, force);
+        }
+
+        private void RequestNextPatrolNode()
+        {
+            if (patrolNodeIds == null || patrolNodeIds.Length == 0) return;
+            var nodeId = patrolNodeIds[patrolIndex++ % patrolNodeIds.Length];
+            if (roadGraph.TryGetNode(nodeId, out var node)) SetDestination(node.Position, true);
+        }
+
+        private void BuildRoute(Vector3 destination, bool force)
+        {
+            var start = roadGraph.FindNearestNode(body.position);
+            var goal = roadGraph.FindNearestNode(destination);
+            if (!force && goal != null && goal.Id == currentGoalNodeId && hasDestination && waypointIndex < waypoints.Count) return;
+
+            waypoints.Clear();
+            waypointIndex = 0;
+            currentGoalNodeId = goal?.Id;
+            if (start == null || goal == null || !roadGraph.TryFindRoute(start.Id, goal.Id, routeEdges))
+            {
+                waypoints.Add(destination);
+                hasDestination = true;
+                return;
+            }
+
+            var currentNodeId = start.Id;
+            for (var edgeIndex = 0; edgeIndex < routeEdges.Count; edgeIndex++)
+            {
+                var edge = routeEdges[edgeIndex];
+                var forward = string.Equals(edge.FromNodeId, currentNodeId, StringComparison.Ordinal);
+                if (forward)
+                {
+                    for (var i = 1; i < edge.Centerline.Count; i++) waypoints.Add(edge.Centerline[i]);
+                    currentNodeId = edge.ToNodeId;
+                }
+                else
+                {
+                    for (var i = edge.Centerline.Count - 2; i >= 0; i--) waypoints.Add(edge.Centerline[i]);
+                    currentNodeId = edge.FromNodeId;
+                }
+            }
+
+            if (waypoints.Count == 0 || Vector3.Distance(waypoints[^1], destination) > profile.waypointTolerance) waypoints.Add(destination);
+            hasDestination = true;
+        }
+    }
+}
