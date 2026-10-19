@@ -4,6 +4,7 @@ using System.IO;
 using Sideways.CameraSystem;
 using Sideways.Configuration;
 using Sideways.Core;
+using Sideways.EnvironmentSystem;
 using Sideways.UI;
 using Sideways.Vehicle;
 using UnityEditor;
@@ -34,10 +35,11 @@ namespace Sideways.Editor
             var pipeline = EnsureRenderPipeline();
             ConfigureRenderPipeline(pipeline);
             var profiles = EnsureProfiles();
+            var roadGraph = EnsureRoadGraph();
             var materials = EnsureMaterials();
             var physicsMaterial = EnsurePhysicsMaterial();
             BuildCarPrefab(profiles, materials, physicsMaterial);
-            BuildSandboxScene(profiles, materials, physicsMaterial);
+            BuildSandboxScene(profiles, roadGraph, materials, physicsMaterial);
             ConfigureBuildSettings();
             AssetDatabase.SaveAssets();
             AssetDatabase.Refresh();
@@ -169,6 +171,80 @@ namespace Sideways.Editor
             };
         }
 
+        private static RoadGraphAsset EnsureRoadGraph()
+        {
+            const string path = Root + "/Configuration/LAPrototypeRoadGraph.asset";
+            var graph = AssetDatabase.LoadAssetAtPath<RoadGraphAsset>(path);
+            if (graph == null)
+            {
+                graph = ScriptableObject.CreateInstance<RoadGraphAsset>();
+                AssetDatabase.CreateAsset(graph, path);
+            }
+
+            var nodes = new[]
+            {
+                N("G_NW", -120f, 100f), N("G_NC", 0f, 100f, RoadNodeRole.Landmark), N("G_NE", 120f, 100f),
+                N("G_W", -120f, 0f), N("G_C", 0f, 0f, RoadNodeRole.Landmark), N("G_E", 120f, 0f),
+                N("G_SW", -120f, -100f), N("G_SC", 0f, -100f), N("G_SE", 120f, -100f),
+                N("B_W", -220f, -165f, RoadNodeRole.BoundaryLoop), N("B_SW", -120f, -165f),
+                N("B_SC", 0f, -165f, RoadNodeRole.Landmark), N("B_SE", 120f, -165f), N("B_E", 220f, -165f, RoadNodeRole.BoundaryLoop),
+                N("O_W", -225f, -40f, RoadNodeRole.BoundaryLoop), N("O_NW", -190f, 145f, RoadNodeRole.BoundaryLoop),
+                N("O_N", 0f, 195f, RoadNodeRole.BoundaryLoop), N("O_NE", 190f, 145f, RoadNodeRole.BoundaryLoop),
+                N("O_E", 225f, -40f, RoadNodeRole.BoundaryLoop)
+            };
+
+            var edges = new List<RoadGraphEdge>
+            {
+                E("Grid_N_WC", "G_NW", "G_NC", RoadKind.Street, 14f, 16f, P(-120f, 100f), P(0f, 100f)),
+                E("Grid_N_CE", "G_NC", "G_NE", RoadKind.Street, 14f, 16f, P(0f, 100f), P(120f, 100f)),
+                E("Grid_M_WC", "G_W", "G_C", RoadKind.Street, 16f, 18f, P(-120f, 0f), P(0f, 0f)),
+                E("Grid_M_CE", "G_C", "G_E", RoadKind.Street, 16f, 18f, P(0f, 0f), P(120f, 0f)),
+                E("Grid_S_WC", "G_SW", "G_SC", RoadKind.Street, 14f, 16f, P(-120f, -100f), P(0f, -100f)),
+                E("Grid_S_CE", "G_SC", "G_SE", RoadKind.Street, 14f, 16f, P(0f, -100f), P(120f, -100f)),
+                E("Grid_W_NS", "G_NW", "G_W", RoadKind.Street, 14f, 16f, P(-120f, 100f), P(-120f, 0f)),
+                E("Grid_W_SS", "G_W", "G_SW", RoadKind.Street, 14f, 16f, P(-120f, 0f), P(-120f, -100f)),
+                E("Grid_C_NS", "G_NC", "G_C", RoadKind.Street, 16f, 18f, P(0f, 100f), P(0f, 0f)),
+                E("Grid_C_SS", "G_C", "G_SC", RoadKind.Street, 16f, 18f, P(0f, 0f), P(0f, -100f)),
+                E("Grid_E_NS", "G_NE", "G_E", RoadKind.Street, 14f, 16f, P(120f, 100f), P(120f, 0f)),
+                E("Grid_E_SS", "G_E", "G_SE", RoadKind.Street, 14f, 16f, P(120f, 0f), P(120f, -100f)),
+
+                E("Boulevard_W0", "B_W", "B_SW", RoadKind.Boulevard, 22f, 24f, P(-220f, -165f), P(-120f, -165f)),
+                E("Boulevard_W1", "B_SW", "B_SC", RoadKind.Boulevard, 22f, 24f, P(-120f, -165f), P(0f, -165f)),
+                E("Boulevard_E1", "B_SC", "B_SE", RoadKind.Boulevard, 22f, 24f, P(0f, -165f), P(120f, -165f)),
+                E("Boulevard_E0", "B_SE", "B_E", RoadKind.Boulevard, 22f, 24f, P(120f, -165f), P(220f, -165f)),
+                E("BoulevardLink_W", "B_SW", "G_SW", RoadKind.Street, 16f, 18f, P(-120f, -165f), P(-120f, -100f)),
+                E("BoulevardLink_C", "B_SC", "G_SC", RoadKind.Street, 16f, 18f, P(0f, -165f), P(0f, -100f)),
+                E("BoulevardLink_E", "B_SE", "G_SE", RoadKind.Street, 16f, 18f, P(120f, -165f), P(120f, -100f)),
+
+                E("Scenic_SW", "B_W", "O_W", RoadKind.Scenic, 15f, 18f, P(-220f, -165f), P(-230f, -130f), P(-232f, -85f), P(-225f, -40f)),
+                E("Scenic_W", "O_W", "O_NW", RoadKind.Scenic, 15f, 18f, P(-225f, -40f), P(-232f, 20f), P(-220f, 82f), P(-190f, 145f)),
+                E("Scenic_NW", "O_NW", "O_N", RoadKind.Scenic, 15f, 18f, P(-190f, 145f), P(-142f, 176f), P(-72f, 192f), P(0f, 195f)),
+                E("Scenic_NE", "O_N", "O_NE", RoadKind.Scenic, 15f, 18f, P(0f, 195f), P(72f, 192f), P(142f, 176f), P(190f, 145f)),
+                E("Scenic_E", "O_NE", "O_E", RoadKind.Scenic, 15f, 18f, P(190f, 145f), P(220f, 82f), P(232f, 20f), P(225f, -40f)),
+                E("Scenic_SE", "O_E", "B_E", RoadKind.Scenic, 15f, 18f, P(225f, -40f), P(232f, -85f), P(230f, -130f), P(220f, -165f)),
+                E("HillLink_W", "O_NW", "G_NW", RoadKind.Street, 14f, 15f, P(-190f, 145f), P(-120f, 100f)),
+                E("HillLink_C", "O_N", "G_NC", RoadKind.Street, 14f, 15f, P(0f, 195f), P(0f, 100f)),
+                E("HillLink_E", "O_NE", "G_NE", RoadKind.Street, 14f, 15f, P(190f, 145f), P(120f, 100f)),
+
+                E("Alley_NW", "G_W", "G_NC", RoadKind.Alley, 8f, 11f, P(-120f, 0f), P(-82f, 31f), P(-43f, 69f), P(0f, 100f)),
+                E("Alley_SE", "G_SC", "G_E", RoadKind.Alley, 8f, 11f, P(0f, -100f), P(43f, -69f), P(82f, -31f), P(120f, 0f)),
+                E("Alley_Beach", "B_W", "G_SW", RoadKind.Alley, 9f, 12f, P(-220f, -165f), P(-178f, -141f), P(-148f, -114f), P(-120f, -100f)),
+                E("Alley_Industrial", "G_SE", "B_E", RoadKind.Alley, 9f, 12f, P(120f, -100f), P(148f, -114f), P(178f, -141f), P(220f, -165f))
+            };
+
+            graph.Configure("sunset-basin", new Vector2(520f, 420f), nodes, edges);
+            if (!graph.IsValid(out var error)) throw new InvalidOperationException($"Road graph is invalid: {error}");
+            EditorUtility.SetDirty(graph);
+            return graph;
+        }
+
+        private static RoadGraphNode N(string id, float x, float z, RoadNodeRole role = RoadNodeRole.Junction) => new(id, P(x, z), role);
+
+        private static RoadGraphEdge E(string id, string from, string to, RoadKind kind, float width, float speed, params Vector3[] points) =>
+            new(id, from, to, kind, width, speed, points);
+
+        private static Vector3 P(float x, float z) => new(x, 0f, z);
+
         private static Materials EnsureMaterials()
         {
             var shader = Shader.Find("Universal Render Pipeline/Lit") ?? Shader.Find("Standard");
@@ -178,6 +254,9 @@ namespace Sideways.Editor
                 Terrain = EnsureMaterial(Root + "/Materials/Terrain.mat", shader, new Color(0.30f, 0.38f, 0.31f)),
                 Building = EnsureMaterial(Root + "/Materials/Building.mat", shader, new Color(0.50f, 0.52f, 0.56f)),
                 Barrier = EnsureMaterial(Root + "/Materials/Barrier.mat", shader, new Color(0.74f, 0.25f, 0.20f)),
+                Concrete = EnsureMaterial(Root + "/Materials/Concrete.mat", shader, new Color(0.43f, 0.45f, 0.47f)),
+                Water = EnsureMaterial(Root + "/Materials/Water.mat", shader, new Color(0.08f, 0.32f, 0.52f)),
+                Marking = EnsureMaterial(Root + "/Materials/RoadMarking.mat", shader, new Color(0.94f, 0.76f, 0.16f)),
                 Car = EnsureMaterial(Root + "/Materials/PlayerCar.mat", shader, new Color(0.12f, 0.55f, 0.92f)),
                 Accent = EnsureMaterial(Root + "/Materials/Accent.mat", shader, new Color(0.95f, 0.80f, 0.18f))
             };
@@ -252,7 +331,7 @@ namespace Sideways.Editor
             Object.DestroyImmediate(root);
         }
 
-        private static void BuildSandboxScene(Profiles profiles, Materials materials, PhysicsMaterial physicsMaterial)
+        private static void BuildSandboxScene(Profiles profiles, RoadGraphAsset roadGraph, Materials materials, PhysicsMaterial physicsMaterial)
         {
             var scene = EditorSceneManager.NewScene(NewSceneSetup.EmptyScene, NewSceneMode.Single);
             scene.name = "DrivingSandbox";
@@ -261,7 +340,7 @@ namespace Sideways.Editor
             systems.AddComponent<PrototypeBootstrap>();
 
             var environment = new GameObject("Environment");
-            BuildEnvironment(environment.transform, materials, physicsMaterial);
+            BuildEnvironment(environment.transform, roadGraph, materials, physicsMaterial);
 
             var prefab = AssetDatabase.LoadAssetAtPath<GameObject>(CarPrefabPath);
             var car = (GameObject)PrefabUtility.InstantiatePrefab(prefab, scene);
@@ -302,36 +381,63 @@ namespace Sideways.Editor
             EditorSceneManager.SaveScene(scene, ScenePath);
         }
 
-        private static void BuildEnvironment(Transform parent, Materials materials, PhysicsMaterial physicsMaterial)
+        private static void BuildEnvironment(Transform parent, RoadGraphAsset roadGraph, Materials materials, PhysicsMaterial physicsMaterial)
         {
-            CreateBox("Terrain", parent, new Vector3(0f, -1.1f, 0f), new Vector3(300f, 2f, 300f), materials.Terrain, physicsMaterial, 0);
+            CreateBox("Ground", parent, new Vector3(0f, -1.1f, 0f), new Vector3(900f, 2f, 800f), materials.Terrain, physicsMaterial, 0);
 
-            var roads = new GameObject("Roads").transform;
-            roads.SetParent(parent, false);
-            CreateRoadSegment(roads, new Vector3(-95f, 0f, -100f), new Vector3(95f, 0f, -100f), materials.Road, physicsMaterial);
-            CreateArc(roads, new Vector3(95f, 0f, -75f), 25f, -90f, 0f, 6, materials.Road, physicsMaterial);
-            CreateRoadSegment(roads, new Vector3(120f, 0f, -75f), new Vector3(120f, 0f, 75f), materials.Road, physicsMaterial);
-            CreateArc(roads, new Vector3(95f, 0f, 75f), 25f, 0f, 90f, 6, materials.Road, physicsMaterial);
-            CreateRoadSegment(roads, new Vector3(95f, 0f, 100f), new Vector3(-95f, 0f, 100f), materials.Road, physicsMaterial);
-            CreateArc(roads, new Vector3(-95f, 0f, 75f), 25f, 90f, 180f, 6, materials.Road, physicsMaterial);
-            CreateRoadSegment(roads, new Vector3(-120f, 0f, 75f), new Vector3(-120f, 0f, -75f), materials.Road, physicsMaterial);
-            CreateArc(roads, new Vector3(-95f, 0f, -75f), 25f, 180f, 270f, 6, materials.Road, physicsMaterial);
-            CreateRoadSegment(roads, new Vector3(-120f, 0f, 0f), new Vector3(120f, 0f, 0f), materials.Road, physicsMaterial);
-            CreateRoadSegment(roads, new Vector3(0f, 0f, -100f), new Vector3(0f, 0f, 100f), materials.Road, physicsMaterial);
+            var roadsObject = new GameObject("Roads");
+            roadsObject.transform.SetParent(parent, false);
+            roadsObject.AddComponent<RoadGraphComponent>().Configure(roadGraph);
+            for (var edgeIndex = 0; edgeIndex < roadGraph.Edges.Count; edgeIndex++)
+            {
+                var edge = roadGraph.Edges[edgeIndex];
+                for (var point = 1; point < edge.Centerline.Count; point++)
+                {
+                    CreateRoadSegment($"{edge.Id}_{point:00}", roadsObject.transform, edge.Centerline[point - 1], edge.Centerline[point], edge.Width, materials.Road, physicsMaterial);
+                    if (edge.Kind == RoadKind.Boulevard)
+                    {
+                        CreateRoadMarker($"{edge.Id}_Center_{point:00}", roadsObject.transform, edge.Centerline[point - 1], edge.Centerline[point], materials.Marking);
+                    }
+                }
+            }
 
             var buildings = new GameObject("Buildings").transform;
             buildings.SetParent(parent, false);
-            CreateBox("Building_SW", buildings, new Vector3(-55f, 9f, -50f), new Vector3(62f, 18f, 52f), materials.Building, physicsMaterial, 8);
-            CreateBox("Building_SE", buildings, new Vector3(58f, 13f, -48f), new Vector3(68f, 26f, 56f), materials.Building, physicsMaterial, 8);
-            CreateBox("Building_NW", buildings, new Vector3(-58f, 12f, 52f), new Vector3(66f, 24f, 54f), materials.Building, physicsMaterial, 8);
-            CreateBox("Building_NE", buildings, new Vector3(55f, 8f, 54f), new Vector3(60f, 16f, 48f), materials.Building, physicsMaterial, 8);
+            CreateBuilding("Downtown_NE_Tower", buildings, P(58f, 54f), new Vector2(58f, 54f), 38f, materials, physicsMaterial);
+            CreateBuilding("Downtown_SW_Block", buildings, P(-58f, -52f), new Vector2(62f, 52f), 25f, materials, physicsMaterial);
+            CreateBuilding("Downtown_NW_West", buildings, P(-91f, 67f), new Vector2(38f, 38f), 19f, materials, physicsMaterial);
+            CreateBuilding("Downtown_NW_South", buildings, P(-47f, 24f), new Vector2(34f, 27f), 16f, materials, physicsMaterial);
+            CreateBuilding("Downtown_SE_East", buildings, P(94f, -66f), new Vector2(30f, 38f), 22f, materials, physicsMaterial);
+            CreateBuilding("Civic_West", buildings, P(-171f, 47f), new Vector2(48f, 58f), 17f, materials, physicsMaterial);
+            CreateBuilding("Civic_East", buildings, P(172f, 57f), new Vector2(48f, 58f), 21f, materials, physicsMaterial);
+            CreateBuilding("Commercial_West", buildings, P(-174f, -69f), new Vector2(50f, 42f), 13f, materials, physicsMaterial);
+            CreateBuilding("Commercial_East", buildings, P(175f, -82f), new Vector2(48f, 32f), 15f, materials, physicsMaterial);
+            CreateBuilding("Warehouse_West", buildings, P(-67f, -133f), new Vector2(68f, 28f), 11f, materials, physicsMaterial);
+            CreateBuilding("Warehouse_East", buildings, P(67f, -133f), new Vector2(68f, 28f), 12f, materials, physicsMaterial);
+            CreateBuilding("Warehouse_FarWest", buildings, P(-170f, -198f), new Vector2(48f, 24f), 9f, materials, physicsMaterial);
+            CreateBuilding("Warehouse_FarEast", buildings, P(170f, -198f), new Vector2(48f, 24f), 10f, materials, physicsMaterial);
+            CreateBuilding("Hillside_East", buildings, P(64f, 143f), new Vector2(48f, 27f), 14f, materials, physicsMaterial);
 
-            var barriers = new GameObject("BoundaryBarriers").transform;
-            barriers.SetParent(parent, false);
-            CreateBox("North", barriers, new Vector3(0f, 1.5f, 149f), new Vector3(300f, 3f, 2f), materials.Barrier, physicsMaterial, 8);
-            CreateBox("South", barriers, new Vector3(0f, 1.5f, -149f), new Vector3(300f, 3f, 2f), materials.Barrier, physicsMaterial, 8);
-            CreateBox("East", barriers, new Vector3(149f, 1.5f, 0f), new Vector3(2f, 3f, 300f), materials.Barrier, physicsMaterial, 8);
-            CreateBox("West", barriers, new Vector3(-149f, 1.5f, 0f), new Vector3(2f, 3f, 300f), materials.Barrier, physicsMaterial, 8);
+            var landmarks = new GameObject("Landmarks").transform;
+            landmarks.SetParent(parent, false);
+            CreateBuilding("SunsetHotel", landmarks, P(-64f, 145f), new Vector2(30f, 28f), 30f, materials, physicsMaterial, materials.Accent);
+            CreateBuilding("BoulevardTheater", landmarks, P(60f, -198f), new Vector2(46f, 24f), 15f, materials, physicsMaterial, materials.Accent);
+            CreateVisualBox("BeachOverlook", landmarks, new Vector3(-244f, 0.45f, -7f), new Vector3(10f, 0.8f, 34f), materials.Concrete);
+
+            var boundaries = new GameObject("BoundaryFiction").transform;
+            boundaries.SetParent(parent, false);
+            CreateVisualBox("PacificWater", boundaries, new Vector3(-520f, 0f, 0f), new Vector3(500f, 0.2f, 800f), materials.Water);
+            CreateBox("OceanSeawall", boundaries, new Vector3(-260f, 2.5f, 0f), new Vector3(8f, 5f, 470f), materials.Concrete, physicsMaterial, 8);
+            CreateBox("EastRetainingWall", boundaries, new Vector3(260f, 3f, 0f), new Vector3(8f, 6f, 470f), materials.Concrete, physicsMaterial, 8);
+            CreateBox("SouthRailWall", boundaries, new Vector3(0f, 3f, -225f), new Vector3(520f, 6f, 8f), materials.Concrete, physicsMaterial, 8);
+            CreateBox("NorthHill_West", boundaries, new Vector3(-165f, 22f, 238f), new Vector3(190f, 44f, 70f), materials.Terrain, physicsMaterial, 8).transform.rotation = Quaternion.Euler(0f, -8f, -8f);
+            CreateBox("NorthHill_Center", boundaries, new Vector3(0f, 30f, 245f), new Vector3(170f, 60f, 78f), materials.Terrain, physicsMaterial, 8).transform.rotation = Quaternion.Euler(0f, 0f, 5f);
+            CreateBox("NorthHill_East", boundaries, new Vector3(165f, 24f, 238f), new Vector3(190f, 48f, 70f), materials.Terrain, physicsMaterial, 8).transform.rotation = Quaternion.Euler(0f, 8f, 8f);
+
+            for (var x = -210f; x <= 210f; x += 70f)
+            {
+                CreateBuilding($"SouthWarehouse_{x:0}", boundaries, P(x, -250f), new Vector2(58f, 36f), 18f + Mathf.Abs(x) * 0.025f, materials, physicsMaterial);
+            }
         }
 
         private static UiReferences BuildUi(VehicleInputSource input, VehicleController controller, VehicleRecovery recovery, DriftScoreController scoring)
@@ -408,29 +514,45 @@ namespace Sideways.Editor
             return new UiReferences { Results = results };
         }
 
-        private static void CreateArc(Transform parent, Vector3 center, float radius, float startDegrees, float endDegrees, int steps, Material material, PhysicsMaterial physicsMaterial)
-        {
-            var previous = center + Direction(startDegrees) * radius;
-            for (var i = 1; i <= steps; i++)
-            {
-                var t = i / (float)steps;
-                var current = center + Direction(Mathf.Lerp(startDegrees, endDegrees, t)) * radius;
-                CreateRoadSegment(parent, previous, current, material, physicsMaterial);
-                previous = current;
-            }
-        }
-
-        private static Vector3 Direction(float degrees)
-        {
-            var radians = degrees * Mathf.Deg2Rad;
-            return new Vector3(Mathf.Cos(radians), 0f, Mathf.Sin(radians));
-        }
-
-        private static void CreateRoadSegment(Transform parent, Vector3 start, Vector3 end, Material material, PhysicsMaterial physicsMaterial)
+        private static void CreateRoadSegment(string name, Transform parent, Vector3 start, Vector3 end, float width, Material material, PhysicsMaterial physicsMaterial)
         {
             var delta = end - start;
-            var segment = CreateBox("Road", parent, (start + end) * 0.5f + Vector3.up * 0.05f, new Vector3(14f, 0.2f, delta.magnitude + 0.6f), material, physicsMaterial, 7);
+            var segment = CreateBox(name, parent, (start + end) * 0.5f + Vector3.up * 0.05f, new Vector3(width, 0.2f, delta.magnitude + 0.8f), material, physicsMaterial, 7);
             segment.transform.rotation = Quaternion.LookRotation(delta.normalized, Vector3.up);
+        }
+
+        private static void CreateRoadMarker(string name, Transform parent, Vector3 start, Vector3 end, Material material)
+        {
+            var delta = end - start;
+            var marker = CreateVisualBox(name, parent, (start + end) * 0.5f + Vector3.up * 0.17f, new Vector3(0.28f, 0.025f, Mathf.Max(1f, delta.magnitude - 2f)), material);
+            marker.transform.rotation = Quaternion.LookRotation(delta.normalized, Vector3.up);
+        }
+
+        private static void CreateBuilding(
+            string name,
+            Transform parent,
+            Vector3 groundPosition,
+            Vector2 footprint,
+            float height,
+            Materials materials,
+            PhysicsMaterial physicsMaterial,
+            Material roofMaterial = null)
+        {
+            var bodyPosition = groundPosition + Vector3.up * (height * 0.5f);
+            CreateBox(name, parent, bodyPosition, new Vector3(footprint.x, height, footprint.y), materials.Building, physicsMaterial, 8);
+            CreateVisualBox($"{name}_Roof", parent, bodyPosition + Vector3.up * (height * 0.5f + 0.3f), new Vector3(footprint.x * 0.82f, 0.6f, footprint.y * 0.82f), roofMaterial != null ? roofMaterial : materials.Concrete);
+        }
+
+        private static GameObject CreateVisualBox(string name, Transform parent, Vector3 position, Vector3 scale, Material material)
+        {
+            var gameObject = GameObject.CreatePrimitive(PrimitiveType.Cube);
+            gameObject.name = name;
+            gameObject.transform.SetParent(parent, true);
+            gameObject.transform.position = position;
+            gameObject.transform.localScale = scale;
+            gameObject.GetComponent<Renderer>().sharedMaterial = material;
+            Object.DestroyImmediate(gameObject.GetComponent<Collider>());
+            return gameObject;
         }
 
         private static GameObject CreateBox(string name, Transform parent, Vector3 position, Vector3 scale, Material material, PhysicsMaterial physicsMaterial, int layer)
@@ -556,6 +678,9 @@ namespace Sideways.Editor
             public Material Terrain;
             public Material Building;
             public Material Barrier;
+            public Material Concrete;
+            public Material Water;
+            public Material Marking;
             public Material Car;
             public Material Accent;
         }

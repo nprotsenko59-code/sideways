@@ -2,6 +2,7 @@ using System.Collections;
 using NUnit.Framework;
 using Sideways.Configuration;
 using Sideways.Core;
+using Sideways.EnvironmentSystem;
 using Sideways.UI;
 using Sideways.Vehicle;
 using UnityEngine;
@@ -22,11 +23,14 @@ namespace Sideways.Tests
             var session = Object.FindFirstObjectByType<RideSessionController>();
             var scoring = Object.FindFirstObjectByType<DriftScoreController>();
             var scoreHud = Object.FindFirstObjectByType<ScoreHud>();
+            var roadGraph = Object.FindFirstObjectByType<RoadGraphComponent>();
             Assert.That(controller, Is.Not.Null);
             Assert.That(recovery, Is.Not.Null);
             Assert.That(session, Is.Not.Null);
             Assert.That(scoring, Is.Not.Null);
             Assert.That(scoreHud, Is.Not.Null);
+            Assert.That(roadGraph, Is.Not.Null);
+            Assert.That(roadGraph.Graph.IsValid(out var graphError), Is.True, graphError);
 
             for (var i = 0; i < 45; i++) yield return new WaitForFixedUpdate();
 

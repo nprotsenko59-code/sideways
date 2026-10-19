@@ -1,0 +1,434 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: d6396e09f93024beca3a68c043e6fb39, type: 3}
+  m_Name: LAPrototypeRoadGraph
+  m_EditorClassIdentifier: Sideways.Runtime::Sideways.EnvironmentSystem.RoadGraphAsset
+  graphId: sunset-basin
+  driveableSize: {x: 520, y: 420}
+  nodes:
+  - Id: G_NW
+    Position: {x: -120, y: 0, z: 100}
+    Role: 0
+    AllowsDeadEnd: 0
+  - Id: G_NC
+    Position: {x: 0, y: 0, z: 100}
+    Role: 1
+    AllowsDeadEnd: 0
+  - Id: G_NE
+    Position: {x: 120, y: 0, z: 100}
+    Role: 0
+    AllowsDeadEnd: 0
+  - Id: G_W
+    Position: {x: -120, y: 0, z: 0}
+    Role: 0
+    AllowsDeadEnd: 0
+  - Id: G_C
+    Position: {x: 0, y: 0, z: 0}
+    Role: 1
+    AllowsDeadEnd: 0
+  - Id: G_E
+    Position: {x: 120, y: 0, z: 0}
+    Role: 0
+    AllowsDeadEnd: 0
+  - Id: G_SW
+    Position: {x: -120, y: 0, z: -100}
+    Role: 0
+    AllowsDeadEnd: 0
+  - Id: G_SC
+    Position: {x: 0, y: 0, z: -100}
+    Role: 0
+    AllowsDeadEnd: 0
+  - Id: G_SE
+    Position: {x: 120, y: 0, z: -100}
+    Role: 0
+    AllowsDeadEnd: 0
+  - Id: B_W
+    Position: {x: -220, y: 0, z: -165}
+    Role: 2
+    AllowsDeadEnd: 0
+  - Id: B_SW
+    Position: {x: -120, y: 0, z: -165}
+    Role: 0
+    AllowsDeadEnd: 0
+  - Id: B_SC
+    Position: {x: 0, y: 0, z: -165}
+    Role: 1
+    AllowsDeadEnd: 0
+  - Id: B_SE
+    Position: {x: 120, y: 0, z: -165}
+    Role: 0
+    AllowsDeadEnd: 0
+  - Id: B_E
+    Position: {x: 220, y: 0, z: -165}
+    Role: 2
+    AllowsDeadEnd: 0
+  - Id: O_W
+    Position: {x: -225, y: 0, z: -40}
+    Role: 2
+    AllowsDeadEnd: 0
+  - Id: O_NW
+    Position: {x: -190, y: 0, z: 145}
+    Role: 2
+    AllowsDeadEnd: 0
+  - Id: O_N
+    Position: {x: 0, y: 0, z: 195}
+    Role: 2
+    AllowsDeadEnd: 0
+  - Id: O_NE
+    Position: {x: 190, y: 0, z: 145}
+    Role: 2
+    AllowsDeadEnd: 0
+  - Id: O_E
+    Position: {x: 225, y: 0, z: -40}
+    Role: 2
+    AllowsDeadEnd: 0
+  edges:
+  - Id: Grid_N_WC
+    FromNodeId: G_NW
+    ToNodeId: G_NC
+    Kind: 0
+    Bidirectional: 1
+    Width: 14
+    SpeedLimitMps: 16
+    Centerline:
+    - {x: -120, y: 0, z: 100}
+    - {x: 0, y: 0, z: 100}
+  - Id: Grid_N_CE
+    FromNodeId: G_NC
+    ToNodeId: G_NE
+    Kind: 0
+    Bidirectional: 1
+    Width: 14
+    SpeedLimitMps: 16
+    Centerline:
+    - {x: 0, y: 0, z: 100}
+    - {x: 120, y: 0, z: 100}
+  - Id: Grid_M_WC
+    FromNodeId: G_W
+    ToNodeId: G_C
+    Kind: 0
+    Bidirectional: 1
+    Width: 16
+    SpeedLimitMps: 18
+    Centerline:
+    - {x: -120, y: 0, z: 0}
+    - {x: 0, y: 0, z: 0}
+  - Id: Grid_M_CE
+    FromNodeId: G_C
+    ToNodeId: G_E
+    Kind: 0
+    Bidirectional: 1
+    Width: 16
+    SpeedLimitMps: 18
+    Centerline:
+    - {x: 0, y: 0, z: 0}
+    - {x: 120, y: 0, z: 0}
+  - Id: Grid_S_WC
+    FromNodeId: G_SW
+    ToNodeId: G_SC
+    Kind: 0
+    Bidirectional: 1
+    Width: 14
+    SpeedLimitMps: 16
+    Centerline:
+    - {x: -120, y: 0, z: -100}
+    - {x: 0, y: 0, z: -100}
+  - Id: Grid_S_CE
+    FromNodeId: G_SC
+    ToNodeId: G_SE
+    Kind: 0
+    Bidirectional: 1
+    Width: 14
+    SpeedLimitMps: 16
+    Centerline:
+    - {x: 0, y: 0, z: -100}
+    - {x: 120, y: 0, z: -100}
+  - Id: Grid_W_NS
+    FromNodeId: G_NW
+    ToNodeId: G_W
+    Kind: 0
+    Bidirectional: 1
+    Width: 14
+    SpeedLimitMps: 16
+    Centerline:
+    - {x: -120, y: 0, z: 100}
+    - {x: -120, y: 0, z: 0}
+  - Id: Grid_W_SS
+    FromNodeId: G_W
+    ToNodeId: G_SW
+    Kind: 0
+    Bidirectional: 1
+    Width: 14
+    SpeedLimitMps: 16
+    Centerline:
+    - {x: -120, y: 0, z: 0}
+    - {x: -120, y: 0, z: -100}
+  - Id: Grid_C_NS
+    FromNodeId: G_NC
+    ToNodeId: G_C
+    Kind: 0
+    Bidirectional: 1
+    Width: 16
+    SpeedLimitMps: 18
+    Centerline:
+    - {x: 0, y: 0, z: 100}
+    - {x: 0, y: 0, z: 0}
+  - Id: Grid_C_SS
+    FromNodeId: G_C
+    ToNodeId: G_SC
+    Kind: 0
+    Bidirectional: 1
+    Width: 16
+    SpeedLimitMps: 18
+    Centerline:
+    - {x: 0, y: 0, z: 0}
+    - {x: 0, y: 0, z: -100}
+  - Id: Grid_E_NS
+    FromNodeId: G_NE
+    ToNodeId: G_E
+    Kind: 0
+    Bidirectional: 1
+    Width: 14
+    SpeedLimitMps: 16
+    Centerline:
+    - {x: 120, y: 0, z: 100}
+    - {x: 120, y: 0, z: 0}
+  - Id: Grid_E_SS
+    FromNodeId: G_E
+    ToNodeId: G_SE
+    Kind: 0
+    Bidirectional: 1
+    Width: 14
+    SpeedLimitMps: 16
+    Centerline:
+    - {x: 120, y: 0, z: 0}
+    - {x: 120, y: 0, z: -100}
+  - Id: Boulevard_W0
+    FromNodeId: B_W
+    ToNodeId: B_SW
+    Kind: 1
+    Bidirectional: 1
+    Width: 22
+    SpeedLimitMps: 24
+    Centerline:
+    - {x: -220, y: 0, z: -165}
+    - {x: -120, y: 0, z: -165}
+  - Id: Boulevard_W1
+    FromNodeId: B_SW
+    ToNodeId: B_SC
+    Kind: 1
+    Bidirectional: 1
+    Width: 22
+    SpeedLimitMps: 24
+    Centerline:
+    - {x: -120, y: 0, z: -165}
+    - {x: 0, y: 0, z: -165}
+  - Id: Boulevard_E1
+    FromNodeId: B_SC
+    ToNodeId: B_SE
+    Kind: 1
+    Bidirectional: 1
+    Width: 22
+    SpeedLimitMps: 24
+    Centerline:
+    - {x: 0, y: 0, z: -165}
+    - {x: 120, y: 0, z: -165}
+  - Id: Boulevard_E0
+    FromNodeId: B_SE
+    ToNodeId: B_E
+    Kind: 1
+    Bidirectional: 1
+    Width: 22
+    SpeedLimitMps: 24
+    Centerline:
+    - {x: 120, y: 0, z: -165}
+    - {x: 220, y: 0, z: -165}
+  - Id: BoulevardLink_W
+    FromNodeId: B_SW
+    ToNodeId: G_SW
+    Kind: 0
+    Bidirectional: 1
+    Width: 16
+    SpeedLimitMps: 18
+    Centerline:
+    - {x: -120, y: 0, z: -165}
+    - {x: -120, y: 0, z: -100}
+  - Id: BoulevardLink_C
+    FromNodeId: B_SC
+    ToNodeId: G_SC
+    Kind: 0
+    Bidirectional: 1
+    Width: 16
+    SpeedLimitMps: 18
+    Centerline:
+    - {x: 0, y: 0, z: -165}
+    - {x: 0, y: 0, z: -100}
+  - Id: BoulevardLink_E
+    FromNodeId: B_SE
+    ToNodeId: G_SE
+    Kind: 0
+    Bidirectional: 1
+    Width: 16
+    SpeedLimitMps: 18
+    Centerline:
+    - {x: 120, y: 0, z: -165}
+    - {x: 120, y: 0, z: -100}
+  - Id: Scenic_SW
+    FromNodeId: B_W
+    ToNodeId: O_W
+    Kind: 3
+    Bidirectional: 1
+    Width: 15
+    SpeedLimitMps: 18
+    Centerline:
+    - {x: -220, y: 0, z: -165}
+    - {x: -230, y: 0, z: -130}
+    - {x: -232, y: 0, z: -85}
+    - {x: -225, y: 0, z: -40}
+  - Id: Scenic_W
+    FromNodeId: O_W
+    ToNodeId: O_NW
+    Kind: 3
+    Bidirectional: 1
+    Width: 15
+    SpeedLimitMps: 18
+    Centerline:
+    - {x: -225, y: 0, z: -40}
+    - {x: -232, y: 0, z: 20}
+    - {x: -220, y: 0, z: 82}
+    - {x: -190, y: 0, z: 145}
+  - Id: Scenic_NW
+    FromNodeId: O_NW
+    ToNodeId: O_N
+    Kind: 3
+    Bidirectional: 1
+    Width: 15
+    SpeedLimitMps: 18
+    Centerline:
+    - {x: -190, y: 0, z: 145}
+    - {x: -142, y: 0, z: 176}
+    - {x: -72, y: 0, z: 192}
+    - {x: 0, y: 0, z: 195}
+  - Id: Scenic_NE
+    FromNodeId: O_N
+    ToNodeId: O_NE
+    Kind: 3
+    Bidirectional: 1
+    Width: 15
+    SpeedLimitMps: 18
+    Centerline:
+    - {x: 0, y: 0, z: 195}
+    - {x: 72, y: 0, z: 192}
+    - {x: 142, y: 0, z: 176}
+    - {x: 190, y: 0, z: 145}
+  - Id: Scenic_E
+    FromNodeId: O_NE
+    ToNodeId: O_E
+    Kind: 3
+    Bidirectional: 1
+    Width: 15
+    SpeedLimitMps: 18
+    Centerline:
+    - {x: 190, y: 0, z: 145}
+    - {x: 220, y: 0, z: 82}
+    - {x: 232, y: 0, z: 20}
+    - {x: 225, y: 0, z: -40}
+  - Id: Scenic_SE
+    FromNodeId: O_E
+    ToNodeId: B_E
+    Kind: 3
+    Bidirectional: 1
+    Width: 15
+    SpeedLimitMps: 18
+    Centerline:
+    - {x: 225, y: 0, z: -40}
+    - {x: 232, y: 0, z: -85}
+    - {x: 230, y: 0, z: -130}
+    - {x: 220, y: 0, z: -165}
+  - Id: HillLink_W
+    FromNodeId: O_NW
+    ToNodeId: G_NW
+    Kind: 0
+    Bidirectional: 1
+    Width: 14
+    SpeedLimitMps: 15
+    Centerline:
+    - {x: -190, y: 0, z: 145}
+    - {x: -120, y: 0, z: 100}
+  - Id: HillLink_C
+    FromNodeId: O_N
+    ToNodeId: G_NC
+    Kind: 0
+    Bidirectional: 1
+    Width: 14
+    SpeedLimitMps: 15
+    Centerline:
+    - {x: 0, y: 0, z: 195}
+    - {x: 0, y: 0, z: 100}
+  - Id: HillLink_E
+    FromNodeId: O_NE
+    ToNodeId: G_NE
+    Kind: 0
+    Bidirectional: 1
+    Width: 14
+    SpeedLimitMps: 15
+    Centerline:
+    - {x: 190, y: 0, z: 145}
+    - {x: 120, y: 0, z: 100}
+  - Id: Alley_NW
+    FromNodeId: G_W
+    ToNodeId: G_NC
+    Kind: 2
+    Bidirectional: 1
+    Width: 8
+    SpeedLimitMps: 11
+    Centerline:
+    - {x: -120, y: 0, z: 0}
+    - {x: -82, y: 0, z: 31}
+    - {x: -43, y: 0, z: 69}
+    - {x: 0, y: 0, z: 100}
+  - Id: Alley_SE
+    FromNodeId: G_SC
+    ToNodeId: G_E
+    Kind: 2
+    Bidirectional: 1
+    Width: 8
+    SpeedLimitMps: 11
+    Centerline:
+    - {x: 0, y: 0, z: -100}
+    - {x: 43, y: 0, z: -69}
+    - {x: 82, y: 0, z: -31}
+    - {x: 120, y: 0, z: 0}
+  - Id: Alley_Beach
+    FromNodeId: B_W
+    ToNodeId: G_SW
+    Kind: 2
+    Bidirectional: 1
+    Width: 9
+    SpeedLimitMps: 12
+    Centerline:
+    - {x: -220, y: 0, z: -165}
+    - {x: -178, y: 0, z: -141}
+    - {x: -148, y: 0, z: -114}
+    - {x: -120, y: 0, z: -100}
+  - Id: Alley_Industrial
+    FromNodeId: G_SE
+    ToNodeId: B_E
+    Kind: 2
+    Bidirectional: 1
+    Width: 9
+    SpeedLimitMps: 12
+    Centerline:
+    - {x: 120, y: 0, z: -100}
+    - {x: 148, y: 0, z: -114}
+    - {x: 178, y: 0, z: -141}
+    - {x: 220, y: 0, z: -165}

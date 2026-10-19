@@ -1,6 +1,6 @@
 # SIDEWAYS
 
-Unity `6000.6.6f1` graybox prototype for an iOS-first arcade drift game.
+Unity `6000.6.6f1` graybox prototype for an iOS-first arcade drift game. The directly playable Sunset Basin scene is a fixed LA-inspired neighborhood with an urban grid, boulevard, curved scenic roads, and alley shortcuts.
 
 ## Open and play
 
@@ -58,4 +58,4 @@ The iOS module is required. Export an unsigned development Xcode project with:
 
 Open `Builds/iOS/Unity-iPhone.xcodeproj`, choose an Apple developer team and device, then build from Xcode. Device performance claims require an iPhone 15-class or newer profiler capture; Editor and Simulator results do not qualify.
 
-See [Documentation/SCORING.md](Documentation/SCORING.md) for the scoring contract and [Documentation/DEVELOPMENT.md](Documentation/DEVELOPMENT.md) for architecture, QA, and current limitations.
+See [Documentation/SCORING.md](Documentation/SCORING.md) for scoring, [Documentation/NEIGHBORHOOD.md](Documentation/NEIGHBORHOOD.md) for the map and road-graph contract, [Documentation/ASSET_IMPORT.md](Documentation/ASSET_IMPORT.md) for asset handoff rules, and [Documentation/DEVELOPMENT.md](Documentation/DEVELOPMENT.md) for architecture and QA.

@@ -1,6 +1,7 @@
 using NUnit.Framework;
 using Sideways.Configuration;
 using Sideways.Core;
+using Sideways.EnvironmentSystem;
 using Sideways.UI;
 using Sideways.Vehicle;
 using UnityEditor;
@@ -17,6 +18,7 @@ namespace Sideways.Tests
             Assert.That(AssetDatabase.LoadAssetAtPath<SceneAsset>("Assets/Sideways/Scenes/DrivingSandbox.unity"), Is.Not.Null);
             Assert.That(AssetDatabase.LoadAssetAtPath<GameObject>("Assets/Sideways/Prefabs/PlayerCar.prefab"), Is.Not.Null);
             Assert.That(AssetDatabase.LoadAssetAtPath<ScoringProfile>("Assets/Sideways/Configuration/DefaultScoring.asset"), Is.Not.Null);
+            Assert.That(AssetDatabase.LoadAssetAtPath<RoadGraphAsset>("Assets/Sideways/Configuration/LAPrototypeRoadGraph.asset"), Is.Not.Null);
         }
 
         [Test]
@@ -28,6 +30,16 @@ namespace Sideways.Tests
             Assert.That(Object.FindFirstObjectByType<DriftScoreController>(), Is.Not.Null);
             Assert.That(Object.FindFirstObjectByType<ScoreHud>(), Is.Not.Null);
             Assert.That(Object.FindFirstObjectByType<VehicleCollisionSensor>(), Is.Not.Null);
+            var roadGraph = Object.FindFirstObjectByType<RoadGraphComponent>();
+            Assert.That(roadGraph, Is.Not.Null);
+            Assert.That(roadGraph.Graph, Is.Not.Null);
+
+            var environment = GameObject.Find("Environment");
+            Assert.That(environment, Is.Not.Null);
+            Assert.That(environment.transform.Find("BoundaryFiction"), Is.Not.Null);
+            Assert.That(environment.transform.Find("Roads").childCount, Is.LessThanOrEqualTo(90));
+            Assert.That(environment.GetComponentsInChildren<Renderer>(true).Length, Is.LessThanOrEqualTo(220));
+            Assert.That(environment.GetComponentsInChildren<Collider>(true).Length, Is.LessThanOrEqualTo(180));
             Assert.That(EditorBuildSettings.scenes[0].path, Is.EqualTo("Assets/Sideways/Scenes/DrivingSandbox.unity"));
         }
     }
