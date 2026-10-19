@@ -129,7 +129,8 @@ namespace Sideways.Vehicle
                 grounded,
                 drifting,
                 handbrake,
-                Vector3.Angle(transform.up, Vector3.up));
+                Vector3.Angle(transform.up, Vector3.up),
+                Vector3.Dot(body.angularVelocity, grounded ? groundNormal : Vector3.up) * Mathf.Rad2Deg);
             TelemetryUpdated?.Invoke(telemetry);
         }
     }

@@ -4,7 +4,7 @@ namespace Sideways.Vehicle
 {
     public readonly struct VehicleTelemetry
     {
-        public VehicleTelemetry(float speed, float steering, Vector3 groundVelocity, float slipAngle, bool grounded, bool drifting, bool handbrake, float angleFromUpright)
+        public VehicleTelemetry(float speed, float steering, Vector3 groundVelocity, float slipAngle, bool grounded, bool drifting, bool handbrake, float angleFromUpright, float yawRateDegrees = 0f)
         {
             Speed = speed;
             Steering = steering;
@@ -14,6 +14,7 @@ namespace Sideways.Vehicle
             Drifting = drifting;
             Handbrake = handbrake;
             AngleFromUpright = angleFromUpright;
+            YawRateDegrees = yawRateDegrees;
         }
 
         public float Speed { get; }
@@ -24,5 +25,6 @@ namespace Sideways.Vehicle
         public bool Drifting { get; }
         public bool Handbrake { get; }
         public float AngleFromUpright { get; }
+        public float YawRateDegrees { get; }
     }
 }

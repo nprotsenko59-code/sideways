@@ -1,0 +1,31 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: ea02d30b4b85e4c0fa1332a1cc7d0457, type: 3}
+  m_Name: DefaultScoring
+  m_EditorClassIdentifier: Sideways.Runtime::Sideways.Configuration.ScoringProfile
+  minimumSpeed: 6
+  minimumSlipAngle: 8
+  idealSlipAngle: 35
+  maximumSlipAngle: 70
+  maximumVehicleTilt: 45
+  maximumYawRate: 180
+  basePointsPerSecond: 100
+  minimumAngleFactor: 0.4
+  fullSpeedBonusAt: 25
+  maximumSpeedMultiplier: 1.75
+  maximumScoringDeltaTime: 0.1
+  comboGraceDuration: 1.5
+  multiplierStepSeconds: 2
+  multiplierStep: 0.25
+  maximumMultiplier: 3
+  severeCollisionSpeed: 7
+  collisionScoringLockout: 0.4

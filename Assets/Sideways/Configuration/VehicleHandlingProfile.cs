@@ -26,9 +26,9 @@ namespace Sideways.Configuration
         [Min(0f)] public float driftInputThreshold = 0.55f;
 
         [Header("Handbrake drift")]
-        [Min(0f)] public float handbrakeLateralGrip = 0.45f;
-        [Min(1f)] public float handbrakeYawMultiplier = 2.4f;
-        [Min(0f)] public float handbrakeDeceleration = 2.5f;
+        [Min(0f)] public float handbrakeLateralGrip = 0.32f;
+        [Min(1f)] public float handbrakeYawMultiplier = 2.75f;
+        [Min(0f)] public float handbrakeDeceleration = 2.2f;
 
         [Header("Grounding")]
         [Min(0.1f)] public float groundProbeLength = 1.1f;

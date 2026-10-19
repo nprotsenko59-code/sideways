@@ -164,7 +164,8 @@ namespace Sideways.Editor
             {
                 Vehicle = EnsureAsset<VehicleHandlingProfile>(Root + "/Configuration/DefaultVehicleHandling.asset"),
                 Camera = EnsureAsset<ChaseCameraProfile>(Root + "/Configuration/DefaultChaseCamera.asset"),
-                Ride = EnsureAsset<RideRulesProfile>(Root + "/Configuration/DefaultRideRules.asset")
+                Ride = EnsureAsset<RideRulesProfile>(Root + "/Configuration/DefaultRideRules.asset"),
+                Scoring = EnsureAsset<ScoringProfile>(Root + "/Configuration/DefaultScoring.asset")
             };
         }
 
@@ -244,6 +245,8 @@ namespace Sideways.Editor
             controller.Configure(body, input, input, profiles.Vehicle, (1 << 0) | (1 << 7), new Vector3(0f, -0.35f, 0f));
             var recovery = root.AddComponent<VehicleRecovery>();
             recovery.Configure(controller, input, profiles.Ride, 1 << 7, 1 << 8);
+            var collisionSensor = root.AddComponent<VehicleCollisionSensor>();
+            collisionSensor.Configure(1 << 8);
 
             PrefabUtility.SaveAsPrefabAsset(root, CarPrefabPath);
             Object.DestroyImmediate(root);
@@ -266,6 +269,7 @@ namespace Sideways.Editor
             var controller = car.GetComponent<VehicleController>();
             var input = car.GetComponent<VehicleInputSource>();
             var recovery = car.GetComponent<VehicleRecovery>();
+            var collisionSensor = car.GetComponent<VehicleCollisionSensor>();
 
             var cameraObject = new GameObject("ChaseCamera");
             cameraObject.tag = "MainCamera";
@@ -278,9 +282,11 @@ namespace Sideways.Editor
             chase.Configure(car.transform, car.GetComponent<Rigidbody>(), profiles.Camera, 1 << 8);
             cameraObject.transform.SetPositionAndRotation(car.transform.position + new Vector3(-10f, 7f, 0f), Quaternion.identity);
 
-            var ui = BuildUi(input, controller, recovery);
+            var scoring = systems.AddComponent<DriftScoreController>();
+            scoring.Configure(controller, collisionSensor, profiles.Scoring);
+            var ui = BuildUi(input, controller, recovery, scoring);
             var rideSession = systems.AddComponent<RideSessionController>();
-            rideSession.Configure(car.transform, controller, profiles.Ride, ui.Results);
+            rideSession.Configure(car.transform, controller, profiles.Ride, ui.Results, scoring);
 
             var sun = new GameObject("Sun");
             var light = sun.AddComponent<Light>();
@@ -328,7 +334,7 @@ namespace Sideways.Editor
             CreateBox("West", barriers, new Vector3(-149f, 1.5f, 0f), new Vector3(2f, 3f, 300f), materials.Barrier, physicsMaterial, 8);
         }
 
-        private static UiReferences BuildUi(VehicleInputSource input, VehicleController controller, VehicleRecovery recovery)
+        private static UiReferences BuildUi(VehicleInputSource input, VehicleController controller, VehicleRecovery recovery, DriftScoreController scoring)
         {
             var canvasObject = new GameObject("HUD", typeof(Canvas), typeof(CanvasScaler), typeof(GraphicRaycaster));
             var canvas = canvasObject.GetComponent<Canvas>();
@@ -351,8 +357,30 @@ namespace Sideways.Editor
             SetRect(handbrakeHint.rectTransform, new Vector2(0f, 20f), new Vector2(620f, 48f), new Vector2(0.5f, 0f));
             handbrakeHint.color = new Color(1f, 1f, 1f, 0.72f);
 
+            var scorePanel = CreateUiImage("ScorePanel", safeArea.transform, new Vector2(0.5f, 1f), new Vector2(0.5f, 1f), new Color(0.02f, 0.03f, 0.05f, 0.78f));
+            SetRect(scorePanel.GetComponent<RectTransform>(), new Vector2(0f, -18f), new Vector2(520f, 126f), new Vector2(0.5f, 1f));
+            scorePanel.GetComponent<Image>().raycastTarget = false;
+            var totalScoreText = CreateText("TotalScore", scorePanel.transform, "0", 48, TextAnchor.MiddleCenter);
+            SetRect(totalScoreText.rectTransform, new Vector2(0f, -8f), new Vector2(490f, 60f), new Vector2(0.5f, 1f));
+            totalScoreText.raycastTarget = false;
+            var comboText = CreateText("Combo", scorePanel.transform, "BUILD A DRIFT COMBO", 23, TextAnchor.MiddleCenter);
+            SetRect(comboText.rectTransform, new Vector2(0f, -68f), new Vector2(490f, 42f), new Vector2(0.5f, 1f));
+            comboText.raycastTarget = false;
+            var graceBackground = CreateUiImage("ComboGraceBackground", scorePanel.transform, new Vector2(0.5f, 0f), new Vector2(0.5f, 0f), new Color(1f, 1f, 1f, 0.15f));
+            SetRect(graceBackground.GetComponent<RectTransform>(), new Vector2(0f, 8f), new Vector2(460f, 6f), new Vector2(0.5f, 0f));
+            graceBackground.GetComponent<Image>().raycastTarget = false;
+            var graceFillObject = CreateUiImage("Fill", graceBackground.transform, Vector2.zero, Vector2.one, new Color(1f, 0.72f, 0.1f, 1f));
+            var graceFill = graceFillObject.GetComponent<Image>();
+            graceFill.raycastTarget = false;
+            graceFill.type = Image.Type.Filled;
+            graceFill.fillMethod = Image.FillMethod.Horizontal;
+            graceFill.fillOrigin = 0;
+            graceFill.fillAmount = 0f;
+            var scoreHud = canvasObject.AddComponent<ScoreHud>();
+            scoreHud.Configure(scoring, totalScoreText, comboText, graceFill);
+
             var debugPanel = CreateUiImage("DebugPanel", safeArea.transform, new Vector2(0f, 1f), new Vector2(0f, 1f), new Color(0f, 0f, 0f, 0.62f));
-            SetRect(debugPanel.GetComponent<RectTransform>(), new Vector2(18f, -18f), new Vector2(310f, 290f), new Vector2(0f, 1f));
+            SetRect(debugPanel.GetComponent<RectTransform>(), new Vector2(18f, -18f), new Vector2(330f, 325f), new Vector2(0f, 1f));
             var debugText = CreateText("Telemetry", debugPanel.transform, "", 26, TextAnchor.UpperLeft);
             Stretch(debugText.rectTransform, 14f);
             var debugHud = canvasObject.AddComponent<DebugHud>();
@@ -519,6 +547,7 @@ namespace Sideways.Editor
             public VehicleHandlingProfile Vehicle;
             public ChaseCameraProfile Camera;
             public RideRulesProfile Ride;
+            public ScoringProfile Scoring;
         }
 
         private sealed class Materials

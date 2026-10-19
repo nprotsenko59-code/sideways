@@ -70,6 +70,8 @@ namespace Sideways.Core
                 vehicle.Body.isKinematic = true;
             }
 
+            GameplayEvents.RaiseComboCancellation();
+
             int? score = null;
             int? best = null;
             if (scoreProvider != null)

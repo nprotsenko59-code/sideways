@@ -2,6 +2,7 @@ using System.Collections;
 using NUnit.Framework;
 using Sideways.Configuration;
 using Sideways.Core;
+using Sideways.UI;
 using Sideways.Vehicle;
 using UnityEngine;
 using UnityEngine.SceneManagement;
@@ -19,9 +20,13 @@ namespace Sideways.Tests
             var controller = Object.FindFirstObjectByType<VehicleController>();
             var recovery = Object.FindFirstObjectByType<VehicleRecovery>();
             var session = Object.FindFirstObjectByType<RideSessionController>();
+            var scoring = Object.FindFirstObjectByType<DriftScoreController>();
+            var scoreHud = Object.FindFirstObjectByType<ScoreHud>();
             Assert.That(controller, Is.Not.Null);
             Assert.That(recovery, Is.Not.Null);
             Assert.That(session, Is.Not.Null);
+            Assert.That(scoring, Is.Not.Null);
+            Assert.That(scoreHud, Is.Not.Null);
 
             for (var i = 0; i < 45; i++) yield return new WaitForFixedUpdate();
 
@@ -100,11 +105,22 @@ namespace Sideways.Tests
             profile.handbrakeYawMultiplier = 2.5f;
             var controller = car.AddComponent<VehicleController>();
             controller.Configure(body, input, input, profile, 1 << 0, new Vector3(0f, -0.3f, 0f));
+            var collisionSensor = car.AddComponent<VehicleCollisionSensor>();
+            collisionSensor.Configure(1 << 8);
+            var scoringProfile = ScriptableObject.CreateInstance<ScoringProfile>();
+            scoringProfile.minimumSpeed = 3f;
+            scoringProfile.minimumSlipAngle = 5f;
+            scoringProfile.idealSlipAngle = 25f;
+            scoringProfile.maximumSlipAngle = 85f;
+            scoringProfile.maximumYawRate = 720f;
+            var scoring = car.AddComponent<DriftScoreController>();
+            scoring.Configure(controller, collisionSensor, scoringProfile);
 
             for (var i = 0; i < 25; i++) yield return new WaitForFixedUpdate();
 
             Assert.That(controller.Telemetry.Handbrake, Is.True);
             Assert.That(Mathf.Abs(controller.Telemetry.SlipAngle), Is.GreaterThan(8f));
+            Assert.That(scoring.CurrentScore, Is.GreaterThan(0));
 
             input.HandbrakeValue = false;
             yield return new WaitForFixedUpdate();
@@ -113,6 +129,7 @@ namespace Sideways.Tests
             Object.Destroy(car);
             Object.Destroy(ground);
             Object.Destroy(profile);
+            Object.Destroy(scoringProfile);
         }
 
         [UnityTest]

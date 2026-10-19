@@ -5,9 +5,11 @@
 - `VehicleController` owns Rigidbody forces and publishes read-only telemetry.
 - `VehicleInputSource` converts keyboard and touch-zone input into smoothed normalized steering and handbrake demand.
 - `VehicleRecovery` records safe road poses and emits reset/combo-cancel events.
+- `VehicleCollisionSensor` reports obstacle impacts without owning scoring policy.
+- `DriftScoreController` evaluates telemetry through a deterministic scoring model and exposes the optional ride-score provider.
 - `RideSessionController` owns the Driving/Ended lifecycle and two-second flip rule.
 - `ChaseCameraController` is a custom damped follow camera with look-ahead and obstruction checks.
-- Handling, camera, and ride rules are ScriptableObject assets under `Assets/Sideways/Configuration`.
+- Handling, camera, ride rules, and drift scoring are ScriptableObject assets under `Assets/Sideways/Configuration`.
 - The `PlayerCar` prefab keeps physics on its root and replaceable visuals below `Visual`.
 
 ## Milestone checklist
@@ -22,6 +24,10 @@
 - [x] Sustained-flip ride ending and restart overlay.
 - [x] Toggleable debug telemetry.
 - [x] EditMode and PlayMode tests plus manual QA checklist.
+- [x] Telemetry-driven drift scoring with angle/speed scaling and anti-exploit limits.
+- [x] Timed combo multiplier, recovery grace, banking, and explicit combo cancellation.
+- [x] Collision severity policy and results/best-score integration.
+- [x] Runtime score/combo HUD with grace feedback.
 - [ ] Physical iPhone profiling and touch QA.
 
 ## Manual QA
@@ -33,16 +39,20 @@
 5. Press R/Reset after a safe pose is recorded; confirm position and velocities reset.
 6. Roll past 100 degrees and recover before two seconds; the ride must continue.
 7. Remain flipped for two seconds; the ride must end and DRIVE AGAIN must restart it.
-8. Drive continuously for ten minutes and confirm no fall-through, console errors, or unstable camera motion.
-9. On iPhone, steer from either half, swipe downward and hold to initiate a drift, then verify release recovery.
-10. On iPhone, verify both landscape orientations, safe-area controls, and a 60 FPS profiler capture.
+8. Sustain a drift and confirm score accumulation, multiplier growth, and combo banking after the recovery grace window.
+9. Build an active combo, press Reset, and confirm the active points are discarded while the banked total remains unchanged.
+10. Build an active combo and hit a solid obstacle hard enough to cancel it; verify a light contact only pauses scoring briefly.
+11. End a ride by remaining flipped; confirm final and best score appear, then restart and verify a fresh zero-score ride.
+12. Drive continuously for ten minutes and confirm no fall-through, console errors, or unstable camera motion.
+13. On iPhone, steer from either half, swipe downward and hold to initiate a drift, then verify release recovery.
+14. On iPhone, verify both landscape orientations, safe-area controls, and a 60 FPS profiler capture.
 
 ## Known limitations
 
 - Driving values are first-pass graybox defaults and require device-based feel tuning.
-- No score provider exists yet, so the results view intentionally hides score fields.
 - No reverse or service brake is available; the handbrake only initiates drifts and upright recovery uses the explicit reset action.
 - The environment is a driving sandbox, not the LA neighborhood slice.
+- Drift scoring currently has no discrete U-turn, proximity, traffic, or police bonuses; those systems remain deferred.
 - Audio, haptics, police, traffic, challenges, and progression are deferred.
 
 ## Development log
@@ -51,3 +61,5 @@
 - 2026-10-18 — Verification: 13 EditMode tests passed, 3 PlayMode tests passed, and Unity produced a successful iOS IL2CPP/Xcode export under `Builds/iOS`.
 - 2026-10-18 — Device validation remains pending: full Xcode is not installed/selected (`xcode-select` points to Command Line Tools), so signing, `xcodebuild`, and iPhone profiling were not run.
 - 2026-10-19 — Added handbrake drift initiation using Space or a downward touch swipe; verification passed with 14 EditMode and 4 PlayMode tests.
+- 2026-10-19 — Milestone 2 added deterministic drift scoring, combo banking/cancellation, collision severity, score HUD, and local final/best ride results.
+- 2026-10-19 — Milestone 2 verification: 24 EditMode tests and 4 PlayMode tests passed, and Unity produced a successful unsigned iOS Xcode export.

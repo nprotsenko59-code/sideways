@@ -11,8 +11,10 @@ namespace Sideways.Core
         internal static void RaiseRoadReset()
         {
             RoadReset?.Invoke();
-            ComboCancellationRequested?.Invoke();
+            RaiseComboCancellation();
         }
+
+        internal static void RaiseComboCancellation() => ComboCancellationRequested?.Invoke();
 
         internal static void RaiseRideEnded(RideEndReason reason) => RideEnded?.Invoke(reason);
 
