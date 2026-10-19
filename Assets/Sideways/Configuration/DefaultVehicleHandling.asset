@@ -1,0 +1,31 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 7554a03c2f934487f990d94df78736c7, type: 3}
+  m_Name: DefaultVehicleHandling
+  m_EditorClassIdentifier: Sideways.Runtime::Sideways.Configuration.VehicleHandlingProfile
+  acceleration: 11
+  maxSpeed: 28
+  overspeedBraking: 8
+  downforce: 12
+  steeringAcceleration: 7.5
+  yawDamping: 3.5
+  minimumSteeringAtMaxSpeed: 0.35
+  inputResponse: 4.5
+  normalLateralGrip: 8
+  driftLateralGrip: 2.1
+  driftMinimumSpeed: 8
+  driftEnterAngle: 12
+  driftExitAngle: 6
+  driftInputThreshold: 0.55
+  groundProbeLength: 1.1
+  groundProbeRadius: 0.18
+  groundProbeHeight: 0.35

@@ -1,0 +1,16 @@
+{
+  "name": "Sideways.Runtime",
+  "rootNamespace": "Sideways",
+  "references": [
+    "Unity.InputSystem",
+    "Unity.InputSystem.UI",
+    "Unity.ugui"
+  ],
+  "internalsVisibleTo": [
+    "Sideways.EditModeTests",
+    "Sideways.PlayModeTests"
+  ],
+  "autoReferenced": true,
+  "overrideReferences": false,
+  "noEngineReferences": false
+}

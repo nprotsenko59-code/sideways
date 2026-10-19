@@ -1,0 +1,9 @@
+{
+  "name": "Sideways.PlayModeTests",
+  "rootNamespace": "Sideways.Tests",
+  "references": ["Sideways.Runtime"],
+  "optionalUnityReferences": ["TestAssemblies"],
+  "autoReferenced": false,
+  "overrideReferences": false,
+  "noEngineReferences": false
+}

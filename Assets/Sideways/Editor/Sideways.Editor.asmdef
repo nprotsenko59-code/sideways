@@ -1,0 +1,16 @@
+{
+  "name": "Sideways.Editor",
+  "rootNamespace": "Sideways.Editor",
+  "references": [
+    "Sideways.Runtime",
+    "Unity.InputSystem",
+    "Unity.InputSystem.UI",
+    "Unity.ugui",
+    "Unity.RenderPipelines.Core.Runtime",
+    "Unity.RenderPipelines.Universal.Runtime"
+  ],
+  "includePlatforms": ["Editor"],
+  "autoReferenced": true,
+  "overrideReferences": false,
+  "noEngineReferences": false
+}

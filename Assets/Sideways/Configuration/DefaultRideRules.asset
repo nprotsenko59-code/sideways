@@ -1,0 +1,20 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: e53879c4d29934162a1aa4b2284f3977, type: 3}
+  m_Name: DefaultRideRules
+  m_EditorClassIdentifier: Sideways.Runtime::Sideways.Configuration.RideRulesProfile
+  flipAngle: 100
+  flipDuration: 2
+  safePoseInterval: 0.5
+  safePoseMaximumTilt: 25
+  safePoseClearance: 0.3
+  resetVerticalOffset: 0.65
