@@ -11,6 +11,8 @@
 - `RoadGraphComponent` exposes the active graph from the scene and draws road-class gizmos when selected.
 - `PoliceDirector` owns pursuit state and penalties; `PoliceVisionSensor` is the only source of sightings, while `PoliceVehicleController` follows the shared road graph.
 - `RecklessDrivingTracker` turns sustained drifts and severe impacts into a short-lived reportable condition without deciding whether police can see them.
+- `ChallengeController` owns the optional challenge lifecycle and consumes stable road-sign ids or drift-point events through a deterministic `ChallengeModel`.
+- `TrafficSpawner` owns sparse population and protected spawn selection; each `TrafficVehicle` stays graph-bound and reports at most one near miss per encounter.
 - `RideSessionController` owns the Driving/Ended lifecycle and two-second flip rule.
 - `ChaseCameraController` is a custom damped follow camera with look-ahead and obstruction checks.
 - Handling, camera, ride rules, and drift scoring are ScriptableObject assets under `Assets/Sideways/Configuration`.
@@ -40,6 +42,11 @@
 - [x] Road-graph pursuit/interception, last-known-position search, reacquisition, and moving escape.
 - [x] Recoverable busted penalty with active-combo cancellation and banked-score preservation.
 - [x] Police state HUD and deterministic pursuit-state tests.
+- [x] Data-driven challenge lifecycle with start, stop, retry, countdown, success, failure, and typed reward hook.
+- [x] Unique road-sign destruction and drift-score challenge definitions.
+- [x] Sparse graph-driven traffic with protected spawning and solid player interaction.
+- [x] Collision-free, relative-speed near-miss scoring with one event per encounter.
+- [x] Challenge and bonus HUD feedback without interrupting free roam.
 - [ ] Physical iPhone profiling and touch QA.
 
 ## Manual QA
@@ -67,16 +74,24 @@
 21. Break sight again and keep moving until the search expires; confirm ESCAPED, followed by a return to PATROL.
 22. Stop while hidden during search; confirm the escape countdown pauses.
 23. Allow police to remain close while the car is slow; confirm BUSTED resets the car and cancels only the active combo.
+24. Press C, destroy one road sign, wait for it to respawn, and destroy it again; confirm it counts only once in the current challenge.
+25. Destroy 10 different signs inside 60 seconds; confirm success, reward feedback, and uninterrupted driving.
+26. Start the drift-score challenge and earn 5,000 drift points; confirm only drift points advance its progress.
+27. Let either challenge expire, then retry it; confirm failure never ends or resets the ride.
+28. Press C while a challenge is active; confirm it stops cleanly and remains available to retry.
+29. Drive toward newly populated areas; confirm traffic never appears close to or directly in front of the car.
+30. Pass a traffic car closely at meaningful relative speed without contact; confirm one near-miss award. Repeat after leaving and re-entering to confirm a new encounter can score.
+31. Contact a traffic car while inside its near-miss zone; confirm the collision does not also award a near miss.
 
 ## Known limitations
 
 - Driving values are first-pass graybox defaults and require device-based feel tuning.
 - No reverse or service brake is available; the handbrake only initiates drifts and upright recovery uses the explicit reset action.
 - Sunset Basin remains primitive graybox geometry and represents one compact LA-inspired slice, not a full city.
-- The road graph is junction-level only; lane direction, traffic priority, and police patrol weights are deferred.
+- The road graph is junction-level; Milestone 5 traffic uses directional lane offsets, while intersection priority, signals, lane changes, and police patrol weights remain deferred.
 - Drift scoring currently has no discrete U-turn, proximity, traffic, or police-escape bonuses; those systems remain deferred.
 - Milestone 4 police is deliberately limited to one unit and one heat level; radio dispatch, roadblocks, damage, and escalation are deferred.
-- Audio, haptics, traffic, challenges, and progression are deferred.
+- Audio, haptics, pedestrians, challenge discovery, persistent rewards, and progression are deferred.
 
 ## Development log
 
@@ -89,3 +104,5 @@
 - 2026-10-19 — Milestone 3 added the Sunset Basin graybox neighborhood and reusable road graph; verification passed with 28 EditMode tests, 4 PlayMode tests, a live editor play check, and a successful unsigned iOS Xcode export.
 - 2026-10-19 — Milestone 4 added sight-based police patrol, graph pursuit, last-known-position search, reacquisition, moving escape, a recoverable busted penalty, and police-state HUD feedback.
 - 2026-10-19 — Milestone 4 verification: 36 EditMode tests and 4 PlayMode tests passed, the live editor check held 60 FPS with the patrol HUD active, and Unity produced a successful unsigned iOS Xcode export.
+- 2026-10-20 — Milestone 5 added optional timed challenges, unique respawning road signs, sparse road-graph traffic, protected spawning, one-event near-miss scoring, and challenge/bonus HUD feedback.
+- 2026-10-20 — Milestone 5 verification: 43 EditMode tests and 5 PlayMode tests passed, the live Game view confirmed the combined HUD and road-sign presentation, and Unity produced a successful unsigned iOS Xcode export.

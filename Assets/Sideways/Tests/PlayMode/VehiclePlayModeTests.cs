@@ -1,9 +1,11 @@
 using System.Collections;
 using NUnit.Framework;
 using Sideways.Configuration;
+using Sideways.Challenges;
 using Sideways.Core;
 using Sideways.EnvironmentSystem;
 using Sideways.Police;
+using Sideways.Traffic;
 using Sideways.UI;
 using Sideways.Vehicle;
 using UnityEngine;
@@ -28,6 +30,9 @@ namespace Sideways.Tests
             var police = Object.FindFirstObjectByType<PoliceDirector>();
             var policeVehicle = Object.FindFirstObjectByType<PoliceVehicleController>();
             var policeHud = Object.FindFirstObjectByType<PoliceHud>();
+            var traffic = Object.FindFirstObjectByType<TrafficSpawner>();
+            var challenges = Object.FindFirstObjectByType<ChallengeController>();
+            var challengeHud = Object.FindFirstObjectByType<ChallengeHud>();
             Assert.That(controller, Is.Not.Null);
             Assert.That(recovery, Is.Not.Null);
             Assert.That(session, Is.Not.Null);
@@ -38,6 +43,9 @@ namespace Sideways.Tests
             Assert.That(policeVehicle, Is.Not.Null);
             Assert.That(policeHud, Is.Not.Null);
             Assert.That(police.State, Is.EqualTo(PoliceState.Patrol));
+            Assert.That(traffic, Is.Not.Null);
+            Assert.That(challenges, Is.Not.Null);
+            Assert.That(challengeHud, Is.Not.Null);
             Assert.That(roadGraph.Graph.IsValid(out var graphError), Is.True, graphError);
 
             var policeStart = policeVehicle.transform.position;
@@ -48,6 +56,8 @@ namespace Sideways.Tests
             Assert.That(controller.Telemetry.Speed, Is.GreaterThan(1f));
             Assert.That(session.State, Is.EqualTo(RideSessionState.Driving));
             Assert.That(Vector3.Distance(policeStart, policeVehicle.transform.position), Is.GreaterThan(0.25f));
+            Assert.That(traffic.ActiveCount, Is.GreaterThan(0));
+            Assert.That(challenges.Snapshot.State, Is.EqualTo(ChallengeState.Idle));
 
             for (var i = 0; i < 20 && !recovery.CanReset; i++) yield return new WaitForFixedUpdate();
             Assert.That(recovery.CanReset, Is.True);
@@ -56,6 +66,27 @@ namespace Sideways.Tests
             Assert.That(recovery.ResetToRoad(), Is.True);
             Assert.That(controller.Body.position.y, Is.LessThan(3f));
             Assert.That(controller.Body.linearVelocity, Is.EqualTo(Vector3.zero));
+        }
+
+        [UnityTest]
+        public IEnumerator SignChallengeConsumesSceneEventsWithoutEndingRide()
+        {
+            SceneManager.LoadScene("DrivingSandbox");
+            yield return null;
+            var challenges = Object.FindFirstObjectByType<ChallengeController>();
+            var session = Object.FindFirstObjectByType<RideSessionController>();
+            var signs = Object.FindObjectsByType<BreakableRoadSign>(FindObjectsSortMode.None);
+            var scoring = Object.FindFirstObjectByType<DriftScoreController>();
+            Assert.That(signs.Length, Is.GreaterThanOrEqualTo(10));
+
+            challenges.StartChallenge(0);
+            for (var i = 0; i < 10; i++) Assert.That(signs[i].DestroySign(), Is.True);
+            yield return null;
+
+            Assert.That(challenges.Snapshot.State, Is.EqualTo(ChallengeState.Succeeded));
+            Assert.That(challenges.Snapshot.Progress, Is.EqualTo(10));
+            Assert.That(scoring.Snapshot.BankedScore, Is.GreaterThanOrEqualTo(challenges.Snapshot.Reward));
+            Assert.That(session.State, Is.EqualTo(RideSessionState.Driving));
         }
 
         [UnityTest]

@@ -2,10 +2,12 @@ using System;
 using System.Collections.Generic;
 using System.IO;
 using Sideways.CameraSystem;
+using Sideways.Challenges;
 using Sideways.Configuration;
 using Sideways.Core;
 using Sideways.EnvironmentSystem;
 using Sideways.Police;
+using Sideways.Traffic;
 using Sideways.UI;
 using Sideways.Vehicle;
 using UnityEditor;
@@ -28,6 +30,7 @@ namespace Sideways.Editor
         private const string ScenePath = Root + "/Scenes/DrivingSandbox.unity";
         private const string CarPrefabPath = Root + "/Prefabs/PlayerCar.prefab";
         private const string PolicePrefabPath = Root + "/Prefabs/PoliceCar.prefab";
+        private const string TrafficPrefabPath = Root + "/Prefabs/TrafficCar.prefab";
 
         [MenuItem("Sideways/Rebuild Prototype")]
         public static void Configure()
@@ -42,6 +45,7 @@ namespace Sideways.Editor
             var physicsMaterial = EnsurePhysicsMaterial();
             BuildCarPrefab(profiles, materials, physicsMaterial);
             BuildPolicePrefab(profiles, roadGraph, materials, physicsMaterial);
+            BuildTrafficPrefab(profiles, roadGraph, materials, physicsMaterial);
             BuildSandboxScene(profiles, roadGraph, materials, physicsMaterial);
             ConfigureBuildSettings();
             AssetDatabase.SaveAssets();
@@ -171,8 +175,21 @@ namespace Sideways.Editor
                 Camera = EnsureAsset<ChaseCameraProfile>(Root + "/Configuration/DefaultChaseCamera.asset"),
                 Ride = EnsureAsset<RideRulesProfile>(Root + "/Configuration/DefaultRideRules.asset"),
                 Scoring = EnsureAsset<ScoringProfile>(Root + "/Configuration/DefaultScoring.asset"),
-                Police = EnsureAsset<PoliceProfile>(Root + "/Configuration/DefaultPolice.asset")
+                Police = EnsureAsset<PoliceProfile>(Root + "/Configuration/DefaultPolice.asset"),
+                Traffic = EnsureAsset<TrafficProfile>(Root + "/Configuration/DefaultTraffic.asset"),
+                Challenges = EnsureChallenges()
             };
+        }
+
+        private static ChallengeDefinition[] EnsureChallenges()
+        {
+            var signs = EnsureAsset<ChallengeDefinition>(Root + "/Configuration/DestroySignsChallenge.asset");
+            signs.Configure("destroy-signs", "DESTROY 10 ROAD SIGNS", ChallengeType.DestroyRoadSigns, 60f, 10, 1500);
+            EditorUtility.SetDirty(signs);
+            var drift = EnsureAsset<ChallengeDefinition>(Root + "/Configuration/DriftScoreChallenge.asset");
+            drift.Configure("drift-score", "EARN 5,000 DRIFT SCORE", ChallengeType.EarnDriftScore, 60f, 5000, 2000);
+            EditorUtility.SetDirty(drift);
+            return new[] { signs, drift };
         }
 
         private static RoadGraphAsset EnsureRoadGraph()
@@ -264,7 +281,9 @@ namespace Sideways.Editor
                 Car = EnsureMaterial(Root + "/Materials/PlayerCar.mat", shader, new Color(0.12f, 0.55f, 0.92f)),
                 Accent = EnsureMaterial(Root + "/Materials/Accent.mat", shader, new Color(0.95f, 0.80f, 0.18f)),
                 Police = EnsureMaterial(Root + "/Materials/PoliceCar.mat", shader, new Color(0.06f, 0.08f, 0.12f)),
-                PoliceLight = EnsureMaterial(Root + "/Materials/PoliceLight.mat", shader, new Color(0.85f, 0.08f, 0.05f))
+                PoliceLight = EnsureMaterial(Root + "/Materials/PoliceLight.mat", shader, new Color(0.85f, 0.08f, 0.05f)),
+                Traffic = EnsureMaterial(Root + "/Materials/TrafficCar.mat", shader, new Color(0.78f, 0.24f, 0.12f)),
+                Sign = EnsureMaterial(Root + "/Materials/RoadSign.mat", shader, new Color(0.95f, 0.22f, 0.12f))
             };
         }
 
@@ -329,9 +348,9 @@ namespace Sideways.Editor
             var controller = root.AddComponent<VehicleController>();
             controller.Configure(body, input, input, profiles.Vehicle, (1 << 0) | (1 << 7), new Vector3(0f, -0.35f, 0f));
             var recovery = root.AddComponent<VehicleRecovery>();
-            recovery.Configure(controller, input, profiles.Ride, 1 << 7, 1 << 8);
+            recovery.Configure(controller, input, profiles.Ride, 1 << 7, (1 << 8) | (1 << 9) | (1 << 10));
             var collisionSensor = root.AddComponent<VehicleCollisionSensor>();
-            collisionSensor.Configure(1 << 8);
+            collisionSensor.Configure((1 << 8) | (1 << 9) | (1 << 10));
 
             PrefabUtility.SaveAsPrefabAsset(root, CarPrefabPath);
             Object.DestroyImmediate(root);
@@ -364,6 +383,41 @@ namespace Sideways.Editor
             root.AddComponent<PoliceVisionSensor>();
 
             PrefabUtility.SaveAsPrefabAsset(root, PolicePrefabPath);
+            Object.DestroyImmediate(root);
+        }
+
+        private static void BuildTrafficPrefab(Profiles profiles, RoadGraphAsset roadGraph, Materials materials, PhysicsMaterial physicsMaterial)
+        {
+            if (AssetDatabase.LoadAssetAtPath<GameObject>(TrafficPrefabPath) != null) AssetDatabase.DeleteAsset(TrafficPrefabPath);
+
+            var root = new GameObject("TrafficCar");
+            root.layer = 10;
+            var body = root.AddComponent<Rigidbody>();
+            body.isKinematic = true;
+            body.interpolation = RigidbodyInterpolation.Interpolate;
+            body.collisionDetectionMode = CollisionDetectionMode.ContinuousSpeculative;
+            var collider = root.AddComponent<BoxCollider>();
+            collider.center = new Vector3(0f, 0.55f, 0f);
+            collider.size = new Vector3(1.9f, 1.1f, 4f);
+            collider.material = physicsMaterial;
+
+            var visual = CreateVisualBox("Visual", root.transform, Vector3.zero, new Vector3(1.75f, 0.8f, 3.75f), materials.Traffic);
+            visual.transform.localPosition = new Vector3(0f, 0.58f, 0f);
+            var cabin = CreateVisualBox("Cabin", root.transform, Vector3.zero, new Vector3(1.4f, 0.62f, 1.7f), materials.Concrete);
+            cabin.transform.localPosition = new Vector3(0f, 1.2f, -0.1f);
+
+            var nearMissObject = new GameObject("NearMissZone");
+            nearMissObject.layer = 10;
+            nearMissObject.transform.SetParent(root.transform, false);
+            var trigger = nearMissObject.AddComponent<SphereCollider>();
+            trigger.isTrigger = true;
+            trigger.radius = profiles.Traffic.nearMissRadius;
+            trigger.center = new Vector3(0f, 0.6f, 0f);
+            var nearMiss = nearMissObject.AddComponent<NearMissEncounter>();
+            var vehicle = root.AddComponent<TrafficVehicle>();
+            vehicle.Configure(body, roadGraph, profiles.Traffic, nearMiss);
+
+            PrefabUtility.SaveAsPrefabAsset(root, TrafficPrefabPath);
             Object.DestroyImmediate(root);
         }
 
@@ -410,7 +464,14 @@ namespace Sideways.Editor
             recklessDriving.Configure(controller, collisionSensor, profiles.Police);
             var policeDirector = systems.AddComponent<PoliceDirector>();
             policeDirector.Configure(car.transform, controller, recovery, policeVehicle, policeVision, recklessDriving, profiles.Police);
-            var ui = BuildUi(input, controller, recovery, scoring, policeDirector);
+            var trafficScore = systems.AddComponent<TrafficScoreController>();
+            trafficScore.Configure(scoring);
+            var challengeController = systems.AddComponent<ChallengeController>();
+            challengeController.Configure(profiles.Challenges, scoring);
+            var trafficRoot = new GameObject("Traffic");
+            var trafficSpawner = trafficRoot.AddComponent<TrafficSpawner>();
+            trafficSpawner.Configure(AssetDatabase.LoadAssetAtPath<GameObject>(TrafficPrefabPath), roadGraph, profiles.Traffic, car.transform);
+            var ui = BuildUi(input, controller, recovery, scoring, policeDirector, challengeController);
             var rideSession = systems.AddComponent<RideSessionController>();
             rideSession.Configure(car.transform, controller, profiles.Ride, ui.Results, scoring);
 
@@ -447,6 +508,21 @@ namespace Sideways.Editor
                     }
                 }
             }
+
+            var signs = new GameObject("RoadSigns").transform;
+            signs.SetParent(parent, false);
+            CreateRoadSign("Sign_01", signs, new Vector3(-35f, 0f, -106f), 0f, materials, physicsMaterial);
+            CreateRoadSign("Sign_02", signs, new Vector3(35f, 0f, -94f), 180f, materials, physicsMaterial);
+            CreateRoadSign("Sign_03", signs, new Vector3(114f, 0f, -55f), 90f, materials, physicsMaterial);
+            CreateRoadSign("Sign_04", signs, new Vector3(126f, 0f, 45f), -90f, materials, physicsMaterial);
+            CreateRoadSign("Sign_05", signs, new Vector3(-114f, 0f, 45f), 90f, materials, physicsMaterial);
+            CreateRoadSign("Sign_06", signs, new Vector3(-126f, 0f, -55f), -90f, materials, physicsMaterial);
+            CreateRoadSign("Sign_07", signs, new Vector3(-45f, 0f, 94f), 0f, materials, physicsMaterial);
+            CreateRoadSign("Sign_08", signs, new Vector3(45f, 0f, 106f), 180f, materials, physicsMaterial);
+            CreateRoadSign("Sign_09", signs, new Vector3(-55f, 0f, -159f), 0f, materials, physicsMaterial);
+            CreateRoadSign("Sign_10", signs, new Vector3(55f, 0f, -171f), 180f, materials, physicsMaterial);
+            CreateRoadSign("Sign_11", signs, new Vector3(-6f, 0f, 52f), 90f, materials, physicsMaterial);
+            CreateRoadSign("Sign_12", signs, new Vector3(6f, 0f, -48f), -90f, materials, physicsMaterial);
 
             var buildings = new GameObject("Buildings").transform;
             buildings.SetParent(parent, false);
@@ -487,7 +563,7 @@ namespace Sideways.Editor
             }
         }
 
-        private static UiReferences BuildUi(VehicleInputSource input, VehicleController controller, VehicleRecovery recovery, DriftScoreController scoring, PoliceDirector policeDirector)
+        private static UiReferences BuildUi(VehicleInputSource input, VehicleController controller, VehicleRecovery recovery, DriftScoreController scoring, PoliceDirector policeDirector, ChallengeController challengeController)
         {
             var canvasObject = new GameObject("HUD", typeof(Canvas), typeof(CanvasScaler), typeof(GraphicRaycaster));
             var canvas = canvasObject.GetComponent<Canvas>();
@@ -540,6 +616,27 @@ namespace Sideways.Editor
             policeText.raycastTarget = false;
             var policeHud = canvasObject.AddComponent<PoliceHud>();
             policeHud.Configure(policeDirector, policeText, policePanelObject.GetComponent<Image>());
+
+            var bonusText = CreateText("Bonus", safeArea.transform, string.Empty, 28, TextAnchor.MiddleCenter);
+            SetRect(bonusText.rectTransform, new Vector2(0f, -222f), new Vector2(650f, 48f), new Vector2(0.5f, 1f));
+            bonusText.color = new Color(1f, 0.78f, 0.16f, 1f);
+            canvasObject.AddComponent<BonusHud>().Configure(scoring, bonusText);
+
+            var challengePanel = CreateUiImage("ChallengePanel", safeArea.transform, new Vector2(1f, 0.5f), new Vector2(1f, 0.5f), new Color(0.03f, 0.05f, 0.08f, 0.86f));
+            SetRect(challengePanel.GetComponent<RectTransform>(), new Vector2(-18f, 0f), new Vector2(390f, 220f), new Vector2(1f, 0.5f));
+            challengePanel.GetComponent<Image>().raycastTarget = false;
+            var challengeTitle = CreateText("Title", challengePanel.transform, "OPTIONAL CHALLENGE", 25, TextAnchor.MiddleCenter);
+            SetRect(challengeTitle.rectTransform, new Vector2(0f, -12f), new Vector2(360f, 42f), new Vector2(0.5f, 1f));
+            var challengeProgress = CreateText("Progress", challengePanel.transform, "Destroy signs • Drift score", 22, TextAnchor.MiddleCenter);
+            SetRect(challengeProgress.rectTransform, new Vector2(0f, -62f), new Vector2(360f, 38f), new Vector2(0.5f, 1f));
+            var challengeTime = CreateText("Time", challengePanel.transform, "60 SECOND EVENTS", 18, TextAnchor.MiddleCenter);
+            SetRect(challengeTime.rectTransform, new Vector2(0f, -102f), new Vector2(360f, 32f), new Vector2(0.5f, 1f));
+            var challengeButtonObject = CreateButton("ChallengeButton", challengePanel.transform, "START  [C]", new Color(0.86f, 0.32f, 0.08f, 0.96f));
+            SetRect(challengeButtonObject.GetComponent<RectTransform>(), new Vector2(0f, 12f), new Vector2(280f, 62f), new Vector2(0.5f, 0f));
+            var challengeButton = challengeButtonObject.GetComponent<Button>();
+            var challengeButtonText = challengeButtonObject.transform.Find("Label").GetComponent<Text>();
+            var challengeHud = canvasObject.AddComponent<ChallengeHud>();
+            challengeHud.Configure(challengeController, challengePanel, challengeTitle, challengeProgress, challengeTime, challengeButton, challengeButtonText);
 
             var debugPanel = CreateUiImage("DebugPanel", safeArea.transform, new Vector2(0f, 1f), new Vector2(0f, 1f), new Color(0f, 0f, 0f, 0.62f));
             SetRect(debugPanel.GetComponent<RectTransform>(), new Vector2(18f, -18f), new Vector2(330f, 325f), new Vector2(0f, 1f));
@@ -597,6 +694,23 @@ namespace Sideways.Editor
             var bodyPosition = groundPosition + Vector3.up * (height * 0.5f);
             CreateBox(name, parent, bodyPosition, new Vector3(footprint.x, height, footprint.y), materials.Building, physicsMaterial, 8);
             CreateVisualBox($"{name}_Roof", parent, bodyPosition + Vector3.up * (height * 0.5f + 0.3f), new Vector3(footprint.x * 0.82f, 0.6f, footprint.y * 0.82f), roofMaterial != null ? roofMaterial : materials.Concrete);
+        }
+
+        private static void CreateRoadSign(string id, Transform parent, Vector3 position, float yaw, Materials materials, PhysicsMaterial physicsMaterial)
+        {
+            var root = new GameObject(id);
+            root.layer = 11;
+            root.transform.SetParent(parent, false);
+            root.transform.SetPositionAndRotation(position, Quaternion.Euler(0f, yaw, 0f));
+            var collider = root.AddComponent<BoxCollider>();
+            collider.center = new Vector3(0f, 1.25f, 0f);
+            collider.size = new Vector3(0.55f, 2.5f, 0.45f);
+            collider.material = physicsMaterial;
+            var pole = CreateVisualBox("Pole", root.transform, Vector3.zero, new Vector3(0.18f, 2.2f, 0.18f), materials.Concrete);
+            pole.transform.localPosition = new Vector3(0f, 1.1f, 0f);
+            var face = CreateVisualBox("Face", root.transform, Vector3.zero, new Vector3(1.1f, 0.85f, 0.12f), materials.Sign);
+            face.transform.localPosition = new Vector3(0f, 2.25f, 0f);
+            root.AddComponent<BreakableRoadSign>().Configure(id, 4f, 12f, root.GetComponentsInChildren<Renderer>(), root.GetComponentsInChildren<Collider>());
         }
 
         private static GameObject CreateVisualBox(string name, Transform parent, Vector3 position, Vector3 scale, Material material)
@@ -718,6 +832,8 @@ namespace Sideways.Editor
             layers.GetArrayElementAtIndex(7).stringValue = "Road";
             layers.GetArrayElementAtIndex(8).stringValue = "Obstacle";
             layers.GetArrayElementAtIndex(9).stringValue = "Police";
+            layers.GetArrayElementAtIndex(10).stringValue = "Traffic";
+            layers.GetArrayElementAtIndex(11).stringValue = "Breakable";
             tagManager.ApplyModifiedPropertiesWithoutUndo();
         }
 
@@ -728,6 +844,8 @@ namespace Sideways.Editor
             public RideRulesProfile Ride;
             public ScoringProfile Scoring;
             public PoliceProfile Police;
+            public TrafficProfile Traffic;
+            public ChallengeDefinition[] Challenges;
         }
 
         private sealed class Materials
@@ -743,6 +861,8 @@ namespace Sideways.Editor
             public Material Accent;
             public Material Police;
             public Material PoliceLight;
+            public Material Traffic;
+            public Material Sign;
         }
 
         private sealed class UiReferences

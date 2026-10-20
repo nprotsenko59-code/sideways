@@ -17,6 +17,8 @@ namespace Sideways.Core
         public event Action<DriftScoreSnapshot> ScoreUpdated;
         public event Action<int> ComboBanked;
         public event Action ComboCancelled;
+        public event Action<int> DriftPointsEarned;
+        public event Action<int, string> BonusAwarded;
 
         public int CurrentScore => Snapshot.TotalScore;
         public DriftScoreSnapshot Snapshot => model?.Snapshot ?? default;
@@ -68,6 +70,8 @@ namespace Sideways.Core
             if (model == null) return;
             var before = model.Snapshot;
             var after = model.Tick(telemetry, Time.fixedDeltaTime);
+            var earned = Mathf.Max(0, after.TotalScore - before.TotalScore);
+            if (earned > 0 && after.Scoring) DriftPointsEarned?.Invoke(earned);
             if (before.HasActiveCombo && !after.HasActiveCombo && after.BankedScore > before.BankedScore)
             {
                 ComboBanked?.Invoke(after.BankedScore - before.BankedScore);
@@ -90,6 +94,15 @@ namespace Sideways.Core
             if (model == null) return;
             if (model.CancelCombo()) ComboCancelled?.Invoke();
             Publish();
+        }
+
+        public bool AwardBonus(int points, string reason)
+        {
+            EnsureModel();
+            if (model == null || !model.AwardBankedBonus(points)) return false;
+            BonusAwarded?.Invoke(points, reason ?? string.Empty);
+            Publish();
+            return true;
         }
 
         private void Publish() => ScoreUpdated?.Invoke(Snapshot);

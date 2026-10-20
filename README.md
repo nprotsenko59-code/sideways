@@ -15,11 +15,14 @@ Controls:
 - Hold Space while steering: engage the handbrake and initiate a drift.
 - On touch devices, swipe downward in either steering half and keep holding; releasing ends the handbrake after a short drift-entry pulse.
 - R or the Reset button: return to the last safe road pose.
+- C or the Challenge button: start, stop, continue to the next challenge, or retry a failed challenge.
 - F3: toggle the debug telemetry panel.
 
 The car accelerates automatically. The handbrake is for drift initiation rather than stopping, and there is no reverse. Sustained, controlled slides build a live combo whose multiplier grows with drift time. Brief recovery gaps preserve the combo; the combo banks after the grace window. A road reset, a severe obstacle impact, or ending the ride discards only the unbanked combo and never reduces banked score.
 
 One police unit patrols the road network. If it actually sees a sustained drift or severe crash, it pursues using the shared road graph. Break line of sight behind solid buildings and keep moving through the 15-second search to escape. If the unit catches a slow car, the active combo is cancelled and the car returns to its last safe pose; banked score and the ride continue.
+
+Sparse civilian traffic follows the road graph and avoids spawning close to or directly ahead of the player. Fast, collision-free passes award one near-miss bonus per encounter. Optional 60-second events include destroying 10 unique road signs and earning 5,000 drift points; completing or failing either event leaves free roam uninterrupted.
 
 Remaining flipped for two seconds ends the ride. The results overlay shows the run score and locally retained best score, and DRIVE AGAIN starts a fresh ride without leaving the sandbox.
 
@@ -60,4 +63,4 @@ The iOS module is required. Export an unsigned development Xcode project with:
 
 Open `Builds/iOS/Unity-iPhone.xcodeproj`, choose an Apple developer team and device, then build from Xcode. Device performance claims require an iPhone 15-class or newer profiler capture; Editor and Simulator results do not qualify.
 
-See [Documentation/SCORING.md](Documentation/SCORING.md) for scoring, [Documentation/NEIGHBORHOOD.md](Documentation/NEIGHBORHOOD.md) for the map and road-graph contract, [Documentation/POLICE.md](Documentation/POLICE.md) for pursuit rules, [Documentation/ASSET_IMPORT.md](Documentation/ASSET_IMPORT.md) for asset handoff rules, and [Documentation/DEVELOPMENT.md](Documentation/DEVELOPMENT.md) for architecture and QA.
+See [Documentation/SCORING.md](Documentation/SCORING.md) for scoring, [Documentation/NEIGHBORHOOD.md](Documentation/NEIGHBORHOOD.md) for the map and road-graph contract, [Documentation/POLICE.md](Documentation/POLICE.md) for pursuit rules, [Documentation/CHALLENGES_TRAFFIC.md](Documentation/CHALLENGES_TRAFFIC.md) for Milestone 5 rules, [Documentation/ASSET_IMPORT.md](Documentation/ASSET_IMPORT.md) for asset handoff rules, and [Documentation/DEVELOPMENT.md](Documentation/DEVELOPMENT.md) for architecture and QA.

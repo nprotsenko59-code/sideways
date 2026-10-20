@@ -77,6 +77,13 @@ namespace Sideways.Core
             return true;
         }
 
+        public bool AwardBankedBonus(int points)
+        {
+            if (points <= 0) return false;
+            bankedScore += points;
+            return true;
+        }
+
         public bool IsEligible(VehicleTelemetry telemetry)
         {
             var slip = Mathf.Abs(telemetry.SlipAngle);
