@@ -24,6 +24,8 @@ One police unit patrols the road network. If it actually sees a sustained drift 
 
 Sparse civilian traffic follows the road graph and avoids spawning close to or directly ahead of the player. Fast, collision-free passes award one near-miss bonus per encounter. Optional 60-second events include destroying 10 unique road signs and earning 5,000 drift points; completing or failing either event leaves free roam uninterrupted.
 
+Coins are arranged in readable lines along major roads and add 100 banked points each. Fuel drains only while the car is moving; green canisters refill 35 fuel. At zero fuel, automatic propulsion stops but steering, coasting, and road reset remain available. Coins and canisters respawn to keep free roam replayable.
+
 Remaining flipped for two seconds ends the ride. The results overlay shows the run score and locally retained best score, and DRIVE AGAIN starts a fresh ride without leaving the sandbox.
 
 ## Rebuild generated prototype assets

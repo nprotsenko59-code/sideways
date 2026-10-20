@@ -15,6 +15,7 @@ namespace Sideways.Vehicle
 
         private IVehicleInputSource inputSource;
         private bool drivingEnabled = true;
+        private bool propulsionEnabled = true;
         private bool drifting;
         private Vector3 groundNormal = Vector3.up;
         private VehicleTelemetry telemetry;
@@ -23,6 +24,7 @@ namespace Sideways.Vehicle
 
         public VehicleTelemetry Telemetry => telemetry;
         public bool DrivingEnabled => drivingEnabled;
+        public bool PropulsionEnabled => propulsionEnabled;
         public Rigidbody Body => body;
 
         private void Awake()
@@ -61,6 +63,8 @@ namespace Sideways.Vehicle
 
         public void SetDrivingEnabled(bool enabled) => drivingEnabled = enabled;
 
+        public void SetPropulsionEnabled(bool enabled) => propulsionEnabled = enabled;
+
         private void ApplyDriveForces(float steering, bool handbrake)
         {
             var forward = Vector3.ProjectOnPlane(transform.forward, groundNormal).normalized;
@@ -70,11 +74,11 @@ namespace Sideways.Vehicle
             var lateralSpeed = Vector3.Dot(planarVelocity, right);
             var speed = planarVelocity.magnitude;
 
-            if (forwardSpeed < profile.maxSpeed)
+            if (propulsionEnabled && forwardSpeed < profile.maxSpeed)
             {
                 body.AddForce(forward * profile.acceleration, ForceMode.Acceleration);
             }
-            else
+            else if (forwardSpeed >= profile.maxSpeed)
             {
                 body.AddForce(-forward * Mathf.Min(forwardSpeed - profile.maxSpeed, profile.overspeedBraking), ForceMode.Acceleration);
             }

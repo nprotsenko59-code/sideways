@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.IO;
 using Sideways.CameraSystem;
 using Sideways.Challenges;
+using Sideways.Collectibles;
 using Sideways.Configuration;
 using Sideways.Core;
 using Sideways.EnvironmentSystem;
@@ -177,6 +178,7 @@ namespace Sideways.Editor
                 Scoring = EnsureAsset<ScoringProfile>(Root + "/Configuration/DefaultScoring.asset"),
                 Police = EnsureAsset<PoliceProfile>(Root + "/Configuration/DefaultPolice.asset"),
                 Traffic = EnsureAsset<TrafficProfile>(Root + "/Configuration/DefaultTraffic.asset"),
+                Fuel = EnsureAsset<FuelProfile>(Root + "/Configuration/DefaultFuel.asset"),
                 Challenges = EnsureChallenges()
             };
         }
@@ -283,7 +285,9 @@ namespace Sideways.Editor
                 Police = EnsureMaterial(Root + "/Materials/PoliceCar.mat", shader, new Color(0.06f, 0.08f, 0.12f)),
                 PoliceLight = EnsureMaterial(Root + "/Materials/PoliceLight.mat", shader, new Color(0.85f, 0.08f, 0.05f)),
                 Traffic = EnsureMaterial(Root + "/Materials/TrafficCar.mat", shader, new Color(0.78f, 0.24f, 0.12f)),
-                Sign = EnsureMaterial(Root + "/Materials/RoadSign.mat", shader, new Color(0.95f, 0.22f, 0.12f))
+                Sign = EnsureMaterial(Root + "/Materials/RoadSign.mat", shader, new Color(0.95f, 0.22f, 0.12f)),
+                Coin = EnsureMaterial(Root + "/Materials/Coin.mat", shader, new Color(1f, 0.72f, 0.06f)),
+                Fuel = EnsureMaterial(Root + "/Materials/FuelCanister.mat", shader, new Color(0.10f, 0.75f, 0.30f))
             };
         }
 
@@ -468,10 +472,13 @@ namespace Sideways.Editor
             trafficScore.Configure(scoring);
             var challengeController = systems.AddComponent<ChallengeController>();
             challengeController.Configure(profiles.Challenges, scoring);
+            var resources = systems.AddComponent<RideResourceController>();
+            resources.Configure(controller, scoring, profiles.Fuel);
+            BuildCollectibles(environment.transform, resources, profiles.Fuel, materials);
             var trafficRoot = new GameObject("Traffic");
             var trafficSpawner = trafficRoot.AddComponent<TrafficSpawner>();
             trafficSpawner.Configure(AssetDatabase.LoadAssetAtPath<GameObject>(TrafficPrefabPath), roadGraph, profiles.Traffic, car.transform);
-            var ui = BuildUi(input, controller, recovery, scoring, policeDirector, challengeController);
+            var ui = BuildUi(input, controller, recovery, scoring, policeDirector, challengeController, resources);
             var rideSession = systems.AddComponent<RideSessionController>();
             rideSession.Configure(car.transform, controller, profiles.Ride, ui.Results, scoring);
 
@@ -563,7 +570,30 @@ namespace Sideways.Editor
             }
         }
 
-        private static UiReferences BuildUi(VehicleInputSource input, VehicleController controller, VehicleRecovery recovery, DriftScoreController scoring, PoliceDirector policeDirector, ChallengeController challengeController)
+        private static void BuildCollectibles(Transform environment, RideResourceController resources, FuelProfile profile, Materials materials)
+        {
+            var root = new GameObject("Collectibles").transform;
+            root.SetParent(environment, false);
+
+            var coins = new[]
+            {
+                P(-52f, -100f), P(-32f, -100f), P(-12f, -100f), P(12f, -100f), P(32f, -100f), P(52f, -100f),
+                P(120f, -78f), P(120f, -52f), P(120f, -26f), P(120f, 24f), P(120f, 52f), P(120f, 78f),
+                P(88f, 100f), P(58f, 100f), P(28f, 100f), P(-28f, 100f), P(-58f, 100f), P(-88f, 100f),
+                P(-120f, 75f), P(-120f, 45f), P(-120f, 15f), P(-120f, -25f), P(-120f, -55f), P(-120f, -82f),
+                P(-180f, -165f), P(-140f, -165f), P(140f, -165f), P(180f, -165f)
+            };
+            for (var i = 0; i < coins.Length; i++) CreateCoin($"Coin_{i + 1:00}", root, coins[i] + Vector3.up * 1.25f, resources, profile, materials.Coin);
+
+            var canisters = new[]
+            {
+                P(5f, -100f), P(120f, 8f), P(5f, 100f), P(-120f, -8f),
+                P(0f, -165f), P(-205f, -165f), P(205f, -165f), P(0f, 195f)
+            };
+            for (var i = 0; i < canisters.Length; i++) CreateFuelCanister($"Fuel_{i + 1:00}", root, canisters[i] + Vector3.up * 0.85f, resources, profile, materials);
+        }
+
+        private static UiReferences BuildUi(VehicleInputSource input, VehicleController controller, VehicleRecovery recovery, DriftScoreController scoring, PoliceDirector policeDirector, ChallengeController challengeController, RideResourceController resources)
         {
             var canvasObject = new GameObject("HUD", typeof(Canvas), typeof(CanvasScaler), typeof(GraphicRaycaster));
             var canvas = canvasObject.GetComponent<Canvas>();
@@ -637,6 +667,25 @@ namespace Sideways.Editor
             var challengeButtonText = challengeButtonObject.transform.Find("Label").GetComponent<Text>();
             var challengeHud = canvasObject.AddComponent<ChallengeHud>();
             challengeHud.Configure(challengeController, challengePanel, challengeTitle, challengeProgress, challengeTime, challengeButton, challengeButtonText);
+
+            var resourcePanel = CreateUiImage("ResourcePanel", safeArea.transform, Vector2.zero, Vector2.zero, new Color(0.03f, 0.05f, 0.08f, 0.86f));
+            SetRect(resourcePanel.GetComponent<RectTransform>(), new Vector2(18f, 18f), new Vector2(310f, 112f), Vector2.zero);
+            resourcePanel.GetComponent<Image>().raycastTarget = false;
+            var coinText = CreateText("Coins", resourcePanel.transform, "COINS  0", 25, TextAnchor.MiddleLeft);
+            SetRect(coinText.rectTransform, new Vector2(16f, -12f), new Vector2(278f, 38f), new Vector2(0f, 1f));
+            var fuelText = CreateText("Fuel", resourcePanel.transform, "FUEL  70", 22, TextAnchor.MiddleLeft);
+            SetRect(fuelText.rectTransform, new Vector2(16f, -54f), new Vector2(278f, 34f), new Vector2(0f, 1f));
+            var fuelBackground = CreateUiImage("FuelBackground", resourcePanel.transform, new Vector2(0f, 0f), new Vector2(0f, 0f), new Color(1f, 1f, 1f, 0.14f));
+            SetRect(fuelBackground.GetComponent<RectTransform>(), new Vector2(16f, 13f), new Vector2(278f, 12f), Vector2.zero);
+            fuelBackground.GetComponent<Image>().raycastTarget = false;
+            var fuelFillObject = CreateUiImage("Fill", fuelBackground.transform, Vector2.zero, Vector2.one, new Color(0.20f, 0.82f, 0.36f, 1f));
+            var fuelFill = fuelFillObject.GetComponent<Image>();
+            fuelFill.raycastTarget = false;
+            fuelFill.type = Image.Type.Filled;
+            fuelFill.fillMethod = Image.FillMethod.Horizontal;
+            fuelFill.fillOrigin = 0;
+            fuelFill.fillAmount = 0.7f;
+            canvasObject.AddComponent<ResourceHud>().Configure(resources, coinText, fuelText, fuelFill);
 
             var debugPanel = CreateUiImage("DebugPanel", safeArea.transform, new Vector2(0f, 1f), new Vector2(0f, 1f), new Color(0f, 0f, 0f, 0.62f));
             SetRect(debugPanel.GetComponent<RectTransform>(), new Vector2(18f, -18f), new Vector2(330f, 325f), new Vector2(0f, 1f));
@@ -712,6 +761,36 @@ namespace Sideways.Editor
             var face = CreateVisualBox("Face", root.transform, Vector3.zero, new Vector3(1.1f, 0.85f, 0.12f), materials.Sign);
             face.transform.localPosition = new Vector3(0f, 2.25f, 0f);
             root.AddComponent<BreakableRoadSign>().Configure(id, 1.5f, 12f, root.GetComponentsInChildren<Renderer>(), root.GetComponentsInChildren<Collider>());
+        }
+
+        private static void CreateCoin(string name, Transform parent, Vector3 position, RideResourceController resources, FuelProfile profile, Material material)
+        {
+            var coin = GameObject.CreatePrimitive(PrimitiveType.Cylinder);
+            coin.name = name;
+            coin.layer = 12;
+            coin.transform.SetParent(parent, false);
+            coin.transform.position = position;
+            coin.transform.localScale = new Vector3(0.7f, 0.10f, 0.7f);
+            coin.transform.rotation = Quaternion.Euler(90f, 0f, 0f);
+            coin.GetComponent<Renderer>().sharedMaterial = material;
+            var collider = coin.GetComponent<Collider>();
+            collider.isTrigger = true;
+            coin.AddComponent<RoadCollectible>().Configure(CollectibleKind.Coin, resources, profile.coinPoints, profile.coinRespawnDelay, coin.GetComponentsInChildren<Renderer>(), collider);
+        }
+
+        private static void CreateFuelCanister(string name, Transform parent, Vector3 position, RideResourceController resources, FuelProfile profile, Materials materials)
+        {
+            var canister = GameObject.CreatePrimitive(PrimitiveType.Cube);
+            canister.name = name;
+            canister.layer = 12;
+            canister.transform.SetParent(parent, false);
+            canister.transform.position = position;
+            canister.transform.localScale = new Vector3(0.85f, 1.2f, 0.5f);
+            canister.GetComponent<Renderer>().sharedMaterial = materials.Fuel;
+            var collider = canister.GetComponent<Collider>();
+            collider.isTrigger = true;
+            var handle = CreateVisualBox("Handle", canister.transform, position + Vector3.up * 0.82f, new Vector3(0.48f, 0.16f, 0.16f), materials.Concrete);
+            canister.AddComponent<RoadCollectible>().Configure(CollectibleKind.FuelCanister, resources, profile.canisterFuel, profile.canisterRespawnDelay, canister.GetComponentsInChildren<Renderer>(), collider);
         }
 
         private static GameObject CreateVisualBox(string name, Transform parent, Vector3 position, Vector3 scale, Material material)
@@ -835,6 +914,7 @@ namespace Sideways.Editor
             layers.GetArrayElementAtIndex(9).stringValue = "Police";
             layers.GetArrayElementAtIndex(10).stringValue = "Traffic";
             layers.GetArrayElementAtIndex(11).stringValue = "Breakable";
+            layers.GetArrayElementAtIndex(12).stringValue = "Collectible";
             tagManager.ApplyModifiedPropertiesWithoutUndo();
         }
 
@@ -846,6 +926,7 @@ namespace Sideways.Editor
             public ScoringProfile Scoring;
             public PoliceProfile Police;
             public TrafficProfile Traffic;
+            public FuelProfile Fuel;
             public ChallengeDefinition[] Challenges;
         }
 
@@ -864,6 +945,8 @@ namespace Sideways.Editor
             public Material PoliceLight;
             public Material Traffic;
             public Material Sign;
+            public Material Coin;
+            public Material Fuel;
         }
 
         private sealed class UiReferences

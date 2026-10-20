@@ -2,6 +2,7 @@ using System.Collections;
 using NUnit.Framework;
 using Sideways.Configuration;
 using Sideways.Challenges;
+using Sideways.Collectibles;
 using Sideways.Core;
 using Sideways.EnvironmentSystem;
 using Sideways.Police;
@@ -33,6 +34,8 @@ namespace Sideways.Tests
             var traffic = Object.FindFirstObjectByType<TrafficSpawner>();
             var challenges = Object.FindFirstObjectByType<ChallengeController>();
             var challengeHud = Object.FindFirstObjectByType<ChallengeHud>();
+            var resources = Object.FindFirstObjectByType<RideResourceController>();
+            var resourceHud = Object.FindFirstObjectByType<ResourceHud>();
             Assert.That(controller, Is.Not.Null);
             Assert.That(recovery, Is.Not.Null);
             Assert.That(session, Is.Not.Null);
@@ -46,6 +49,9 @@ namespace Sideways.Tests
             Assert.That(traffic, Is.Not.Null);
             Assert.That(challenges, Is.Not.Null);
             Assert.That(challengeHud, Is.Not.Null);
+            Assert.That(resources, Is.Not.Null);
+            Assert.That(resourceHud, Is.Not.Null);
+            Assert.That(resources.Snapshot.Fuel, Is.GreaterThan(0f));
             Assert.That(roadGraph.Graph.IsValid(out var graphError), Is.True, graphError);
 
             var policeStart = policeVehicle.transform.position;

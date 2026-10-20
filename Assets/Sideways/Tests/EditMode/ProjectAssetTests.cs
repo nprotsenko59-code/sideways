@@ -1,6 +1,8 @@
+using System.Linq;
 using NUnit.Framework;
 using Sideways.Configuration;
 using Sideways.Challenges;
+using Sideways.Collectibles;
 using Sideways.Core;
 using Sideways.EnvironmentSystem;
 using Sideways.Police;
@@ -30,6 +32,9 @@ namespace Sideways.Tests
             var trafficProfile = AssetDatabase.LoadAssetAtPath<TrafficProfile>("Assets/Sideways/Configuration/DefaultTraffic.asset");
             Assert.That(trafficProfile, Is.Not.Null);
             Assert.That(trafficProfile.IsValid(out var trafficError), Is.True, trafficError);
+            var fuelProfile = AssetDatabase.LoadAssetAtPath<FuelProfile>("Assets/Sideways/Configuration/DefaultFuel.asset");
+            Assert.That(fuelProfile, Is.Not.Null);
+            Assert.That(fuelProfile.IsValid(out var fuelError), Is.True, fuelError);
             Assert.That(AssetDatabase.LoadAssetAtPath<ChallengeDefinition>("Assets/Sideways/Configuration/DestroySignsChallenge.asset").IsValid(out var signChallengeError), Is.True, signChallengeError);
             Assert.That(AssetDatabase.LoadAssetAtPath<ChallengeDefinition>("Assets/Sideways/Configuration/DriftScoreChallenge.asset").IsValid(out var driftChallengeError), Is.True, driftChallengeError);
         }
@@ -52,6 +57,11 @@ namespace Sideways.Tests
             Assert.That(Object.FindFirstObjectByType<ChallengeController>(), Is.Not.Null);
             Assert.That(Object.FindFirstObjectByType<ChallengeHud>(), Is.Not.Null);
             Assert.That(Object.FindFirstObjectByType<BonusHud>(), Is.Not.Null);
+            Assert.That(Object.FindFirstObjectByType<RideResourceController>(), Is.Not.Null);
+            Assert.That(Object.FindFirstObjectByType<ResourceHud>(), Is.Not.Null);
+            var collectibles = Object.FindObjectsByType<RoadCollectible>(FindObjectsSortMode.None);
+            Assert.That(collectibles.Count(item => item.Kind == CollectibleKind.Coin), Is.GreaterThanOrEqualTo(20));
+            Assert.That(collectibles.Count(item => item.Kind == CollectibleKind.FuelCanister), Is.GreaterThanOrEqualTo(6));
             Assert.That(Object.FindObjectsByType<BreakableRoadSign>(FindObjectsSortMode.None).Length, Is.GreaterThanOrEqualTo(10));
             var roadGraph = Object.FindFirstObjectByType<RoadGraphComponent>();
             Assert.That(roadGraph, Is.Not.Null);

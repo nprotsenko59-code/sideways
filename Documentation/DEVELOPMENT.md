@@ -13,6 +13,7 @@
 - `RecklessDrivingTracker` turns sustained drifts and severe impacts into a short-lived reportable condition without deciding whether police can see them.
 - `ChallengeController` owns the optional challenge lifecycle and consumes stable road-sign ids or drift-point events through a deterministic `ChallengeModel`.
 - `TrafficSpawner` owns sparse population and protected spawn selection; each `TrafficVehicle` stays graph-bound and reports at most one near miss per encounter.
+- `RideResourceController` owns per-ride coins and fuel, while `FuelModel` keeps consumption and refill rules deterministic.
 - `RideSessionController` owns the Driving/Ended lifecycle and two-second flip rule.
 - `ChaseCameraController` is a custom damped follow camera with look-ahead and obstruction checks.
 - Handling, camera, ride rules, and drift scoring are ScriptableObject assets under `Assets/Sideways/Configuration`.
@@ -47,6 +48,7 @@
 - [x] Sparse graph-driven traffic with protected spawning and solid player interaction.
 - [x] Collision-free, relative-speed near-miss scoring with one event per encounter.
 - [x] Challenge and bonus HUD feedback without interrupting free roam.
+- [x] Road coin lines, banked coin awards, draining fuel, refill canisters, and resource HUD.
 - [ ] Physical iPhone profiling and touch QA.
 
 ## Manual QA
@@ -82,6 +84,9 @@
 29. Drive toward newly populated areas; confirm traffic never appears close to or directly in front of the car.
 30. Pass a traffic car closely at meaningful relative speed without contact; confirm one near-miss award. Repeat after leaving and re-entering to confirm a new encounter can score.
 31. Contact a traffic car while inside its near-miss zone; confirm the collision does not also award a near miss.
+32. Follow a coin line and confirm every coin adds 100 banked points and increments the coin counter once.
+33. Drive until fuel decreases, collect a green canister, and confirm fuel increases without exceeding 100.
+34. Reach zero fuel and confirm propulsion stops while steering and coasting remain active; collect a canister to restore propulsion.
 
 ## Known limitations
 
@@ -106,3 +111,5 @@
 - 2026-10-19 — Milestone 4 verification: 36 EditMode tests and 4 PlayMode tests passed, the live editor check held 60 FPS with the patrol HUD active, and Unity produced a successful unsigned iOS Xcode export.
 - 2026-10-20 — Milestone 5 added optional timed challenges, unique respawning road signs, sparse road-graph traffic, protected spawning, one-event near-miss scoring, and challenge/bonus HUD feedback.
 - 2026-10-20 — Milestone 5 verification: 43 EditMode tests and 5 PlayMode tests passed, the live Game view confirmed the combined HUD and road-sign presentation, and Unity produced a successful unsigned iOS Xcode export.
+- 2026-10-20 — Added replayable road coins and fuel canisters, deterministic fuel consumption, propulsion cutoff at empty, banked coin awards, and a combined resource HUD.
+- 2026-10-20 — Collectible/fuel verification: 47 EditMode tests and 5 PlayMode tests passed; live Play Mode confirmed coin awards, fuel drain, canister refill, 60 FPS, and non-overlapping HUD presentation.

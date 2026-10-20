@@ -1,6 +1,6 @@
 %YAML 1.1
 %TAG !u! tag:unity3d.com,2011:
---- !u!1 &1902631783054085865
+--- !u!1 &4369268050570051079
 GameObject:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
@@ -8,9 +8,165 @@ GameObject:
   m_PrefabAsset: {fileID: 0}
   serializedVersion: 6
   m_Component:
-  - component: {fileID: 8359767125176671536}
-  - component: {fileID: 3164085106567277809}
-  - component: {fileID: 1926895790666233529}
+  - component: {fileID: 2810609076603476203}
+  - component: {fileID: 8604411328795024047}
+  - component: {fileID: 6904052521937445665}
+  - component: {fileID: 4574202222469302285}
+  - component: {fileID: 8566809114544926678}
+  - component: {fileID: 6499005105678054494}
+  - component: {fileID: 3508650566358174470}
+  m_Layer: 6
+  m_Name: PlayerCar
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &2810609076603476203
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 4369268050570051079}
+  serializedVersion: 2
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children:
+  - {fileID: 1235549707552533616}
+  m_Father: {fileID: 0}
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!54 &8604411328795024047
+Rigidbody:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 4369268050570051079}
+  serializedVersion: 5
+  m_Mass: 1100
+  m_LinearDamping: 0.08
+  m_AngularDamping: 0.75
+  m_CenterOfMass: {x: 0, y: -0.35, z: 0}
+  m_InertiaTensor: {x: 1, y: 1, z: 1}
+  m_InertiaRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_IncludeLayers:
+    serializedVersion: 2
+    m_Bits: 0
+  m_ExcludeLayers:
+    serializedVersion: 2
+    m_Bits: 0
+  m_ImplicitCom: 0
+  m_ImplicitTensor: 1
+  m_UseGravity: 1
+  m_IsKinematic: 0
+  m_Interpolate: 1
+  m_Constraints: 0
+  m_CollisionDetection: 2
+--- !u!65 &6904052521937445665
+BoxCollider:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 4369268050570051079}
+  m_Material: {fileID: 13400000, guid: 03d73b8925f874746a4def0dff327daf, type: 2}
+  m_IncludeLayers:
+    serializedVersion: 2
+    m_Bits: 0
+  m_ExcludeLayers:
+    serializedVersion: 2
+    m_Bits: 0
+  m_LayerOverridePriority: 0
+  m_IsTrigger: 0
+  m_ProvidesContacts: 0
+  m_Enabled: 1
+  serializedVersion: 3
+  m_Size: {x: 2, y: 1.1, z: 4.2}
+  m_Center: {x: 0, y: 0.55, z: 0}
+--- !u!114 &4574202222469302285
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 4369268050570051079}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 272d06319a100405ba2b78523a2034d6, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Sideways.Runtime::Sideways.Vehicle.VehicleInputSource
+  response: 4.5
+  touchHandbrakeReleasePulse: 0.25
+--- !u!114 &8566809114544926678
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 4369268050570051079}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: ce6f037312a0145a48439b3ed3db05f1, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Sideways.Runtime::Sideways.Vehicle.VehicleController
+  body: {fileID: 8604411328795024047}
+  inputSourceBehaviour: {fileID: 4574202222469302285}
+  profile: {fileID: 11400000, guid: 6e752ff219fdd4127a285a0a279fc272, type: 2}
+  groundMask:
+    serializedVersion: 2
+    m_Bits: 129
+  centerOfMass: {x: 0, y: -0.35, z: 0}
+--- !u!114 &6499005105678054494
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 4369268050570051079}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: a5d1cd78bc73a466783f563c988b9fc4, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Sideways.Runtime::Sideways.Vehicle.VehicleRecovery
+  controller: {fileID: 8566809114544926678}
+  inputSource: {fileID: 4574202222469302285}
+  rules: {fileID: 11400000, guid: 9e082b7e9b49946a4bf4032310c5d324, type: 2}
+  roadMask:
+    serializedVersion: 2
+    m_Bits: 128
+  obstacleMask:
+    serializedVersion: 2
+    m_Bits: 1792
+  clearanceHalfExtents: {x: 1.2, y: 0.6, z: 2.2}
+--- !u!114 &3508650566358174470
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 4369268050570051079}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 5378da89a666a4326b45f0a9d061522f, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Sideways.Runtime::Sideways.Vehicle.VehicleCollisionSensor
+  obstacleMask:
+    serializedVersion: 2
+    m_Bits: 1792
+--- !u!1 &4689258583482233315
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 4678396755906577133}
+  - component: {fileID: 3447037503577935272}
+  - component: {fileID: 70866652288143232}
   m_Layer: 0
   m_Name: Cabin
   m_TagString: Untagged
@@ -18,36 +174,36 @@ GameObject:
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
   m_IsActive: 1
---- !u!4 &8359767125176671536
+--- !u!4 &4678396755906577133
 Transform:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1902631783054085865}
+  m_GameObject: {fileID: 4689258583482233315}
   serializedVersion: 2
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
   m_LocalPosition: {x: 0, y: 0.75, z: -0.1}
   m_LocalScale: {x: 0.82, y: 0.72, z: 0.48}
   m_ConstrainProportionsScale: 0
   m_Children: []
-  m_Father: {fileID: 2721107413548156795}
+  m_Father: {fileID: 1235549707552533616}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
---- !u!33 &3164085106567277809
+--- !u!33 &3447037503577935272
 MeshFilter:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1902631783054085865}
+  m_GameObject: {fileID: 4689258583482233315}
   m_Mesh: {fileID: 10202, guid: 0000000000000000e000000000000000, type: 0}
---- !u!23 &1926895790666233529
+--- !u!23 &70866652288143232
 MeshRenderer:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1902631783054085865}
+  m_GameObject: {fileID: 4689258583482233315}
   m_Enabled: 1
   m_CastShadows: 1
   m_ReceiveShadows: 1
@@ -90,7 +246,7 @@ MeshRenderer:
   m_SortingOrder: 0
   m_MaskInteraction: 0
   m_AdditionalVertexStreams: {fileID: 0}
---- !u!1 &4180322546510193339
+--- !u!1 &7671541224673972749
 GameObject:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
@@ -98,9 +254,9 @@ GameObject:
   m_PrefabAsset: {fileID: 0}
   serializedVersion: 6
   m_Component:
-  - component: {fileID: 2721107413548156795}
-  - component: {fileID: 3311105723749701667}
-  - component: {fileID: 7108692587458504334}
+  - component: {fileID: 1235549707552533616}
+  - component: {fileID: 8177303045522988179}
+  - component: {fileID: 5506105316748286541}
   m_Layer: 0
   m_Name: Visual
   m_TagString: Untagged
@@ -108,37 +264,37 @@ GameObject:
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
   m_IsActive: 1
---- !u!4 &2721107413548156795
+--- !u!4 &1235549707552533616
 Transform:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 4180322546510193339}
+  m_GameObject: {fileID: 7671541224673972749}
   serializedVersion: 2
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
   m_LocalPosition: {x: 0, y: 0.58, z: 0}
   m_LocalScale: {x: 1.85, y: 0.85, z: 4}
   m_ConstrainProportionsScale: 0
   m_Children:
-  - {fileID: 8359767125176671536}
-  m_Father: {fileID: 6173031145580569826}
+  - {fileID: 4678396755906577133}
+  m_Father: {fileID: 2810609076603476203}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
---- !u!33 &3311105723749701667
+--- !u!33 &8177303045522988179
 MeshFilter:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 4180322546510193339}
+  m_GameObject: {fileID: 7671541224673972749}
   m_Mesh: {fileID: 10202, guid: 0000000000000000e000000000000000, type: 0}
---- !u!23 &7108692587458504334
+--- !u!23 &5506105316748286541
 MeshRenderer:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 4180322546510193339}
+  m_GameObject: {fileID: 7671541224673972749}
   m_Enabled: 1
   m_CastShadows: 1
   m_ReceiveShadows: 1
@@ -181,159 +337,3 @@ MeshRenderer:
   m_SortingOrder: 0
   m_MaskInteraction: 0
   m_AdditionalVertexStreams: {fileID: 0}
---- !u!1 &8642044790570105796
-GameObject:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  serializedVersion: 6
-  m_Component:
-  - component: {fileID: 6173031145580569826}
-  - component: {fileID: 7603155085747355563}
-  - component: {fileID: 7427194461594844599}
-  - component: {fileID: 9134742766555318769}
-  - component: {fileID: 137781156464155892}
-  - component: {fileID: 61390272779885835}
-  - component: {fileID: 8317934800259801412}
-  m_Layer: 6
-  m_Name: PlayerCar
-  m_TagString: Untagged
-  m_Icon: {fileID: 0}
-  m_NavMeshLayer: 0
-  m_StaticEditorFlags: 0
-  m_IsActive: 1
---- !u!4 &6173031145580569826
-Transform:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 8642044790570105796}
-  serializedVersion: 2
-  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 0, y: 0, z: 0}
-  m_LocalScale: {x: 1, y: 1, z: 1}
-  m_ConstrainProportionsScale: 0
-  m_Children:
-  - {fileID: 2721107413548156795}
-  m_Father: {fileID: 0}
-  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
---- !u!54 &7603155085747355563
-Rigidbody:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 8642044790570105796}
-  serializedVersion: 5
-  m_Mass: 1100
-  m_LinearDamping: 0.08
-  m_AngularDamping: 0.75
-  m_CenterOfMass: {x: 0, y: -0.35, z: 0}
-  m_InertiaTensor: {x: 1, y: 1, z: 1}
-  m_InertiaRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_IncludeLayers:
-    serializedVersion: 2
-    m_Bits: 0
-  m_ExcludeLayers:
-    serializedVersion: 2
-    m_Bits: 0
-  m_ImplicitCom: 0
-  m_ImplicitTensor: 1
-  m_UseGravity: 1
-  m_IsKinematic: 0
-  m_Interpolate: 1
-  m_Constraints: 0
-  m_CollisionDetection: 2
---- !u!65 &7427194461594844599
-BoxCollider:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 8642044790570105796}
-  m_Material: {fileID: 13400000, guid: 03d73b8925f874746a4def0dff327daf, type: 2}
-  m_IncludeLayers:
-    serializedVersion: 2
-    m_Bits: 0
-  m_ExcludeLayers:
-    serializedVersion: 2
-    m_Bits: 0
-  m_LayerOverridePriority: 0
-  m_IsTrigger: 0
-  m_ProvidesContacts: 0
-  m_Enabled: 1
-  serializedVersion: 3
-  m_Size: {x: 2, y: 1.1, z: 4.2}
-  m_Center: {x: 0, y: 0.55, z: 0}
---- !u!114 &9134742766555318769
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 8642044790570105796}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 272d06319a100405ba2b78523a2034d6, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: Sideways.Runtime::Sideways.Vehicle.VehicleInputSource
-  response: 4.5
-  touchHandbrakeReleasePulse: 0.25
---- !u!114 &137781156464155892
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 8642044790570105796}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: ce6f037312a0145a48439b3ed3db05f1, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: Sideways.Runtime::Sideways.Vehicle.VehicleController
-  body: {fileID: 7603155085747355563}
-  inputSourceBehaviour: {fileID: 9134742766555318769}
-  profile: {fileID: 11400000, guid: 6e752ff219fdd4127a285a0a279fc272, type: 2}
-  groundMask:
-    serializedVersion: 2
-    m_Bits: 129
-  centerOfMass: {x: 0, y: -0.35, z: 0}
---- !u!114 &61390272779885835
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 8642044790570105796}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: a5d1cd78bc73a466783f563c988b9fc4, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: Sideways.Runtime::Sideways.Vehicle.VehicleRecovery
-  controller: {fileID: 137781156464155892}
-  inputSource: {fileID: 9134742766555318769}
-  rules: {fileID: 11400000, guid: 9e082b7e9b49946a4bf4032310c5d324, type: 2}
-  roadMask:
-    serializedVersion: 2
-    m_Bits: 128
-  obstacleMask:
-    serializedVersion: 2
-    m_Bits: 1792
-  clearanceHalfExtents: {x: 1.2, y: 0.6, z: 2.2}
---- !u!114 &8317934800259801412
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 8642044790570105796}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 5378da89a666a4326b45f0a9d061522f, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: Sideways.Runtime::Sideways.Vehicle.VehicleCollisionSensor
-  obstacleMask:
-    serializedVersion: 2
-    m_Bits: 1792
