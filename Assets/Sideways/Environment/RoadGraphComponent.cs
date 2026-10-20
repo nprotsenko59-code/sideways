@@ -10,6 +10,18 @@ namespace Sideways.EnvironmentSystem
 
         public void Configure(RoadGraphAsset roadGraph) => graph = roadGraph;
 
+        private void Awake()
+        {
+            // The terrain is the continuous driving surface. Road boxes only mark
+            // where recovery is allowed; keeping them solid creates internal faces
+            // at segment joins that fast-moving vehicles can hit like invisible walls.
+            var roadVolumes = GetComponentsInChildren<Collider>(true);
+            for (var i = 0; i < roadVolumes.Length; i++)
+            {
+                roadVolumes[i].isTrigger = true;
+            }
+        }
+
         private void OnDrawGizmosSelected()
         {
             if (graph == null) return;

@@ -53,6 +53,12 @@ namespace Sideways.Tests
             Assert.That(resourceHud, Is.Not.Null);
             Assert.That(resources.Snapshot.Fuel, Is.GreaterThan(0f));
             Assert.That(roadGraph.Graph.IsValid(out var graphError), Is.True, graphError);
+            var roadVolumes = roadGraph.GetComponentsInChildren<Collider>(true);
+            Assert.That(roadVolumes.Length, Is.GreaterThan(0));
+            for (var i = 0; i < roadVolumes.Length; i++)
+            {
+                Assert.That(roadVolumes[i].isTrigger, Is.True, $"{roadVolumes[i].name} must not create a solid road seam");
+            }
 
             var policeStart = policeVehicle.transform.position;
 

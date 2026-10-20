@@ -70,7 +70,9 @@ namespace Sideways.Vehicle
         private bool IsSafePose()
         {
             var rayOrigin = transform.position + Vector3.up * 0.5f;
-            var roadBelow = Physics.Raycast(rayOrigin, Vector3.down, 2f, roadMask, QueryTriggerInteraction.Ignore);
+            // Roads are trigger volumes so their overlapping segment seams cannot
+            // physically block the vehicle. They still identify valid recovery areas.
+            var roadBelow = Physics.Raycast(rayOrigin, Vector3.down, 2f, roadMask, QueryTriggerInteraction.Collide);
             var obstacleFree = !Physics.CheckBox(transform.position, clearanceHalfExtents + Vector3.one * rules.safePoseClearance, transform.rotation, obstacleMask, QueryTriggerInteraction.Ignore);
             return SafePoseRules.IsEligible(
                 controller.Telemetry.Grounded,

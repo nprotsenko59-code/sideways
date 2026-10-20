@@ -722,6 +722,7 @@ namespace Sideways.Editor
             // The terrain surface is 1 cm below the road: visually separate to
             // prevent z-fighting, but physically flush enough to avoid a curb.
             var segment = CreateBox(name, parent, (start + end) * 0.5f + Vector3.down * 0.2f, new Vector3(width, 0.2f, delta.magnitude + 0.8f), material, physicsMaterial, 7);
+            segment.GetComponent<BoxCollider>().isTrigger = true;
             segment.transform.rotation = Quaternion.LookRotation(delta.normalized, Vector3.up);
         }
 
