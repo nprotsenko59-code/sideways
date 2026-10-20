@@ -498,7 +498,7 @@ namespace Sideways.Editor
 
         private static void BuildEnvironment(Transform parent, RoadGraphAsset roadGraph, Materials materials, PhysicsMaterial physicsMaterial)
         {
-            CreateBox("Ground", parent, new Vector3(0f, -1.1f, 0f), new Vector3(900f, 2f, 800f), materials.Terrain, physicsMaterial, 0);
+            CreateBox("Ground", parent, new Vector3(0f, -1.11f, 0f), new Vector3(900f, 2f, 800f), materials.Terrain, physicsMaterial, 0);
 
             var roadsObject = new GameObject("Roads");
             roadsObject.transform.SetParent(parent, false);
@@ -719,8 +719,8 @@ namespace Sideways.Editor
         private static void CreateRoadSegment(string name, Transform parent, Vector3 start, Vector3 end, float width, Material material, PhysicsMaterial physicsMaterial)
         {
             var delta = end - start;
-            // Ground spans y=-2.1..-0.1, so a 0.2 m road centered at -0.2
-            // keeps both driving surfaces flush and removes the trapping curb.
+            // The terrain surface is 1 cm below the road: visually separate to
+            // prevent z-fighting, but physically flush enough to avoid a curb.
             var segment = CreateBox(name, parent, (start + end) * 0.5f + Vector3.down * 0.2f, new Vector3(width, 0.2f, delta.magnitude + 0.8f), material, physicsMaterial, 7);
             segment.transform.rotation = Quaternion.LookRotation(delta.normalized, Vector3.up);
         }
