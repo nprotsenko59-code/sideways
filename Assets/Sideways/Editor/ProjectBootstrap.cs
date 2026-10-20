@@ -706,11 +706,12 @@ namespace Sideways.Editor
             collider.center = new Vector3(0f, 1.25f, 0f);
             collider.size = new Vector3(0.55f, 2.5f, 0.45f);
             collider.material = physicsMaterial;
+            collider.isTrigger = true;
             var pole = CreateVisualBox("Pole", root.transform, Vector3.zero, new Vector3(0.18f, 2.2f, 0.18f), materials.Concrete);
             pole.transform.localPosition = new Vector3(0f, 1.1f, 0f);
             var face = CreateVisualBox("Face", root.transform, Vector3.zero, new Vector3(1.1f, 0.85f, 0.12f), materials.Sign);
             face.transform.localPosition = new Vector3(0f, 2.25f, 0f);
-            root.AddComponent<BreakableRoadSign>().Configure(id, 4f, 12f, root.GetComponentsInChildren<Renderer>(), root.GetComponentsInChildren<Collider>());
+            root.AddComponent<BreakableRoadSign>().Configure(id, 1.5f, 12f, root.GetComponentsInChildren<Renderer>(), root.GetComponentsInChildren<Collider>());
         }
 
         private static GameObject CreateVisualBox(string name, Transform parent, Vector3 position, Vector3 scale, Material material)

@@ -705,7 +705,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: Sideways.Runtime::Sideways.Challenges.BreakableRoadSign
   signId: Sign_07
-  minimumImpactSpeed: 4
+  minimumImpactSpeed: 1.5
   respawnDelay: 12
   renderers:
   - {fileID: 1841946759}
@@ -893,7 +893,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: Sideways.Runtime::Sideways.Challenges.BreakableRoadSign
   signId: Sign_12
-  minimumImpactSpeed: 4
+  minimumImpactSpeed: 1.5
   respawnDelay: 12
   renderers:
   - {fileID: 1567217914}
@@ -2687,7 +2687,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: Sideways.Runtime::Sideways.Challenges.BreakableRoadSign
   signId: Sign_04
-  minimumImpactSpeed: 4
+  minimumImpactSpeed: 1.5
   respawnDelay: 12
   renderers:
   - {fileID: 1314231381}
@@ -2875,7 +2875,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: Sideways.Runtime::Sideways.Challenges.BreakableRoadSign
   signId: Sign_09
-  minimumImpactSpeed: 4
+  minimumImpactSpeed: 1.5
   respawnDelay: 12
   renderers:
   - {fileID: 142146202}
@@ -5725,7 +5725,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: Sideways.Runtime::Sideways.Challenges.BreakableRoadSign
   signId: Sign_02
-  minimumImpactSpeed: 4
+  minimumImpactSpeed: 1.5
   respawnDelay: 12
   renderers:
   - {fileID: 392446515}
@@ -7493,7 +7493,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: Sideways.Runtime::Sideways.Challenges.BreakableRoadSign
   signId: Sign_05
-  minimumImpactSpeed: 4
+  minimumImpactSpeed: 1.5
   respawnDelay: 12
   renderers:
   - {fileID: 1627652550}
@@ -8420,7 +8420,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: Sideways.Runtime::Sideways.Challenges.BreakableRoadSign
   signId: Sign_11
-  minimumImpactSpeed: 4
+  minimumImpactSpeed: 1.5
   respawnDelay: 12
   renderers:
   - {fileID: 724725115}
@@ -9638,7 +9638,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: Sideways.Runtime::Sideways.Challenges.BreakableRoadSign
   signId: Sign_10
-  minimumImpactSpeed: 4
+  minimumImpactSpeed: 1.5
   respawnDelay: 12
   renderers:
   - {fileID: 131324169}
@@ -11602,7 +11602,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: Sideways.Runtime::Sideways.Challenges.BreakableRoadSign
   signId: Sign_03
-  minimumImpactSpeed: 4
+  minimumImpactSpeed: 1.5
   respawnDelay: 12
   renderers:
   - {fileID: 858848658}
@@ -12295,7 +12295,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: Sideways.Runtime::Sideways.Challenges.BreakableRoadSign
   signId: Sign_01
-  minimumImpactSpeed: 4
+  minimumImpactSpeed: 1.5
   respawnDelay: 12
   renderers:
   - {fileID: 1712758918}
@@ -14751,7 +14751,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: Sideways.Runtime::Sideways.Challenges.BreakableRoadSign
   signId: Sign_06
-  minimumImpactSpeed: 4
+  minimumImpactSpeed: 1.5
   respawnDelay: 12
   renderers:
   - {fileID: 1079093455}
@@ -16262,7 +16262,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: Sideways.Runtime::Sideways.Challenges.BreakableRoadSign
   signId: Sign_08
-  minimumImpactSpeed: 4
+  minimumImpactSpeed: 1.5
   respawnDelay: 12
   renderers:
   - {fileID: 624509483}

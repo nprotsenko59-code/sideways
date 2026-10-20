@@ -5,7 +5,7 @@ namespace Sideways.Challenges
     public sealed class BreakableRoadSign : MonoBehaviour
     {
         [SerializeField] private string signId;
-        [SerializeField] private float minimumImpactSpeed = 4f;
+        [SerializeField] private float minimumImpactSpeed = 1.5f;
         [SerializeField] private float respawnDelay = 12f;
         [SerializeField] private Renderer[] renderers;
         [SerializeField] private Collider[] colliders;
@@ -15,6 +15,11 @@ namespace Sideways.Challenges
 
         public string SignId => signId;
         public bool IsDestroyed => destroyed;
+
+        private void Awake()
+        {
+            SetCollidersAsTriggers();
+        }
 
         private void Update()
         {
@@ -27,6 +32,13 @@ namespace Sideways.Challenges
             DestroySign();
         }
 
+        private void OnTriggerEnter(Collider other)
+        {
+            var body = other.attachedRigidbody;
+            if (destroyed || body == null || body.gameObject.layer != 6 || body.linearVelocity.magnitude < minimumImpactSpeed) return;
+            DestroySign();
+        }
+
         public void Configure(string id, float impactSpeed, float respawnSeconds, Renderer[] signRenderers, Collider[] signColliders)
         {
             signId = id;
@@ -34,6 +46,7 @@ namespace Sideways.Challenges
             respawnDelay = respawnSeconds;
             renderers = signRenderers;
             colliders = signColliders;
+            SetCollidersAsTriggers();
         }
 
         public bool DestroySign()
@@ -55,6 +68,15 @@ namespace Sideways.Challenges
             if (colliders != null)
             {
                 for (var i = 0; i < colliders.Length; i++) if (colliders[i] != null) colliders[i].enabled = !value;
+            }
+        }
+
+        private void SetCollidersAsTriggers()
+        {
+            if (colliders == null) return;
+            for (var i = 0; i < colliders.Length; i++)
+            {
+                if (colliders[i] != null) colliders[i].isTrigger = true;
             }
         }
     }
