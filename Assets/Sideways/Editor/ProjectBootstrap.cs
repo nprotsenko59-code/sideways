@@ -719,14 +719,16 @@ namespace Sideways.Editor
         private static void CreateRoadSegment(string name, Transform parent, Vector3 start, Vector3 end, float width, Material material, PhysicsMaterial physicsMaterial)
         {
             var delta = end - start;
-            var segment = CreateBox(name, parent, (start + end) * 0.5f + Vector3.up * 0.05f, new Vector3(width, 0.2f, delta.magnitude + 0.8f), material, physicsMaterial, 7);
+            // Ground spans y=-2.1..-0.1, so a 0.2 m road centered at -0.2
+            // keeps both driving surfaces flush and removes the trapping curb.
+            var segment = CreateBox(name, parent, (start + end) * 0.5f + Vector3.down * 0.2f, new Vector3(width, 0.2f, delta.magnitude + 0.8f), material, physicsMaterial, 7);
             segment.transform.rotation = Quaternion.LookRotation(delta.normalized, Vector3.up);
         }
 
         private static void CreateRoadMarker(string name, Transform parent, Vector3 start, Vector3 end, Material material)
         {
             var delta = end - start;
-            var marker = CreateVisualBox(name, parent, (start + end) * 0.5f + Vector3.up * 0.17f, new Vector3(0.28f, 0.025f, Mathf.Max(1f, delta.magnitude - 2f)), material);
+            var marker = CreateVisualBox(name, parent, (start + end) * 0.5f + Vector3.down * 0.08f, new Vector3(0.28f, 0.025f, Mathf.Max(1f, delta.magnitude - 2f)), material);
             marker.transform.rotation = Quaternion.LookRotation(delta.normalized, Vector3.up);
         }
 
