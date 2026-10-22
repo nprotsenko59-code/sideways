@@ -105,6 +105,16 @@ namespace Sideways.Tests
             Object.DestroyImmediate(profile);
         }
 
+        [Test]
+        public void InvalidTrafficSpacingIsRejected()
+        {
+            var profile = ScriptableObject.CreateInstance<TrafficProfile>();
+            profile.minimumVehicleSpacing = 0f;
+
+            Assert.That(profile.IsValid(out _), Is.False);
+            Object.DestroyImmediate(profile);
+        }
+
         private static ChallengeDefinition CreateChallenge(ChallengeType type, int target, float duration)
         {
             var definition = ScriptableObject.CreateInstance<ChallengeDefinition>();

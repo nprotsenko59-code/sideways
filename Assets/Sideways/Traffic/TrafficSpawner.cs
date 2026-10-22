@@ -66,6 +66,13 @@ namespace Sideways.Traffic
             var distance = toSpawn.magnitude;
             if (distance < profile.minimumSpawnDistance || distance > profile.maximumSpawnDistance) return false;
             if (distance <= profile.forwardSpawnExclusionDistance && Vector3.Angle(player.forward, toSpawn) <= profile.forwardSpawnExclusionAngle * 0.5f) return false;
+            var spacingSquared = profile.minimumVehicleSpacing * profile.minimumVehicleSpacing;
+            for (var i = 0; i < vehicles.Count; i++)
+            {
+                var vehicle = vehicles[i];
+                if (vehicle == null || !vehicle.gameObject.activeSelf) continue;
+                if ((vehicle.transform.position - position).sqrMagnitude < spacingSquared) return false;
+            }
             return true;
         }
 

@@ -12,7 +12,7 @@
 - `PoliceDirector` owns pursuit state and penalties; `PoliceVisionSensor` is the only source of sightings, while `PoliceVehicleController` follows the shared road graph.
 - `RecklessDrivingTracker` turns sustained drifts and severe impacts into a short-lived reportable condition without deciding whether police can see them.
 - `ChallengeController` owns the optional challenge lifecycle and consumes stable road-sign ids or drift-point events through a deterministic `ChallengeModel`.
-- `TrafficSpawner` owns sparse population and protected spawn selection; each `TrafficVehicle` stays graph-bound and reports at most one near miss per encounter.
+- `TrafficSpawner` owns the local traffic population and protected spawn selection; each `TrafficVehicle` stays graph-bound and reports at most one near miss per encounter.
 - `RideResourceController` owns per-ride coins and fuel, while `FuelModel` keeps consumption and refill rules deterministic.
 - `PlayerPreferencesController` owns the pause-safe options overlay and applies persistent accessibility preferences.
 - `GameFeedbackController` owns synthesized engine/event audio and rate-limited iOS haptics without affecting gameplay rules.
@@ -47,7 +47,7 @@
 - [x] Police state HUD and deterministic pursuit-state tests.
 - [x] Data-driven challenge lifecycle with start, stop, retry, countdown, success, failure, and typed reward hook.
 - [x] Unique road-sign destruction and drift-score challenge definitions.
-- [x] Sparse graph-driven traffic with protected spawning and solid player interaction.
+- [x] Graph-driven local traffic with protected spawning and solid player interaction.
 - [x] Collision-free, relative-speed near-miss scoring with one event per encounter.
 - [x] Challenge and bonus HUD feedback without interrupting free roam.
 - [x] Road coin lines, banked coin awards, draining fuel, refill canisters, and resource HUD.
@@ -86,7 +86,7 @@
 26. Start the drift-score challenge and earn 5,000 drift points; confirm only drift points advance its progress.
 27. Let either challenge expire, then retry it; confirm failure never ends or resets the ride.
 28. Press C while a challenge is active; confirm it stops cleanly and remains available to retry.
-29. Drive toward newly populated areas; confirm traffic never appears close to or directly in front of the car.
+29. Drive through several districts; confirm multiple traffic cars cycle into the local area without appearing directly in front of the player or overlapping one another.
 30. Pass a traffic car closely at meaningful relative speed without contact; confirm one near-miss award. Repeat after leaving and re-entering to confirm a new encounter can score.
 31. Contact a traffic car while inside its near-miss zone; confirm the collision does not also award a near miss.
 32. Follow a coin line and confirm every coin adds 100 banked points and increments the coin counter once.
@@ -129,3 +129,4 @@
 - 2026-10-22 — Physical device acceptance remains pending because full Xcode and device tooling are not installed; `xcode-select` currently points to Command Line Tools.
 - 2026-10-22 — Strengthened police pursuit with predictive interception, road-junction search sweeps, distance-gated escape progress, wider detection, faster replanning, and more capable pursuit handling; verification passed with 52 EditMode and 5 PlayMode tests.
 - 2026-10-22 — Promoted the overhead view to the default and retuned it to a closer, oblique arcade composition with forward framing and damped heading changes, while retaining chase view as an alternate.
+- 2026-10-22 — Increased the local traffic pool from four to eight cars, tightened its spawn/despawn ring for the overhead camera, and added minimum spawn spacing to prevent vehicle stacking.

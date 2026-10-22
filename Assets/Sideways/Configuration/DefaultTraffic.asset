@@ -12,13 +12,14 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 2a72dddc529774f5daf1b4b03a5b891e, type: 3}
   m_Name: DefaultTraffic
   m_EditorClassIdentifier: Sideways.Runtime::Sideways.Configuration.TrafficProfile
-  maximumVehicles: 4
-  minimumSpawnDistance: 65
-  maximumSpawnDistance: 170
-  forwardSpawnExclusionDistance: 110
-  forwardSpawnExclusionAngle: 50
-  despawnDistance: 230
-  spawnAttempts: 16
+  maximumVehicles: 8
+  minimumSpawnDistance: 45
+  maximumSpawnDistance: 140
+  forwardSpawnExclusionDistance: 65
+  forwardSpawnExclusionAngle: 40
+  despawnDistance: 180
+  spawnAttempts: 32
+  minimumVehicleSpacing: 14
   minimumSpeed: 8
   maximumSpeed: 14
   turnRate: 100

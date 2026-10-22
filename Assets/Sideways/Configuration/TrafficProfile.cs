@@ -13,6 +13,7 @@ namespace Sideways.Configuration
         [Range(1f, 179f)] public float forwardSpawnExclusionAngle = 50f;
         [Min(1f)] public float despawnDistance = 230f;
         [Range(1, 32)] public int spawnAttempts = 16;
+        [Min(1f)] public float minimumVehicleSpacing = 12f;
 
         [Header("Driving")]
         [Min(1f)] public float minimumSpeed = 8f;
@@ -29,9 +30,9 @@ namespace Sideways.Configuration
 
         public bool IsValid(out string error)
         {
-            if (maximumVehicles < 0 || maximumSpawnDistance <= minimumSpawnDistance || despawnDistance <= maximumSpawnDistance)
+            if (maximumVehicles < 0 || maximumSpawnDistance <= minimumSpawnDistance || despawnDistance <= maximumSpawnDistance || minimumVehicleSpacing <= 0f)
             {
-                error = "Traffic population distances must be ordered spawn minimum < spawn maximum < despawn.";
+                error = "Traffic population distances must be ordered spawn minimum < spawn maximum < despawn, with positive vehicle spacing.";
                 return false;
             }
             if (minimumSpeed <= 0f || maximumSpeed < minimumSpeed || turnRate <= 0f)
