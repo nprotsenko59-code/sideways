@@ -76,9 +76,9 @@
 16. Drive the scenic perimeter, both diagonal alleys, and all three hill connectors; confirm every route rejoins the network.
 17. Drive for ten minutes while deliberately choosing unfamiliar turns; confirm there are no exposed road endings or accidental map-edge dead ends.
 18. Drift in clear view of the police car; confirm the HUD changes from SPOTTED to PURSUED.
-19. Break line of sight behind a solid building; confirm SEARCHING begins and the unit heads to the last visible position rather than following through the wall.
+19. Break line of sight behind a solid building; confirm SEARCHING begins and the unit predicts the player's route, then sweeps nearby road junctions rather than stopping at the last visible position.
 20. Reappear during search; confirm pursuit resumes immediately.
-21. Break sight again and keep moving until the search expires; confirm ESCAPED, followed by a return to PATROL.
+21. Break sight again, open at least 55 m of distance, and keep moving until the search expires; confirm ESCAPED, followed by a return to PATROL. Let the unit close the gap during another attempt and confirm escape progress reverses.
 22. Stop while hidden during search; confirm the escape countdown pauses.
 23. Allow police to remain close while the car is slow; confirm BUSTED resets the car and cancels only the active combo.
 24. Press C, destroy one road sign, wait for it to respawn, and destroy it again; confirm it counts only once in the current challenge.
@@ -126,3 +126,4 @@
 - 2026-10-22 — Milestone 6 added persistent accessibility/options controls, synthesized audio, iOS haptics, reduced-motion camera behavior, allocation-conscious HUD updates, GC telemetry, an explicit iOS 15 floor, and separate development/release export paths.
 - 2026-10-22 — Milestone 6 verification: 49 EditMode tests and 5 PlayMode tests passed, the options overlay was exercised in live Play Mode, and Unity produced a successful unsigned iOS Xcode export.
 - 2026-10-22 — Physical device acceptance remains pending because full Xcode and device tooling are not installed; `xcode-select` currently points to Command Line Tools.
+- 2026-10-22 — Strengthened police pursuit with predictive interception, road-junction search sweeps, distance-gated escape progress, wider detection, faster replanning, and more capable pursuit handling; verification passed with 52 EditMode and 5 PlayMode tests.

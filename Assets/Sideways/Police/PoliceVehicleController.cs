@@ -16,6 +16,7 @@ namespace Sideways.Police
 
         private readonly List<RoadGraphEdge> routeEdges = new();
         private readonly List<Vector3> waypoints = new();
+        private readonly List<RoadGraphNode> searchNodes = new();
         private PoliceState state;
         private string currentGoalNodeId;
         private int waypointIndex;
@@ -95,6 +96,32 @@ namespace Sideways.Police
             if (!force && Time.time < nextReplanTime) return;
             nextReplanTime = Time.time + profile.routeReplanInterval;
             BuildRoute(destination, force);
+        }
+
+        public void SetSearchDestination(Vector3 estimatedPosition, int searchIndex)
+        {
+            if (roadGraph == null || profile == null) return;
+            var anchor = roadGraph.FindNearestNode(estimatedPosition);
+            if (anchor == null) return;
+
+            searchNodes.Clear();
+            var radiusSquared = profile.searchRadius * profile.searchRadius;
+            for (var i = 0; i < roadGraph.Nodes.Count; i++)
+            {
+                var node = roadGraph.Nodes[i];
+                if ((node.Position - anchor.Position).sqrMagnitude <= radiusSquared) searchNodes.Add(node);
+            }
+
+            searchNodes.Sort((left, right) =>
+            {
+                var leftDistance = (left.Position - anchor.Position).sqrMagnitude;
+                var rightDistance = (right.Position - anchor.Position).sqrMagnitude;
+                var distanceComparison = leftDistance.CompareTo(rightDistance);
+                return distanceComparison != 0 ? distanceComparison : string.CompareOrdinal(left.Id, right.Id);
+            });
+
+            var target = searchNodes.Count > 0 ? searchNodes[Mathf.Abs(searchIndex) % searchNodes.Count] : anchor;
+            SetDestination(target.Position, true);
         }
 
         private void RequestNextPatrolNode()

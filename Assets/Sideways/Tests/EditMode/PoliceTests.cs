@@ -17,6 +17,11 @@ namespace Sideways.Tests
             profile.searchDuration = 10f;
             profile.escapedDisplayDuration = 1f;
             profile.minimumEscapeSpeed = 2f;
+            profile.minimumEscapeDistance = 35f;
+            profile.escapeProgressDecay = 2f;
+            profile.predictionHorizon = 5f;
+            profile.searchWaypointInterval = 3.5f;
+            profile.searchRadius = 55f;
             profile.bustedDistance = 4f;
             profile.bustedMaximumPlayerSpeed = 5f;
             profile.bustedHoldDuration = 1f;
@@ -116,6 +121,44 @@ namespace Sideways.Tests
             model.Tick(true, false, new Vector3(3f, 0f, 7f), 8f, 20f, 0.1f);
             Assert.That(model.State, Is.EqualTo(PoliceState.Pursuit));
             Assert.That(model.LastSeenPosition, Is.EqualTo(new Vector3(3f, 0f, 7f)));
+        }
+
+        [Test]
+        public void HiddenPursuitPredictsPlayerTravelFromLastSeenVelocity()
+        {
+            var model = new PolicePursuitModel(profile);
+            model.Tick(true, true, new Vector3(1f, 0f, 2f), new Vector3(0f, 0f, 10f), 10f, 20f, 0.1f);
+            model.Tick(false, false, Vector3.zero, Vector3.zero, 10f, 60f, 1.1f);
+
+            Assert.That(model.State, Is.EqualTo(PoliceState.Search));
+            Assert.That(model.EstimatedPlayerPosition.x, Is.EqualTo(1f).Within(0.01f));
+            Assert.That(model.EstimatedPlayerPosition.z, Is.EqualTo(13f).Within(0.01f));
+        }
+
+        [Test]
+        public void NearbyPoliceReversesEscapeProgress()
+        {
+            profile.minimumEscapeDistance = 50f;
+            var model = BeginPursuit();
+            model.Tick(false, false, Vector3.zero, 10f, 60f, 1.1f);
+            model.Tick(false, false, Vector3.zero, 10f, 80f, 5f);
+            var remainingAfterGetaway = model.SearchRemaining;
+
+            model.Tick(false, false, Vector3.zero, 10f, 20f, 2f);
+
+            Assert.That(model.State, Is.EqualTo(PoliceState.Search));
+            Assert.That(model.SearchRemaining, Is.GreaterThan(remainingAfterGetaway));
+        }
+
+        [Test]
+        public void SearchAdvancesAcrossRoadSweepWaypoints()
+        {
+            var model = BeginPursuit();
+            model.Tick(false, false, Vector3.zero, 10f, 60f, 1.1f);
+            Assert.That(model.SearchWaypointIndex, Is.Zero);
+
+            model.Tick(false, false, Vector3.zero, 10f, 60f, 3.6f);
+            Assert.That(model.SearchWaypointIndex, Is.EqualTo(1));
         }
 
         [Test]

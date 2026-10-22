@@ -12,25 +12,30 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 357a370b98fe8499bbd0361ae65ff7a9, type: 3}
   m_Name: DefaultPolice
   m_EditorClassIdentifier: Sideways.Runtime::Sideways.Configuration.PoliceProfile
-  visionRange: 95
-  visionAngle: 120
+  visionRange: 125
+  visionAngle: 145
   scanInterval: 0.1
   driftTriggerDuration: 0.7
   driftTriggerMinimumSpeed: 9
   severeCollisionSpeed: 7
   recklessMemory: 3.5
-  lostSightDelay: 1.25
-  searchDuration: 15
+  lostSightDelay: 3
+  searchDuration: 24
   escapedDisplayDuration: 2
   minimumEscapeSpeed: 2
+  minimumEscapeDistance: 55
+  escapeProgressDecay: 2
+  predictionHorizon: 5
+  searchWaypointInterval: 3.5
+  searchRadius: 70
   patrolSpeed: 11
-  pursuitSpeed: 19
-  searchSpeed: 13
-  acceleration: 10
-  turnRate: 130
+  pursuitSpeed: 23
+  searchSpeed: 18
+  acceleration: 14
+  turnRate: 180
   waypointTolerance: 3.5
-  routeReplanInterval: 0.8
-  interceptLeadTime: 1.1
+  routeReplanInterval: 0.35
+  interceptLeadTime: 1.6
   bustedDistance: 4.5
   bustedMaximumPlayerSpeed: 6
   bustedHoldDuration: 1.25

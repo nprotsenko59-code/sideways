@@ -16,9 +16,14 @@ namespace Sideways.Configuration
 
         [Header("Pursuit lifecycle")]
         [Min(0f)] public float lostSightDelay = 1.25f;
-        [Range(10f, 20f)] public float searchDuration = 15f;
+        [Range(10f, 30f)] public float searchDuration = 15f;
         [Min(0f)] public float escapedDisplayDuration = 2f;
         [Min(0f)] public float minimumEscapeSpeed = 2f;
+        [Min(0f)] public float minimumEscapeDistance = 35f;
+        [Min(0f)] public float escapeProgressDecay = 1.5f;
+        [Min(0f)] public float predictionHorizon = 4f;
+        [Min(0.5f)] public float searchWaypointInterval = 3.5f;
+        [Min(1f)] public float searchRadius = 55f;
 
         [Header("Navigation")]
         [Min(1f)] public float patrolSpeed = 11f;
@@ -43,9 +48,15 @@ namespace Sideways.Configuration
                 return false;
             }
 
-            if (searchDuration < 10f || searchDuration > 20f || lostSightDelay < 0f || minimumEscapeSpeed < 0f)
+            if (searchDuration < 10f || searchDuration > 30f || lostSightDelay < 0f || minimumEscapeSpeed < 0f || minimumEscapeDistance < 0f || escapeProgressDecay < 0f)
             {
-                error = "Search duration must be 10–20 seconds and pursuit timing values cannot be negative.";
+                error = "Search duration must be 10–30 seconds and escape requirements cannot be negative.";
+                return false;
+            }
+
+            if (predictionHorizon < 0f || searchWaypointInterval < 0.5f || searchRadius <= 0f)
+            {
+                error = "Police search prediction and road-sweep values are invalid.";
                 return false;
             }
 

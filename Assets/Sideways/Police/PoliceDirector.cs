@@ -18,6 +18,7 @@ namespace Sideways.Police
 
         private PolicePursuitModel model;
         private bool active = true;
+        private int lastSearchWaypointIndex = -1;
 
         public event Action<PoliceStateTransition> StateChanged;
         public event Action<PoliceStatusSnapshot> StatusUpdated;
@@ -40,12 +41,14 @@ namespace Sideways.Police
 
             var hasVisual = vision != null && vision.HasVisual;
             var speed = playerVehicle != null ? playerVehicle.Telemetry.Speed : 0f;
+            var velocity = playerVehicle != null ? playerVehicle.Telemetry.GroundVelocity : Vector3.zero;
             var distance = Vector3.Distance(policeVehicle.transform.position, player.position);
-            var result = model.Tick(hasVisual, recklessDriving != null && recklessDriving.IsReckless, player.position, speed, distance, Time.deltaTime);
+            var result = model.Tick(hasVisual, recklessDriving != null && recklessDriving.IsReckless, player.position, velocity, speed, distance, Time.deltaTime);
 
             if (result.StateChanged)
             {
                 policeVehicle.SetState(result.State);
+                lastSearchWaypointIndex = -1;
                 StateChanged?.Invoke(new PoliceStateTransition(result.PreviousState, result.State));
                 if (result.State == PoliceState.Escaped) PlayerEscaped?.Invoke();
             }
@@ -58,13 +61,18 @@ namespace Sideways.Police
 
             if (model.State == PoliceState.Pursuit && model.HasLastSeen)
             {
-                var target = model.LastSeenPosition;
-                if (hasVisual && playerVehicle != null) target += playerVehicle.Telemetry.GroundVelocity * profile.interceptLeadTime;
+                var target = model.EstimatedPlayerPosition;
+                if (hasVisual) target += velocity * profile.interceptLeadTime;
                 policeVehicle.SetDestination(target);
             }
             else if (model.State == PoliceState.Search && model.HasLastSeen)
             {
-                policeVehicle.SetDestination(model.LastSeenPosition);
+                var searchIndex = model.SearchWaypointIndex;
+                if (searchIndex != lastSearchWaypointIndex)
+                {
+                    lastSearchWaypointIndex = searchIndex;
+                    policeVehicle.SetSearchDestination(model.EstimatedPlayerPosition, searchIndex);
+                }
             }
 
             StatusUpdated?.Invoke(new PoliceStatusSnapshot(model.State, hasVisual, model.HasLastSeen, model.LastSeenPosition, model.SearchRemaining));
