@@ -1,6 +1,6 @@
 %YAML 1.1
 %TAG !u! tag:unity3d.com,2011:
---- !u!1 &1738633041907846995
+--- !u!1 &892653779092276335
 GameObject:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
@@ -8,137 +8,9 @@ GameObject:
   m_PrefabAsset: {fileID: 0}
   serializedVersion: 6
   m_Component:
-  - component: {fileID: 2538434354338393441}
-  - component: {fileID: 697704558040022760}
-  - component: {fileID: 2687099082046773325}
-  - component: {fileID: 2993537057229821936}
-  - component: {fileID: 2335409059919499546}
-  m_Layer: 9
-  m_Name: PoliceCar
-  m_TagString: Untagged
-  m_Icon: {fileID: 0}
-  m_NavMeshLayer: 0
-  m_StaticEditorFlags: 0
-  m_IsActive: 1
---- !u!4 &2538434354338393441
-Transform:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1738633041907846995}
-  serializedVersion: 2
-  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 0, y: 0, z: 0}
-  m_LocalScale: {x: 1, y: 1, z: 1}
-  m_ConstrainProportionsScale: 0
-  m_Children:
-  - {fileID: 7321128911032496540}
-  - {fileID: 3947245760018693039}
-  - {fileID: 8759565048148070556}
-  m_Father: {fileID: 0}
-  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
---- !u!54 &697704558040022760
-Rigidbody:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1738633041907846995}
-  serializedVersion: 5
-  m_Mass: 1
-  m_LinearDamping: 0
-  m_AngularDamping: 0.05
-  m_CenterOfMass: {x: 0, y: 0, z: 0}
-  m_InertiaTensor: {x: 1, y: 1, z: 1}
-  m_InertiaRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_IncludeLayers:
-    serializedVersion: 2
-    m_Bits: 0
-  m_ExcludeLayers:
-    serializedVersion: 2
-    m_Bits: 0
-  m_ImplicitCom: 1
-  m_ImplicitTensor: 1
-  m_UseGravity: 1
-  m_IsKinematic: 1
-  m_Interpolate: 1
-  m_Constraints: 0
-  m_CollisionDetection: 3
---- !u!65 &2687099082046773325
-BoxCollider:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1738633041907846995}
-  m_Material: {fileID: 13400000, guid: 03d73b8925f874746a4def0dff327daf, type: 2}
-  m_IncludeLayers:
-    serializedVersion: 2
-    m_Bits: 0
-  m_ExcludeLayers:
-    serializedVersion: 2
-    m_Bits: 0
-  m_LayerOverridePriority: 0
-  m_IsTrigger: 0
-  m_ProvidesContacts: 0
-  m_Enabled: 1
-  serializedVersion: 3
-  m_Size: {x: 2.1, y: 1.1, z: 4.4}
-  m_Center: {x: 0, y: 0.55, z: 0}
---- !u!114 &2993537057229821936
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1738633041907846995}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: f7d10be5124c94fc7a4b39022c1406f8, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: Sideways.Runtime::Sideways.Police.PoliceVehicleController
-  body: {fileID: 697704558040022760}
-  roadGraph: {fileID: 11400000, guid: 972d7cd256aac4c8280a227fe9828af4, type: 2}
-  profile: {fileID: 11400000, guid: 86363a34e3b0143079a124713658af78, type: 2}
-  patrolNodeIds:
-  - G_NE
-  - G_E
-  - G_SE
-  - B_SE
-  - G_SC
-  - G_C
-  - G_NC
---- !u!114 &2335409059919499546
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1738633041907846995}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: fab37aff545f14a28bcbdaea91745595, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: Sideways.Runtime::Sideways.Police.PoliceVisionSensor
-  target: {fileID: 0}
-  profile: {fileID: 0}
-  obstructionMask:
-    serializedVersion: 2
-    m_Bits: 0
-  eyeOffset: {x: 0, y: 1.1, z: 0.8}
-  targetOffset: {x: 0, y: 0.5, z: 0}
---- !u!1 &7221255842342483273
-GameObject:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  serializedVersion: 6
-  m_Component:
-  - component: {fileID: 8759565048148070556}
-  - component: {fileID: 1571514573283031072}
-  - component: {fileID: 7159053689356067425}
+  - component: {fileID: 5862859614924269740}
+  - component: {fileID: 6719918628361208408}
+  - component: {fileID: 3610259615927035673}
   m_Layer: 0
   m_Name: LightBar
   m_TagString: Untagged
@@ -146,36 +18,36 @@ GameObject:
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
   m_IsActive: 1
---- !u!4 &8759565048148070556
+--- !u!4 &5862859614924269740
 Transform:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 7221255842342483273}
+  m_GameObject: {fileID: 892653779092276335}
   serializedVersion: 2
   m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
   m_LocalPosition: {x: 0, y: 1.68, z: -0.1}
   m_LocalScale: {x: 1.25, y: 0.18, z: 0.34}
   m_ConstrainProportionsScale: 0
   m_Children: []
-  m_Father: {fileID: 2538434354338393441}
+  m_Father: {fileID: 3699149132557226775}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
---- !u!33 &1571514573283031072
+--- !u!33 &6719918628361208408
 MeshFilter:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 7221255842342483273}
+  m_GameObject: {fileID: 892653779092276335}
   m_Mesh: {fileID: 10202, guid: 0000000000000000e000000000000000, type: 0}
---- !u!23 &7159053689356067425
+--- !u!23 &3610259615927035673
 MeshRenderer:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 7221255842342483273}
+  m_GameObject: {fileID: 892653779092276335}
   m_Enabled: 1
   m_CastShadows: 1
   m_ReceiveShadows: 1
@@ -218,7 +90,7 @@ MeshRenderer:
   m_SortingOrder: 0
   m_MaskInteraction: 0
   m_AdditionalVertexStreams: {fileID: 0}
---- !u!1 &7903939583183268925
+--- !u!1 &7846295974970758897
 GameObject:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
@@ -226,9 +98,137 @@ GameObject:
   m_PrefabAsset: {fileID: 0}
   serializedVersion: 6
   m_Component:
-  - component: {fileID: 7321128911032496540}
-  - component: {fileID: 5677037617617569282}
-  - component: {fileID: 2732856343564626093}
+  - component: {fileID: 3699149132557226775}
+  - component: {fileID: 8102557328256664084}
+  - component: {fileID: 8758132994703805315}
+  - component: {fileID: 4388631739151929978}
+  - component: {fileID: 3895618505159245809}
+  m_Layer: 9
+  m_Name: PoliceCar
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &3699149132557226775
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 7846295974970758897}
+  serializedVersion: 2
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children:
+  - {fileID: 7124813521991507068}
+  - {fileID: 1804064810750827517}
+  - {fileID: 5862859614924269740}
+  m_Father: {fileID: 0}
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!54 &8102557328256664084
+Rigidbody:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 7846295974970758897}
+  serializedVersion: 5
+  m_Mass: 1
+  m_LinearDamping: 0
+  m_AngularDamping: 0.05
+  m_CenterOfMass: {x: 0, y: 0, z: 0}
+  m_InertiaTensor: {x: 1, y: 1, z: 1}
+  m_InertiaRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_IncludeLayers:
+    serializedVersion: 2
+    m_Bits: 0
+  m_ExcludeLayers:
+    serializedVersion: 2
+    m_Bits: 0
+  m_ImplicitCom: 1
+  m_ImplicitTensor: 1
+  m_UseGravity: 1
+  m_IsKinematic: 1
+  m_Interpolate: 1
+  m_Constraints: 0
+  m_CollisionDetection: 3
+--- !u!65 &8758132994703805315
+BoxCollider:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 7846295974970758897}
+  m_Material: {fileID: 13400000, guid: 03d73b8925f874746a4def0dff327daf, type: 2}
+  m_IncludeLayers:
+    serializedVersion: 2
+    m_Bits: 0
+  m_ExcludeLayers:
+    serializedVersion: 2
+    m_Bits: 0
+  m_LayerOverridePriority: 0
+  m_IsTrigger: 0
+  m_ProvidesContacts: 0
+  m_Enabled: 1
+  serializedVersion: 3
+  m_Size: {x: 2.1, y: 1.1, z: 4.4}
+  m_Center: {x: 0, y: 0.55, z: 0}
+--- !u!114 &4388631739151929978
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 7846295974970758897}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: f7d10be5124c94fc7a4b39022c1406f8, type: 3}
+  m_Name:
+  m_EditorClassIdentifier: Sideways.Runtime::Sideways.Police.PoliceVehicleController
+  body: {fileID: 8102557328256664084}
+  roadGraph: {fileID: 11400000, guid: 972d7cd256aac4c8280a227fe9828af4, type: 2}
+  profile: {fileID: 11400000, guid: 86363a34e3b0143079a124713658af78, type: 2}
+  patrolNodeIds:
+  - G_NE
+  - G_E
+  - G_SE
+  - B_SE
+  - G_SC
+  - G_C
+  - G_NC
+--- !u!114 &3895618505159245809
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 7846295974970758897}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: fab37aff545f14a28bcbdaea91745595, type: 3}
+  m_Name:
+  m_EditorClassIdentifier: Sideways.Runtime::Sideways.Police.PoliceVisionSensor
+  target: {fileID: 0}
+  profile: {fileID: 0}
+  obstructionMask:
+    serializedVersion: 2
+    m_Bits: 0
+  eyeOffset: {x: 0, y: 1.1, z: 0.8}
+  targetOffset: {x: 0, y: 0.5, z: 0}
+--- !u!1 &8969446573081975253
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 7124813521991507068}
+  - component: {fileID: 1080744100051474675}
+  - component: {fileID: 1245821013912986165}
   m_Layer: 0
   m_Name: Visual
   m_TagString: Untagged
@@ -236,36 +236,36 @@ GameObject:
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
   m_IsActive: 1
---- !u!4 &7321128911032496540
+--- !u!4 &7124813521991507068
 Transform:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 7903939583183268925}
+  m_GameObject: {fileID: 8969446573081975253}
   serializedVersion: 2
   m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
   m_LocalPosition: {x: 0, y: 0.58, z: 0}
   m_LocalScale: {x: 1.95, y: 0.82, z: 4.15}
   m_ConstrainProportionsScale: 0
   m_Children: []
-  m_Father: {fileID: 2538434354338393441}
+  m_Father: {fileID: 3699149132557226775}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
---- !u!33 &5677037617617569282
+--- !u!33 &1080744100051474675
 MeshFilter:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 7903939583183268925}
+  m_GameObject: {fileID: 8969446573081975253}
   m_Mesh: {fileID: 10202, guid: 0000000000000000e000000000000000, type: 0}
---- !u!23 &2732856343564626093
+--- !u!23 &1245821013912986165
 MeshRenderer:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 7903939583183268925}
+  m_GameObject: {fileID: 8969446573081975253}
   m_Enabled: 1
   m_CastShadows: 1
   m_ReceiveShadows: 1
@@ -308,7 +308,7 @@ MeshRenderer:
   m_SortingOrder: 0
   m_MaskInteraction: 0
   m_AdditionalVertexStreams: {fileID: 0}
---- !u!1 &8470005872227322323
+--- !u!1 &9085316733436081439
 GameObject:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
@@ -316,9 +316,9 @@ GameObject:
   m_PrefabAsset: {fileID: 0}
   serializedVersion: 6
   m_Component:
-  - component: {fileID: 3947245760018693039}
-  - component: {fileID: 6826634645714847135}
-  - component: {fileID: 38092154372640480}
+  - component: {fileID: 1804064810750827517}
+  - component: {fileID: 5109616310588978041}
+  - component: {fileID: 4067708374408694263}
   m_Layer: 0
   m_Name: Cabin
   m_TagString: Untagged
@@ -326,36 +326,36 @@ GameObject:
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
   m_IsActive: 1
---- !u!4 &3947245760018693039
+--- !u!4 &1804064810750827517
 Transform:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 8470005872227322323}
+  m_GameObject: {fileID: 9085316733436081439}
   serializedVersion: 2
   m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
   m_LocalPosition: {x: 0, y: 1.25, z: -0.1}
   m_LocalScale: {x: 1.55, y: 0.65, z: 1.9}
   m_ConstrainProportionsScale: 0
   m_Children: []
-  m_Father: {fileID: 2538434354338393441}
+  m_Father: {fileID: 3699149132557226775}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
---- !u!33 &6826634645714847135
+--- !u!33 &5109616310588978041
 MeshFilter:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 8470005872227322323}
+  m_GameObject: {fileID: 9085316733436081439}
   m_Mesh: {fileID: 10202, guid: 0000000000000000e000000000000000, type: 0}
---- !u!23 &38092154372640480
+--- !u!23 &4067708374408694263
 MeshRenderer:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 8470005872227322323}
+  m_GameObject: {fileID: 9085316733436081439}
   m_Enabled: 1
   m_CastShadows: 1
   m_ReceiveShadows: 1

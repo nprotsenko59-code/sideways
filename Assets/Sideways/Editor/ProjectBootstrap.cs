@@ -66,19 +66,31 @@ namespace Sideways.Editor
             EditorSceneManager.OpenScene(ScenePath, OpenSceneMode.Single);
         }
 
+        [MenuItem("Sideways/Build iOS Development")]
         public static void BuildIos()
         {
+            BuildIosInternal("Builds/iOS", BuildOptions.Development | BuildOptions.AllowDebugging);
+        }
+
+        [MenuItem("Sideways/Build iOS Release")]
+        public static void BuildIosRelease()
+        {
+            BuildIosInternal("Builds/iOS-Release", BuildOptions.None);
+        }
+
+        private static void BuildIosInternal(string outputDirectory, BuildOptions options)
+        {
             Configure();
-            var output = Path.GetFullPath("Builds/iOS");
+            var output = Path.GetFullPath(outputDirectory);
             Directory.CreateDirectory(output);
-            var options = new BuildPlayerOptions
+            var buildOptions = new BuildPlayerOptions
             {
                 scenes = new[] { ScenePath },
                 locationPathName = output,
                 target = BuildTarget.iOS,
-                options = BuildOptions.Development | BuildOptions.AllowDebugging
+                options = options
             };
-            var report = BuildPipeline.BuildPlayer(options);
+            var report = BuildPipeline.BuildPlayer(buildOptions);
             if (report.summary.result != BuildResult.Succeeded)
             {
                 throw new InvalidOperationException($"iOS export failed: {report.summary.result} ({report.summary.totalErrors} errors)");
@@ -97,6 +109,8 @@ namespace Sideways.Editor
             PlayerSettings.allowedAutorotateToLandscapeRight = true;
             PlayerSettings.SetApplicationIdentifier(UnityEditor.Build.NamedBuildTarget.iOS, "com.nprotsenko.sideways.prototype");
             PlayerSettings.SetScriptingBackend(UnityEditor.Build.NamedBuildTarget.iOS, ScriptingImplementation.IL2CPP);
+            PlayerSettings.iOS.targetOSVersionString = "15.0";
+            PlayerSettings.enableFrameTimingStats = true;
 
             var assets = AssetDatabase.LoadAllAssetsAtPath("ProjectSettings/ProjectSettings.asset");
             if (assets.Length > 0)
@@ -478,7 +492,8 @@ namespace Sideways.Editor
             var trafficRoot = new GameObject("Traffic");
             var trafficSpawner = trafficRoot.AddComponent<TrafficSpawner>();
             trafficSpawner.Configure(AssetDatabase.LoadAssetAtPath<GameObject>(TrafficPrefabPath), roadGraph, profiles.Traffic, car.transform);
-            var ui = BuildUi(input, controller, recovery, scoring, policeDirector, challengeController, resources);
+            var ui = BuildUi(input, controller, recovery, scoring, policeDirector, challengeController, resources, chase);
+            systems.AddComponent<GameFeedbackController>().Configure(controller, collisionSensor, scoring, resources, challengeController, ui.Preferences);
             var rideSession = systems.AddComponent<RideSessionController>();
             rideSession.Configure(car.transform, controller, profiles.Ride, ui.Results, scoring);
 
@@ -593,7 +608,7 @@ namespace Sideways.Editor
             for (var i = 0; i < canisters.Length; i++) CreateFuelCanister($"Fuel_{i + 1:00}", root, canisters[i] + Vector3.up * 0.85f, resources, profile, materials);
         }
 
-        private static UiReferences BuildUi(VehicleInputSource input, VehicleController controller, VehicleRecovery recovery, DriftScoreController scoring, PoliceDirector policeDirector, ChallengeController challengeController, RideResourceController resources)
+        private static UiReferences BuildUi(VehicleInputSource input, VehicleController controller, VehicleRecovery recovery, DriftScoreController scoring, PoliceDirector policeDirector, ChallengeController challengeController, RideResourceController resources, ChaseCameraController chaseCamera)
         {
             var canvasObject = new GameObject("HUD", typeof(Canvas), typeof(CanvasScaler), typeof(GraphicRaycaster));
             var canvas = canvasObject.GetComponent<Canvas>();
@@ -688,7 +703,7 @@ namespace Sideways.Editor
             canvasObject.AddComponent<ResourceHud>().Configure(resources, coinText, fuelText, fuelFill);
 
             var debugPanel = CreateUiImage("DebugPanel", safeArea.transform, new Vector2(0f, 1f), new Vector2(0f, 1f), new Color(0f, 0f, 0f, 0.62f));
-            SetRect(debugPanel.GetComponent<RectTransform>(), new Vector2(18f, -18f), new Vector2(330f, 325f), new Vector2(0f, 1f));
+            SetRect(debugPanel.GetComponent<RectTransform>(), new Vector2(18f, -18f), new Vector2(330f, 355f), new Vector2(0f, 1f));
             var debugText = CreateText("Telemetry", debugPanel.transform, "", 26, TextAnchor.UpperLeft);
             Stretch(debugText.rectTransform, 14f);
             var debugHud = canvasObject.AddComponent<DebugHud>();
@@ -697,6 +712,50 @@ namespace Sideways.Editor
             var resetButton = CreateButton("ResetButton", safeArea.transform, "RESET  [R]", new Color(0.12f, 0.15f, 0.2f, 0.86f));
             SetRect(resetButton.GetComponent<RectTransform>(), new Vector2(-18f, -18f), new Vector2(220f, 84f), new Vector2(1f, 1f));
             resetButton.AddComponent<ResetButtonBinding>().Configure(input);
+
+            var settingsButtonObject = CreateButton("SettingsButton", safeArea.transform, "OPTIONS  [ESC]", new Color(0.12f, 0.15f, 0.2f, 0.86f));
+            SetRect(settingsButtonObject.GetComponent<RectTransform>(), new Vector2(-256f, -18f), new Vector2(220f, 84f), new Vector2(1f, 1f));
+
+            var settingsPanel = CreateUiImage("SettingsPanel", safeArea.transform, Vector2.zero, Vector2.one, new Color(0f, 0f, 0f, 0.88f));
+            var settingsCard = CreateUiImage("SettingsCard", settingsPanel.transform, new Vector2(0.5f, 0.5f), new Vector2(0.5f, 0.5f), new Color(0.04f, 0.06f, 0.10f, 0.98f));
+            SetRect(settingsCard.GetComponent<RectTransform>(), Vector2.zero, new Vector2(700f, 720f), new Vector2(0.5f, 0.5f));
+            var settingsTitle = CreateText("Title", settingsCard.transform, "OPTIONS & ACCESSIBILITY", 38, TextAnchor.MiddleCenter);
+            SetRect(settingsTitle.rectTransform, new Vector2(0f, -28f), new Vector2(640f, 62f), new Vector2(0.5f, 1f));
+            var settingsHint = CreateText("Hint", settingsCard.transform, "Changes are saved automatically", 20, TextAnchor.MiddleCenter);
+            SetRect(settingsHint.rectTransform, new Vector2(0f, -88f), new Vector2(620f, 42f), new Vector2(0.5f, 1f));
+            settingsHint.color = new Color(1f, 1f, 1f, 0.68f);
+
+            var audioButtonObject = CreateButton("AudioToggle", settingsCard.transform, "AUDIO  ON", new Color(0.12f, 0.55f, 0.92f, 0.95f));
+            SetRect(audioButtonObject.GetComponent<RectTransform>(), new Vector2(0f, -154f), new Vector2(540f, 70f), new Vector2(0.5f, 1f));
+            var hapticsButtonObject = CreateButton("HapticsToggle", settingsCard.transform, "HAPTICS  ON", new Color(0.12f, 0.55f, 0.92f, 0.95f));
+            SetRect(hapticsButtonObject.GetComponent<RectTransform>(), new Vector2(0f, -238f), new Vector2(540f, 70f), new Vector2(0.5f, 1f));
+            var contrastButtonObject = CreateButton("ContrastToggle", settingsCard.transform, "HIGH CONTRAST  OFF", new Color(0.12f, 0.55f, 0.92f, 0.95f));
+            SetRect(contrastButtonObject.GetComponent<RectTransform>(), new Vector2(0f, -322f), new Vector2(540f, 70f), new Vector2(0.5f, 1f));
+            var largeHudButtonObject = CreateButton("LargeHudToggle", settingsCard.transform, "LARGE HUD  OFF", new Color(0.12f, 0.55f, 0.92f, 0.95f));
+            SetRect(largeHudButtonObject.GetComponent<RectTransform>(), new Vector2(0f, -406f), new Vector2(540f, 70f), new Vector2(0.5f, 1f));
+            var reducedMotionButtonObject = CreateButton("ReducedMotionToggle", settingsCard.transform, "REDUCED MOTION  OFF", new Color(0.12f, 0.55f, 0.92f, 0.95f));
+            SetRect(reducedMotionButtonObject.GetComponent<RectTransform>(), new Vector2(0f, -490f), new Vector2(540f, 70f), new Vector2(0.5f, 1f));
+            var settingsCloseObject = CreateButton("CloseButton", settingsCard.transform, "RETURN TO DRIVE", new Color(0.86f, 0.32f, 0.08f, 0.98f));
+            SetRect(settingsCloseObject.GetComponent<RectTransform>(), new Vector2(0f, 34f), new Vector2(540f, 78f), new Vector2(0.5f, 0f));
+
+            var preferences = canvasObject.AddComponent<PlayerPreferencesController>();
+            preferences.Configure(
+                scaler,
+                chaseCamera,
+                settingsPanel,
+                settingsButtonObject.GetComponent<Button>(),
+                settingsCloseObject.GetComponent<Button>(),
+                audioButtonObject.GetComponent<Button>(),
+                audioButtonObject.transform.Find("Label").GetComponent<Text>(),
+                hapticsButtonObject.GetComponent<Button>(),
+                hapticsButtonObject.transform.Find("Label").GetComponent<Text>(),
+                contrastButtonObject.GetComponent<Button>(),
+                contrastButtonObject.transform.Find("Label").GetComponent<Text>(),
+                largeHudButtonObject.GetComponent<Button>(),
+                largeHudButtonObject.transform.Find("Label").GetComponent<Text>(),
+                reducedMotionButtonObject.GetComponent<Button>(),
+                reducedMotionButtonObject.transform.Find("Label").GetComponent<Text>());
+            settingsPanel.SetActive(false);
 
             var resultsPanel = CreateUiImage("ResultsPanel", safeArea.transform, Vector2.zero, Vector2.one, new Color(0f, 0f, 0f, 0.82f));
             var reasonText = CreateText("Reason", resultsPanel.transform, "RIDE OVER", 54, TextAnchor.MiddleCenter);
@@ -713,7 +772,7 @@ namespace Sideways.Editor
 
             var eventSystem = new GameObject("EventSystem", typeof(EventSystem), typeof(InputSystemUIInputModule));
             eventSystem.GetComponent<InputSystemUIInputModule>().AssignDefaultActions();
-            return new UiReferences { Results = results };
+            return new UiReferences { Results = results, Preferences = preferences };
         }
 
         private static void CreateRoadSegment(string name, Transform parent, Vector3 start, Vector3 end, float width, Material material, PhysicsMaterial physicsMaterial)
@@ -955,6 +1014,7 @@ namespace Sideways.Editor
         private sealed class UiReferences
         {
             public RideResultsView Results;
+            public PlayerPreferencesController Preferences;
         }
     }
 }

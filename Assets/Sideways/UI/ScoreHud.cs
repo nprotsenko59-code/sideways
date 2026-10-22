@@ -11,24 +11,42 @@ namespace Sideways.UI
         [SerializeField] private Text comboText;
         [SerializeField] private Image comboGraceFill;
 
+        private int lastTotal = int.MinValue;
+        private int lastCombo = int.MinValue;
+        private int lastMultiplier = int.MinValue;
+        private bool lastHasCombo;
+        private bool lastScoring;
+
         private void Update()
         {
             if (scoring == null) return;
             var snapshot = scoring.Snapshot;
-            if (scoreText != null) scoreText.text = snapshot.TotalScore.ToString("N0");
+            if (scoreText != null && snapshot.TotalScore != lastTotal)
+            {
+                scoreText.text = snapshot.TotalScore.ToString("N0");
+                lastTotal = snapshot.TotalScore;
+            }
 
             if (comboText != null)
             {
-                if (snapshot.HasActiveCombo)
+                var multiplier = Mathf.RoundToInt(snapshot.Multiplier * 100f);
+                if (snapshot.HasActiveCombo != lastHasCombo || snapshot.Scoring != lastScoring || snapshot.ActiveComboScore != lastCombo || multiplier != lastMultiplier)
                 {
-                    var state = snapshot.Scoring ? "DRIFT" : "KEEP IT";
-                    comboText.text = $"{state}  +{snapshot.ActiveComboScore:N0}   ×{snapshot.Multiplier:0.00}";
-                    comboText.color = snapshot.Scoring ? new Color(1f, 0.82f, 0.2f) : Color.white;
-                }
-                else
-                {
-                    comboText.text = "BUILD A DRIFT COMBO";
-                    comboText.color = new Color(1f, 1f, 1f, 0.58f);
+                    if (snapshot.HasActiveCombo)
+                    {
+                        var state = snapshot.Scoring ? "DRIFT" : "KEEP IT";
+                        comboText.text = $"{state}  +{snapshot.ActiveComboScore:N0}   ×{snapshot.Multiplier:0.00}";
+                        comboText.color = snapshot.Scoring ? new Color(1f, 0.82f, 0.2f) : Color.white;
+                    }
+                    else
+                    {
+                        comboText.text = "BUILD A DRIFT COMBO";
+                        comboText.color = new Color(1f, 1f, 1f, 0.58f);
+                    }
+                    lastHasCombo = snapshot.HasActiveCombo;
+                    lastScoring = snapshot.Scoring;
+                    lastCombo = snapshot.ActiveComboScore;
+                    lastMultiplier = multiplier;
                 }
             }
 

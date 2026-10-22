@@ -14,6 +14,11 @@ namespace Sideways.UI
         [SerializeField] private Button actionButton;
         [SerializeField] private Text actionText;
 
+        private bool hasRendered;
+        private ChallengeState lastState;
+        private int lastProgress;
+        private int lastSecond;
+
         private void OnEnable()
         {
             if (controller != null) controller.StatusUpdated += Render;
@@ -48,13 +53,19 @@ namespace Sideways.UI
         private void Render(ChallengeSnapshot snapshot)
         {
             if (panel == null) return;
+            var second = Mathf.CeilToInt(snapshot.TimeRemaining);
+            if (hasRendered && snapshot.State == lastState && snapshot.Progress == lastProgress && second == lastSecond) return;
+            hasRendered = true;
+            lastState = snapshot.State;
+            lastProgress = snapshot.Progress;
+            lastSecond = second;
             panel.SetActive(true);
             switch (snapshot.State)
             {
                 case ChallengeState.Active:
                     titleText.text = snapshot.DisplayName;
                     progressText.text = $"{snapshot.Progress:N0} / {snapshot.Target:N0}";
-                    timeText.text = $"{Mathf.CeilToInt(snapshot.TimeRemaining)}s";
+                    timeText.text = $"{second}s";
                     actionText.text = "STOP";
                     break;
                 case ChallengeState.Succeeded:

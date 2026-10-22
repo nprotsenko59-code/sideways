@@ -14,6 +14,8 @@
 - `ChallengeController` owns the optional challenge lifecycle and consumes stable road-sign ids or drift-point events through a deterministic `ChallengeModel`.
 - `TrafficSpawner` owns sparse population and protected spawn selection; each `TrafficVehicle` stays graph-bound and reports at most one near miss per encounter.
 - `RideResourceController` owns per-ride coins and fuel, while `FuelModel` keeps consumption and refill rules deterministic.
+- `PlayerPreferencesController` owns the pause-safe options overlay and applies persistent accessibility preferences.
+- `GameFeedbackController` owns synthesized engine/event audio and rate-limited iOS haptics without affecting gameplay rules.
 - `RideSessionController` owns the Driving/Ended lifecycle and two-second flip rule.
 - `ChaseCameraController` is a custom damped follow camera with look-ahead and obstruction checks.
 - Handling, camera, ride rules, and drift scoring are ScriptableObject assets under `Assets/Sideways/Configuration`.
@@ -49,6 +51,9 @@
 - [x] Collision-free, relative-speed near-miss scoring with one event per encounter.
 - [x] Challenge and bonus HUD feedback without interrupting free roam.
 - [x] Road coin lines, banked coin awards, draining fuel, refill canisters, and resource HUD.
+- [x] Persistent audio, haptics, high-contrast, large-HUD, and reduced-motion preferences.
+- [x] Allocation-conscious HUD rendering plus toggleable FPS/GC telemetry.
+- [x] Explicit iOS 15 baseline and separate development/release Xcode exports.
 - [ ] Physical iPhone profiling and touch QA.
 
 ## Manual QA
@@ -87,6 +92,11 @@
 32. Follow a coin line and confirm every coin adds 100 banked points and increments the coin counter once.
 33. Drive until fuel decreases, collect a green canister, and confirm fuel increases without exceeding 100.
 34. Reach zero fuel and confirm propulsion stops while steering and coasting remain active; collect a canister to restore propulsion.
+35. Open OPTIONS with Escape/P or the touch button; confirm the ride pauses and every preference persists after a restart.
+36. Toggle high contrast and large HUD; confirm all settings text remains readable in both landscape orientations.
+37. Toggle reduced motion; confirm the camera uses less look-ahead and settles faster without changing vehicle handling.
+38. Toggle audio and haptics independently; confirm each suppresses only its own feedback channel.
+39. On a development device build, toggle F3 and confirm 60 FPS with `GC 0 B` during steady straight-line driving.
 
 ## Known limitations
 
@@ -96,7 +106,7 @@
 - The road graph is junction-level; Milestone 5 traffic uses directional lane offsets, while intersection priority, signals, lane changes, and police patrol weights remain deferred.
 - Drift scoring currently has no discrete U-turn, proximity, traffic, or police-escape bonuses; those systems remain deferred.
 - Milestone 4 police is deliberately limited to one unit and one heat level; radio dispatch, roadblocks, damage, and escalation are deferred.
-- Audio, haptics, pedestrians, challenge discovery, persistent rewards, and progression are deferred.
+- Imported production audio, pedestrians, challenge discovery, persistent rewards, and progression are deferred.
 
 ## Development log
 
@@ -113,3 +123,6 @@
 - 2026-10-20 — Milestone 5 verification: 43 EditMode tests and 5 PlayMode tests passed, the live Game view confirmed the combined HUD and road-sign presentation, and Unity produced a successful unsigned iOS Xcode export.
 - 2026-10-20 — Added replayable road coins and fuel canisters, deterministic fuel consumption, propulsion cutoff at empty, banked coin awards, and a combined resource HUD.
 - 2026-10-20 — Collectible/fuel verification: 47 EditMode tests and 5 PlayMode tests passed; live Play Mode confirmed coin awards, fuel drain, canister refill, 60 FPS, and non-overlapping HUD presentation.
+- 2026-10-22 — Milestone 6 added persistent accessibility/options controls, synthesized audio, iOS haptics, reduced-motion camera behavior, allocation-conscious HUD updates, GC telemetry, an explicit iOS 15 floor, and separate development/release export paths.
+- 2026-10-22 — Milestone 6 verification: 49 EditMode tests and 5 PlayMode tests passed, the options overlay was exercised in live Play Mode, and Unity produced a successful unsigned iOS Xcode export.
+- 2026-10-22 — Physical device acceptance remains pending because full Xcode and device tooling are not installed; `xcode-select` currently points to Command Line Tools.

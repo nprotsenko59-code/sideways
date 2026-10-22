@@ -36,6 +36,8 @@ namespace Sideways.Tests
             var challengeHud = Object.FindFirstObjectByType<ChallengeHud>();
             var resources = Object.FindFirstObjectByType<RideResourceController>();
             var resourceHud = Object.FindFirstObjectByType<ResourceHud>();
+            var preferences = Object.FindFirstObjectByType<PlayerPreferencesController>();
+            var feedback = Object.FindFirstObjectByType<GameFeedbackController>();
             Assert.That(controller, Is.Not.Null);
             Assert.That(recovery, Is.Not.Null);
             Assert.That(session, Is.Not.Null);
@@ -51,6 +53,9 @@ namespace Sideways.Tests
             Assert.That(challengeHud, Is.Not.Null);
             Assert.That(resources, Is.Not.Null);
             Assert.That(resourceHud, Is.Not.Null);
+            Assert.That(preferences, Is.Not.Null);
+            Assert.That(feedback, Is.Not.Null);
+            Assert.That(preferences.IsOpen, Is.False);
             Assert.That(resources.Snapshot.Fuel, Is.GreaterThan(0f));
             Assert.That(roadGraph.Graph.IsValid(out var graphError), Is.True, graphError);
             var roadVolumes = roadGraph.GetComponentsInChildren<Collider>(true);

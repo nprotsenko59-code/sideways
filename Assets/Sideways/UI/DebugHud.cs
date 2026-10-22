@@ -1,4 +1,5 @@
 using Sideways.Vehicle;
+using Unity.Profiling;
 using UnityEngine;
 using UnityEngine.InputSystem;
 using UnityEngine.UI;
@@ -11,14 +12,25 @@ namespace Sideways.UI
         [SerializeField] private VehicleRecovery recovery;
         [SerializeField] private Text text;
         [SerializeField] private GameObject panel;
-        [SerializeField] private bool startVisible = true;
+        [SerializeField] private bool startVisible;
 
         private float smoothedDelta = 1f / 60f;
         private float nextRefresh;
+        private ProfilerRecorder gcAllocatedRecorder;
 
         private void Awake()
         {
             if (panel != null) panel.SetActive(startVisible);
+        }
+
+        private void OnEnable()
+        {
+            gcAllocatedRecorder = ProfilerRecorder.StartNew(ProfilerCategory.Memory, "GC Allocated In Frame");
+        }
+
+        private void OnDisable()
+        {
+            gcAllocatedRecorder.Dispose();
         }
 
         private void Update()
@@ -42,7 +54,8 @@ namespace Sideways.UI
                 $"YAW    {telemetry.YawRateDegrees,5:0.0}°/s\n" +
                 $"TILT   {telemetry.AngleFromUpright,5:0.0}°\n" +
                 $"RESET  {(recovery != null && recovery.CanReset ? "READY" : "WAIT ")}\n" +
-                $"FPS    {(smoothedDelta > 0f ? 1f / smoothedDelta : 0f),5:0}";
+                $"FPS    {(smoothedDelta > 0f ? 1f / smoothedDelta : 0f),5:0}\n" +
+                $"GC     {(gcAllocatedRecorder.Valid ? gcAllocatedRecorder.LastValue : 0),5} B";
         }
 
         public void Configure(VehicleController controller, VehicleRecovery vehicleRecovery, Text label, GameObject rootPanel)

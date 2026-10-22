@@ -13,6 +13,8 @@ namespace Sideways.UI
         private float spottedRemaining;
         private float bustedRemaining;
         private readonly string[] searchLabels = new string[21];
+        private string lastValue;
+        private Color lastColor;
 
         private void Awake()
         {
@@ -89,8 +91,11 @@ namespace Sideways.UI
 
         private void Render(string value, Color color)
         {
+            if (value == lastValue && color == lastColor) return;
             if (stateText != null) stateText.text = value;
             if (panel != null) panel.color = color;
+            lastValue = value;
+            lastColor = color;
         }
     }
 }

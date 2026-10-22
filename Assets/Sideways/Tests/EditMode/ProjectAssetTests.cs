@@ -59,6 +59,8 @@ namespace Sideways.Tests
             Assert.That(Object.FindFirstObjectByType<BonusHud>(), Is.Not.Null);
             Assert.That(Object.FindFirstObjectByType<RideResourceController>(), Is.Not.Null);
             Assert.That(Object.FindFirstObjectByType<ResourceHud>(), Is.Not.Null);
+            Assert.That(Object.FindFirstObjectByType<PlayerPreferencesController>(), Is.Not.Null);
+            Assert.That(Object.FindFirstObjectByType<GameFeedbackController>(), Is.Not.Null);
             var collectibles = Object.FindObjectsByType<RoadCollectible>(FindObjectsSortMode.None);
             Assert.That(collectibles.Count(item => item.Kind == CollectibleKind.Coin), Is.GreaterThanOrEqualTo(20));
             Assert.That(collectibles.Count(item => item.Kind == CollectibleKind.FuelCanister), Is.GreaterThanOrEqualTo(6));
@@ -74,6 +76,10 @@ namespace Sideways.Tests
             Assert.That(environment.GetComponentsInChildren<Renderer>(true).Length, Is.LessThanOrEqualTo(220));
             Assert.That(environment.GetComponentsInChildren<Collider>(true).Length, Is.LessThanOrEqualTo(180));
             Assert.That(EditorBuildSettings.scenes[0].path, Is.EqualTo("Assets/Sideways/Scenes/DrivingSandbox.unity"));
+            Assert.That(PlayerSettings.iOS.targetOSVersionString, Is.EqualTo("15.0"));
+            Assert.That(PlayerSettings.allowedAutorotateToLandscapeLeft, Is.True);
+            Assert.That(PlayerSettings.allowedAutorotateToLandscapeRight, Is.True);
+            Assert.That(PlayerSettings.allowedAutorotateToPortrait, Is.False);
         }
     }
 }

@@ -17,6 +17,7 @@ Controls:
 - R or the Reset button: return to the last safe road pose.
 - C or the Challenge button: start, stop, continue to the next challenge, or retry a failed challenge.
 - F3: toggle the debug telemetry panel.
+- Escape or P: pause and open options/accessibility settings.
 
 The car accelerates automatically. The handbrake is for drift initiation rather than stopping, and there is no reverse. Sustained, controlled slides build a live combo whose multiplier grows with drift time. Brief recovery gaps preserve the combo; the combo banks after the grace window. A road reset, a severe obstacle impact, or ending the ride discards only the unbanked combo and never reduces banked score.
 
@@ -27,6 +28,8 @@ Sparse civilian traffic follows the road graph and avoids spawning close to or d
 Coins are arranged in readable lines along major roads and add 100 banked points each. Fuel drains only while the car is moving; green canisters refill 35 fuel. At zero fuel, automatic propulsion stops but steering, coasting, and road reset remain available. Coins and canisters respawn to keep free roam replayable.
 
 Remaining flipped for two seconds ends the ride. The results overlay shows the run score and locally retained best score, and DRIVE AGAIN starts a fresh ride without leaving the sandbox.
+
+The options overlay persists audio, haptics, high-contrast UI, large-HUD and reduced-motion preferences. Lightweight engine/event audio is generated at runtime, while supported iOS devices receive rate-limited haptic feedback for meaningful events.
 
 ## Rebuild generated prototype assets
 
@@ -65,4 +68,6 @@ The iOS module is required. Export an unsigned development Xcode project with:
 
 Open `Builds/iOS/Unity-iPhone.xcodeproj`, choose an Apple developer team and device, then build from Xcode. Device performance claims require an iPhone 15-class or newer profiler capture; Editor and Simulator results do not qualify.
 
-See [Documentation/SCORING.md](Documentation/SCORING.md) for scoring, [Documentation/NEIGHBORHOOD.md](Documentation/NEIGHBORHOOD.md) for the map and road-graph contract, [Documentation/POLICE.md](Documentation/POLICE.md) for pursuit rules, [Documentation/CHALLENGES_TRAFFIC.md](Documentation/CHALLENGES_TRAFFIC.md) for Milestone 5 rules, [Documentation/ASSET_IMPORT.md](Documentation/ASSET_IMPORT.md) for asset handoff rules, and [Documentation/DEVELOPMENT.md](Documentation/DEVELOPMENT.md) for architecture and QA.
+For a non-development export, run `Sideways > Build iOS Release` in Unity or invoke `Sideways.Editor.ProjectBootstrap.BuildIosRelease`; it writes to `Builds/iOS-Release` without development or script-debugging flags.
+
+See [Documentation/SCORING.md](Documentation/SCORING.md) for scoring, [Documentation/NEIGHBORHOOD.md](Documentation/NEIGHBORHOOD.md) for the map and road-graph contract, [Documentation/POLICE.md](Documentation/POLICE.md) for pursuit rules, [Documentation/CHALLENGES_TRAFFIC.md](Documentation/CHALLENGES_TRAFFIC.md) for Milestone 5 rules, [Documentation/MOBILE_RELEASE.md](Documentation/MOBILE_RELEASE.md) for Milestone 6 mobile/release requirements, [Documentation/ASSET_IMPORT.md](Documentation/ASSET_IMPORT.md) for asset handoff rules, and [Documentation/DEVELOPMENT.md](Documentation/DEVELOPMENT.md) for architecture and QA.
