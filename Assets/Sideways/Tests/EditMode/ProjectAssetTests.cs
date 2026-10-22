@@ -1,5 +1,6 @@
 using System.Linq;
 using NUnit.Framework;
+using Sideways.CameraSystem;
 using Sideways.Configuration;
 using Sideways.Challenges;
 using Sideways.Collectibles;
@@ -45,6 +46,8 @@ namespace Sideways.Tests
             var scene = EditorSceneManager.OpenScene("Assets/Sideways/Scenes/DrivingSandbox.unity", OpenSceneMode.Single);
             Assert.That(scene.GetRootGameObjects(), Has.Some.Matches<GameObject>(go => go.name == "PlayerCar"));
             Assert.That(GameObject.FindWithTag("MainCamera"), Is.Not.Null);
+            Assert.That(Object.FindFirstObjectByType<ChaseCameraController>(), Is.Not.Null);
+            Assert.That(Object.FindFirstObjectByType<CameraModeButtonBinding>(), Is.Not.Null);
             Assert.That(Object.FindFirstObjectByType<DriftScoreController>(), Is.Not.Null);
             Assert.That(Object.FindFirstObjectByType<ScoreHud>(), Is.Not.Null);
             Assert.That(Object.FindFirstObjectByType<VehicleCollisionSensor>(), Is.Not.Null);

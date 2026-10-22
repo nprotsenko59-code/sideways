@@ -14,5 +14,12 @@ namespace Sideways.Configuration
         [Range(20f, 100f)] public float fieldOfView = 62f;
         [Min(0.05f)] public float obstructionRadius = 0.35f;
         [Min(0f)] public float obstructionPadding = 0.25f;
+
+        [Header("Overhead experiment")]
+        [Min(5f)] public float overheadHeight = 36f;
+        [Min(0f)] public float overheadBackOffset = 2f;
+        [Min(0f)] public float overheadLookAheadDistance = 5f;
+        [Min(0f)] public float overheadDamping = 8f;
+        [Range(20f, 100f)] public float overheadFieldOfView = 58f;
     }
 }

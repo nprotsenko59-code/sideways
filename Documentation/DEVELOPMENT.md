@@ -17,7 +17,7 @@
 - `PlayerPreferencesController` owns the pause-safe options overlay and applies persistent accessibility preferences.
 - `GameFeedbackController` owns synthesized engine/event audio and rate-limited iOS haptics without affecting gameplay rules.
 - `RideSessionController` owns the Driving/Ended lifecycle and two-second flip rule.
-- `ChaseCameraController` is a custom damped follow camera with look-ahead and obstruction checks.
+- `ChaseCameraController` owns switchable chase and overhead views, with damped look-ahead and chase-view obstruction checks.
 - Handling, camera, ride rules, and drift scoring are ScriptableObject assets under `Assets/Sideways/Configuration`.
 - The `PlayerCar` prefab keeps physics on its root and replaceable visuals below `Visual`.
 
@@ -28,7 +28,7 @@
 - [x] Directly playable DrivingSandbox scene and replaceable car prefab.
 - [x] Automatic acceleration, analog-smoothed steering, lateral grip and drift telemetry.
 - [x] Space-key and downward-swipe handbrake drift initiation.
-- [x] Custom chase camera, collision correction and configurable presentation.
+- [x] Switchable chase/overhead camera, chase-view collision correction, and configurable presentation.
 - [x] Safe-pose reset and combo-cancel event.
 - [x] Sustained-flip ride ending and restart overlay.
 - [x] Toggleable debug telemetry.
@@ -97,6 +97,7 @@
 37. Toggle reduced motion; confirm the camera uses less look-ahead and settles faster without changing vehicle handling.
 38. Toggle audio and haptics independently; confirm each suppresses only its own feedback channel.
 39. On a development device build, toggle F3 and confirm 60 FPS with `GC 0 B` during steady straight-line driving.
+40. Press V and use the Camera button to switch between CHASE and TOP; confirm both transitions are smooth, the car remains readable, and touch steering still works in the overhead view.
 
 ## Known limitations
 
@@ -127,3 +128,4 @@
 - 2026-10-22 — Milestone 6 verification: 49 EditMode tests and 5 PlayMode tests passed, the options overlay was exercised in live Play Mode, and Unity produced a successful unsigned iOS Xcode export.
 - 2026-10-22 — Physical device acceptance remains pending because full Xcode and device tooling are not installed; `xcode-select` currently points to Command Line Tools.
 - 2026-10-22 — Strengthened police pursuit with predictive interception, road-junction search sweeps, distance-gated escape progress, wider detection, faster replanning, and more capable pursuit handling; verification passed with 52 EditMode and 5 PlayMode tests.
+- 2026-10-22 — Added a switchable experimental overhead driving view with keyboard and safe-area HUD controls; verification passed with 53 EditMode and 5 PlayMode tests.

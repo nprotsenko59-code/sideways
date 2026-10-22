@@ -21,3 +21,8 @@ MonoBehaviour:
   fieldOfView: 62
   obstructionRadius: 0.35
   obstructionPadding: 0.25
+  overheadHeight: 36
+  overheadBackOffset: 2
+  overheadLookAheadDistance: 5
+  overheadDamping: 8
+  overheadFieldOfView: 58

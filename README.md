@@ -17,11 +17,12 @@ Controls:
 - R or the Reset button: return to the last safe road pose.
 - C or the Challenge button: start, stop, continue to the next challenge, or retry a failed challenge.
 - F3: toggle the debug telemetry panel.
+- V or the Camera button: switch between the chase and experimental overhead views.
 - Escape or P: pause and open options/accessibility settings.
 
 The car accelerates automatically. The handbrake is for drift initiation rather than stopping, and there is no reverse. Sustained, controlled slides build a live combo whose multiplier grows with drift time. Brief recovery gaps preserve the combo; the combo banks after the grace window. A road reset, a severe obstacle impact, or ending the ride discards only the unbanked combo and never reduces banked score.
 
-One police unit patrols the road network. If it actually sees a sustained drift or severe crash, it pursues using the shared road graph. Break line of sight behind solid buildings and keep moving through the 15-second search to escape. If the unit catches a slow car, the active combo is cancelled and the car returns to its last safe pose; banked score and the ride continue.
+One police unit patrols the road network. If it sees a sustained drift or severe crash, it pursues using the shared road graph and predicts travel after losing sight. To escape, break line of sight, open at least 55 m of distance, and keep moving through the 24-second search; letting the unit close the gap reverses escape progress. If it catches a slow car, the active combo is cancelled and the car returns to its last safe pose; banked score and the ride continue.
 
 Sparse civilian traffic follows the road graph and avoids spawning close to or directly ahead of the player. Fast, collision-free passes award one near-miss bonus per encounter. Optional 60-second events include destroying 10 unique road signs and earning 5,000 drift points; completing or failing either event leaves free roam uninterrupted.
 
