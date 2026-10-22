@@ -97,7 +97,7 @@
 37. Toggle reduced motion; confirm the camera uses less look-ahead and settles faster without changing vehicle handling.
 38. Toggle audio and haptics independently; confirm each suppresses only its own feedback channel.
 39. On a development device build, toggle F3 and confirm 60 FPS with `GC 0 B` during steady straight-line driving.
-40. Press V and use the Camera button to switch between CHASE and TOP; confirm both transitions are smooth, the car remains readable, and touch steering still works in the overhead view.
+40. Confirm the ride starts in TOP view. Press V and use the Camera button to switch between TOP and CHASE; confirm both transitions are smooth, the car remains readable, the overhead heading follows turns without snapping, and touch steering still works.
 
 ## Known limitations
 
@@ -128,4 +128,4 @@
 - 2026-10-22 — Milestone 6 verification: 49 EditMode tests and 5 PlayMode tests passed, the options overlay was exercised in live Play Mode, and Unity produced a successful unsigned iOS Xcode export.
 - 2026-10-22 — Physical device acceptance remains pending because full Xcode and device tooling are not installed; `xcode-select` currently points to Command Line Tools.
 - 2026-10-22 — Strengthened police pursuit with predictive interception, road-junction search sweeps, distance-gated escape progress, wider detection, faster replanning, and more capable pursuit handling; verification passed with 52 EditMode and 5 PlayMode tests.
-- 2026-10-22 — Added a switchable experimental overhead driving view with keyboard and safe-area HUD controls; verification passed with 53 EditMode and 5 PlayMode tests.
+- 2026-10-22 — Promoted the overhead view to the default and retuned it to a closer, oblique arcade composition with forward framing and damped heading changes, while retaining chase view as an alternate.

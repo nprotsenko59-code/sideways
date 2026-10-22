@@ -16,7 +16,7 @@ namespace Sideways.UI
         {
             button = GetComponent<Button>();
             button.onClick.AddListener(Toggle);
-            Refresh(cameraController != null ? cameraController.ViewMode : CameraViewMode.Chase);
+            Refresh(cameraController != null ? cameraController.ViewMode : CameraViewMode.Overhead);
         }
 
         private void OnEnable()
@@ -40,7 +40,7 @@ namespace Sideways.UI
             cameraController = controller;
             label = buttonLabel;
             if (isActiveAndEnabled && cameraController != null) cameraController.ViewModeChanged += Refresh;
-            Refresh(cameraController != null ? cameraController.ViewMode : CameraViewMode.Chase);
+            Refresh(cameraController != null ? cameraController.ViewMode : CameraViewMode.Overhead);
         }
 
         private void Toggle() => cameraController?.ToggleViewMode();

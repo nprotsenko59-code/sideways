@@ -716,7 +716,7 @@ namespace Sideways.Editor
             var settingsButtonObject = CreateButton("SettingsButton", safeArea.transform, "OPTIONS  [ESC]", new Color(0.12f, 0.15f, 0.2f, 0.86f));
             SetRect(settingsButtonObject.GetComponent<RectTransform>(), new Vector2(-256f, -18f), new Vector2(220f, 84f), new Vector2(1f, 1f));
 
-            var cameraButtonObject = CreateButton("CameraButton", safeArea.transform, "CAMERA: CHASE  [V]", new Color(0.12f, 0.15f, 0.2f, 0.86f));
+            var cameraButtonObject = CreateButton("CameraButton", safeArea.transform, "CAMERA: TOP  [V]", new Color(0.12f, 0.15f, 0.2f, 0.86f));
             SetRect(cameraButtonObject.GetComponent<RectTransform>(), new Vector2(-494f, -18f), new Vector2(220f, 84f), new Vector2(1f, 1f));
             cameraButtonObject.AddComponent<CameraModeButtonBinding>().Configure(chaseCamera, cameraButtonObject.transform.Find("Label").GetComponent<Text>());
 

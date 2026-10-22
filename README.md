@@ -17,7 +17,7 @@ Controls:
 - R or the Reset button: return to the last safe road pose.
 - C or the Challenge button: start, stop, continue to the next challenge, or retry a failed challenge.
 - F3: toggle the debug telemetry panel.
-- V or the Camera button: switch between the chase and experimental overhead views.
+- V or the Camera button: switch between the primary overhead view and the alternate chase view.
 - Escape or P: pause and open options/accessibility settings.
 
 The car accelerates automatically. The handbrake is for drift initiation rather than stopping, and there is no reverse. Sustained, controlled slides build a live combo whose multiplier grows with drift time. Brief recovery gaps preserve the combo; the combo banks after the grace window. A road reset, a severe obstacle impact, or ending the ride discards only the unbanked combo and never reduces banked score.
@@ -30,7 +30,7 @@ Coins are arranged in readable lines along major roads and add 100 banked points
 
 Remaining flipped for two seconds ends the ride. The results overlay shows the run score and locally retained best score, and DRIVE AGAIN starts a fresh ride without leaving the sandbox.
 
-The options overlay persists audio, haptics, high-contrast UI, large-HUD and reduced-motion preferences. Lightweight engine/event audio is generated at runtime, while supported iOS devices receive rate-limited haptic feedback for meaningful events.
+The default camera uses a close, oblique overhead composition with forward framing and gently damped heading changes; the original chase view remains available for comparison. The options overlay persists audio, haptics, high-contrast UI, large-HUD and reduced-motion preferences. Lightweight engine/event audio is generated at runtime, while supported iOS devices receive rate-limited haptic feedback for meaningful events.
 
 ## Rebuild generated prototype assets
 

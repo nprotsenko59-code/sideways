@@ -13,13 +13,13 @@ namespace Sideways.Tests
             try
             {
                 var controller = gameObject.AddComponent<ChaseCameraController>();
-                Assert.That(controller.ViewMode, Is.EqualTo(CameraViewMode.Chase));
-
-                controller.ToggleViewMode();
                 Assert.That(controller.ViewMode, Is.EqualTo(CameraViewMode.Overhead));
 
                 controller.ToggleViewMode();
                 Assert.That(controller.ViewMode, Is.EqualTo(CameraViewMode.Chase));
+
+                controller.ToggleViewMode();
+                Assert.That(controller.ViewMode, Is.EqualTo(CameraViewMode.Overhead));
             }
             finally
             {

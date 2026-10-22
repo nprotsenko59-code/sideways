@@ -18,10 +18,11 @@ namespace Sideways.CameraSystem
         [SerializeField] private Rigidbody targetBody;
         [SerializeField] private ChaseCameraProfile profile;
         [SerializeField] private LayerMask obstructionMask;
-        [SerializeField] private CameraViewMode viewMode;
+        [SerializeField] private CameraViewMode viewMode = CameraViewMode.Overhead;
 
         private UnityEngine.Camera cameraComponent;
         private bool reducedMotion;
+        private Vector3 smoothedOverheadForward;
 
         public event Action<CameraViewMode> ViewModeChanged;
 
@@ -30,7 +31,8 @@ namespace Sideways.CameraSystem
         private void Awake()
         {
             cameraComponent = GetComponent<UnityEngine.Camera>();
-            if (profile != null) cameraComponent.fieldOfView = profile.fieldOfView;
+            smoothedOverheadForward = target != null ? Vector3.ProjectOnPlane(target.forward, Vector3.up).normalized : Vector3.forward;
+            if (profile != null) cameraComponent.fieldOfView = viewMode == CameraViewMode.Overhead ? profile.overheadFieldOfView : profile.fieldOfView;
         }
 
         private void Update()
@@ -47,12 +49,19 @@ namespace Sideways.CameraSystem
             if (flatForward.sqrMagnitude < 0.001f) flatForward = Vector3.forward;
             var velocity = targetBody != null ? Vector3.ProjectOnPlane(targetBody.linearVelocity, Vector3.up) : Vector3.zero;
             var overhead = viewMode == CameraViewMode.Overhead;
+            if (smoothedOverheadForward.sqrMagnitude < 0.001f) smoothedOverheadForward = flatForward;
+            if (overhead)
+            {
+                var headingT = 1f - Mathf.Exp(-profile.overheadHeadingDamping * Time.unscaledDeltaTime);
+                smoothedOverheadForward = Vector3.Slerp(smoothedOverheadForward, flatForward, headingT).normalized;
+            }
+            var framingForward = overhead ? smoothedOverheadForward : flatForward;
             var baseLookAhead = overhead ? profile.overheadLookAheadDistance : profile.lookAheadDistance;
             var lookAheadDistance = baseLookAhead * (reducedMotion ? 0.25f : 1f);
-            var lookAhead = velocity.sqrMagnitude > 0.1f ? velocity.normalized * lookAheadDistance : flatForward * lookAheadDistance;
+            var lookAhead = velocity.sqrMagnitude > 0.1f ? velocity.normalized * lookAheadDistance : framingForward * lookAheadDistance;
             var lookPoint = target.position + Vector3.up * profile.lookHeight + lookAhead;
             var desired = overhead
-                ? target.position - flatForward * profile.overheadBackOffset + Vector3.up * profile.overheadHeight
+                ? target.position - framingForward * profile.overheadBackOffset + Vector3.up * profile.overheadHeight
                 : target.position - flatForward * profile.distance + Vector3.up * profile.height;
 
             var castDirection = desired - lookPoint;
@@ -65,7 +74,8 @@ namespace Sideways.CameraSystem
             var dampingMultiplier = reducedMotion ? 2.5f : 1f;
             var positionDamping = overhead ? profile.overheadDamping : profile.positionDamping;
             var positionT = 1f - Mathf.Exp(-positionDamping * dampingMultiplier * Time.unscaledDeltaTime);
-            var rotationT = 1f - Mathf.Exp(-profile.rotationDamping * dampingMultiplier * Time.unscaledDeltaTime);
+            var rotationDamping = overhead ? profile.overheadRotationDamping : profile.rotationDamping;
+            var rotationT = 1f - Mathf.Exp(-rotationDamping * dampingMultiplier * Time.unscaledDeltaTime);
             transform.position = Vector3.Lerp(transform.position, desired, positionT);
             var desiredRotation = Quaternion.LookRotation(lookPoint - transform.position, Vector3.up);
             transform.rotation = Quaternion.Slerp(transform.rotation, desiredRotation, rotationT);
@@ -85,6 +95,11 @@ namespace Sideways.CameraSystem
         public void ToggleViewMode()
         {
             viewMode = viewMode == CameraViewMode.Chase ? CameraViewMode.Overhead : CameraViewMode.Chase;
+            if (viewMode == CameraViewMode.Overhead && target != null)
+            {
+                var flatForward = Vector3.ProjectOnPlane(target.forward, Vector3.up).normalized;
+                if (flatForward.sqrMagnitude > 0.001f) smoothedOverheadForward = flatForward;
+            }
             ViewModeChanged?.Invoke(viewMode);
         }
     }
