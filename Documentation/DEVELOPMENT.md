@@ -9,7 +9,7 @@
 - `DriftScoreController` evaluates telemetry through a deterministic scoring model and exposes the optional ride-score provider.
 - `RoadGraphAsset` is the stable, validated navigation source for both rendered roads and future police/traffic routing.
 - `RoadGraphComponent` exposes the active graph from the scene and draws road-class gizmos when selected.
-- `PoliceDirector` owns pursuit state and penalties; `PoliceVisionSensor` is the only source of sightings, while `PoliceVehicleController` follows the shared road graph.
+- `PoliceDirector` owns pursuit, wanted heat, reinforcement deployment, escape rewards, and penalties; each `PoliceVisionSensor` is a source of verified sightings, while coordinated `PoliceVehicleController` units follow the shared road graph.
 - `RecklessDrivingTracker` turns sustained drifts and severe impacts into a short-lived reportable condition without deciding whether police can see them.
 - `ChallengeController` owns the optional challenge lifecycle and consumes stable road-sign ids or drift-point events through a deterministic `ChallengeModel`.
 - `TrafficSpawner` owns the local traffic population and protected spawn selection; each `TrafficVehicle` stays graph-bound and reports at most one near miss per encounter.
@@ -54,6 +54,8 @@
 - [x] Persistent audio, haptics, high-contrast, large-HUD, and reduced-motion preferences.
 - [x] Allocation-conscious HUD rendering plus toggleable FPS/GC telemetry.
 - [x] Explicit iOS 15 baseline and separate development/release Xcode exports.
+- [x] Three-level wanted heat with coordinated reinforcements, roadblock deployment, and escape rewards.
+- [x] Pooled damageable traffic with junction yielding.
 - [ ] Physical iPhone profiling and touch QA.
 
 ## Manual QA
@@ -98,15 +100,20 @@
 38. Toggle audio and haptics independently; confirm each suppresses only its own feedback channel.
 39. On a development device build, toggle F3 and confirm 60 FPS with `GC 0 B` during steady straight-line driving.
 40. Confirm the ride starts in TOP view. Press V and use the Camera button to switch between TOP and CHASE; confirm both transitions are smooth, the car remains readable, the overhead heading follows turns without snapping, and touch steering still works.
+41. Trigger pursuit, then continue drifting in police view; confirm heat rises from one to three stars and the active unit count grows from one to three.
+42. At three stars, confirm the visible roadblock deploys across the southern central road while leaving a narrow escape gap; escape or get busted and confirm it retracts.
+43. Escape at each heat level and confirm the banked reward is 500 points per star; confirm an active combo is not modified.
+44. Observe two traffic cars reaching the same junction; confirm one yields until the other clears it.
+45. Hit a traffic car at high relative speed; confirm it is temporarily removed and later returns from the existing pool.
 
 ## Known limitations
 
 - Driving values are first-pass graybox defaults and require device-based feel tuning.
 - No reverse or service brake is available; the handbrake only initiates drifts and upright recovery uses the explicit reset action.
 - Sunset Basin remains primitive graybox geometry and represents one compact LA-inspired slice, not a full city.
-- The road graph is junction-level; Milestone 5 traffic uses directional lane offsets, while intersection priority, signals, lane changes, and police patrol weights remain deferred.
+- The road graph is junction-level; traffic now has exclusive junction yielding, while signals, directional priority, and lane changes remain deferred.
 - Drift scoring currently has no discrete U-turn, proximity, traffic, or police-escape bonuses; those systems remain deferred.
-- Milestone 4 police is deliberately limited to one unit and one heat level; radio dispatch, roadblocks, damage, and escalation are deferred.
+- Police escalation currently caps at three identical units and one fixed authored roadblock; dynamic placement, radio dispatch, and specialist units are deferred.
 - Imported production audio, pedestrians, challenge discovery, persistent rewards, and progression are deferred.
 
 ## Development log
@@ -130,3 +137,5 @@
 - 2026-10-22 — Strengthened police pursuit with predictive interception, road-junction search sweeps, distance-gated escape progress, wider detection, faster replanning, and more capable pursuit handling; verification passed with 52 EditMode and 5 PlayMode tests.
 - 2026-10-22 — Promoted the overhead view to the default and retuned it to a closer, oblique arcade composition with forward framing and damped heading changes, while retaining chase view as an alternate.
 - 2026-10-22 — Increased the local traffic pool from four to eight cars, tightened its spawn/despawn ring for the overhead camera, and added minimum spawn spacing to prevent vehicle stacking.
+- 2026-10-22 — Milestone 7 added three-level wanted heat, coordinated police reinforcements, a high-heat roadblock, heat-scaled escape rewards, junction-yielding traffic, and temporary traffic wrecks.
+- 2026-10-22 — Milestone 7 verification: 59 EditMode tests and 5 PlayMode tests passed, the rebuilt scene ran cleanly in Play Mode, and Unity produced a successful unsigned iOS Xcode export.

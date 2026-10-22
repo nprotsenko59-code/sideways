@@ -25,6 +25,17 @@ namespace Sideways.Traffic
             if (encounterActive) collisionOccurred = true;
         }
 
+        public void ResetEncounter()
+        {
+            encounterActive = false;
+            collisionOccurred = false;
+            playerBody = null;
+            closestDistance = float.PositiveInfinity;
+            maximumRelativeSpeed = 0f;
+        }
+
+        private void OnDisable() => ResetEncounter();
+
         private void OnTriggerEnter(Collider other)
         {
             if (encounterActive || other.gameObject.layer != 6 || trafficVehicle == null || profile == null) return;

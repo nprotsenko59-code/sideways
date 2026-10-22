@@ -40,7 +40,7 @@ namespace Sideways.Traffic
             {
                 if (!vehicles[i].gameObject.activeSelf)
                 {
-                    if (Time.time >= nextInactiveRetryTime) TryPlace(vehicles[i]);
+                    if (Time.time >= nextInactiveRetryTime && vehicles[i].CanRespawn) TryPlace(vehicles[i]);
                     continue;
                 }
                 if (Vector3.Distance(vehicles[i].transform.position, player.position) > profile.despawnDistance)

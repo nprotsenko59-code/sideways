@@ -36,13 +36,16 @@ namespace Sideways.Police
 
     public readonly struct PoliceStatusSnapshot
     {
-        public PoliceStatusSnapshot(PoliceState state, bool hasVisual, bool hasLastSeen, Vector3 lastSeenPosition, float searchRemaining)
+        public PoliceStatusSnapshot(PoliceState state, bool hasVisual, bool hasLastSeen, Vector3 lastSeenPosition, float searchRemaining, int heatLevel = 0, int activeUnits = 1, bool roadblockDeployed = false)
         {
             State = state;
             HasVisual = hasVisual;
             HasLastSeen = hasLastSeen;
             LastSeenPosition = lastSeenPosition;
             SearchRemaining = searchRemaining;
+            HeatLevel = heatLevel;
+            ActiveUnits = activeUnits;
+            RoadblockDeployed = roadblockDeployed;
         }
 
         public PoliceState State { get; }
@@ -50,5 +53,8 @@ namespace Sideways.Police
         public bool HasLastSeen { get; }
         public Vector3 LastSeenPosition { get; }
         public float SearchRemaining { get; }
+        public int HeatLevel { get; }
+        public int ActiveUnits { get; }
+        public bool RoadblockDeployed { get; }
     }
 }

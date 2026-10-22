@@ -36,6 +36,13 @@ MonoBehaviour:
   waypointTolerance: 3.5
   routeReplanInterval: 0.35
   interceptLeadTime: 1.6
+  heatTwoExposure: 4
+  heatThreeExposure: 10
+  heatOneUnits: 1
+  heatTwoUnits: 2
+  heatThreeUnits: 3
+  roadblockHeatLevel: 3
+  escapeRewardPerHeat: 500
   bustedDistance: 4.5
   bustedMaximumPlayerSpeed: 6
   bustedHoldDuration: 1.25

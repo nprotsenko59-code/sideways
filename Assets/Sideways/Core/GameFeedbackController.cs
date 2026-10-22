@@ -1,6 +1,7 @@
 using Sideways.Challenges;
 using Sideways.Collectibles;
 using Sideways.UI;
+using Sideways.Traffic;
 using Sideways.Vehicle;
 using UnityEngine;
 
@@ -78,6 +79,7 @@ namespace Sideways.Core
             if (resources != null) resources.PickupCollected += HandlePickup;
             if (challenges != null) challenges.RewardEarned += HandleReward;
             RoadSignEvents.SignDestroyed += HandleSignDestroyed;
+            TrafficEvents.VehicleDestroyed += HandleTrafficDestroyed;
             GameplayEvents.RoadReset += HandleRoadReset;
             GameplayEvents.RideEnded += HandleRideEnded;
             subscribed = true;
@@ -91,6 +93,7 @@ namespace Sideways.Core
             if (resources != null) resources.PickupCollected -= HandlePickup;
             if (challenges != null) challenges.RewardEarned -= HandleReward;
             RoadSignEvents.SignDestroyed -= HandleSignDestroyed;
+            TrafficEvents.VehicleDestroyed -= HandleTrafficDestroyed;
             GameplayEvents.RoadReset -= HandleRoadReset;
             GameplayEvents.RideEnded -= HandleRideEnded;
             subscribed = false;
@@ -112,6 +115,7 @@ namespace Sideways.Core
         private void HandleComboBanked(int points) => Play(rewardClip, 0.75f);
         private void HandleReward(ChallengeReward reward) { Play(rewardClip, 1f); Vibrate(); }
         private void HandleSignDestroyed(string signId) => Play(impactClip, 0.42f);
+        private void HandleTrafficDestroyed(TrafficVehicleDestroyedEvent destroyed) { Play(impactClip, 0.9f); Vibrate(); }
         private void HandleRoadReset() => Play(resetClip, 0.8f);
 
         private void HandleRideEnded(RideEndReason reason)

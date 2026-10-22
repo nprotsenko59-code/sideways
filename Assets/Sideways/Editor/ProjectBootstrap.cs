@@ -459,11 +459,20 @@ namespace Sideways.Editor
             var collisionSensor = car.GetComponent<VehicleCollisionSensor>();
 
             var policePrefab = AssetDatabase.LoadAssetAtPath<GameObject>(PolicePrefabPath);
-            var policeCar = (GameObject)PrefabUtility.InstantiatePrefab(policePrefab, scene);
-            policeCar.transform.SetPositionAndRotation(new Vector3(120f, 0.65f, 100f), Quaternion.Euler(0f, 180f, 0f));
-            var policeVehicle = policeCar.GetComponent<PoliceVehicleController>();
-            var policeVision = policeCar.GetComponent<PoliceVisionSensor>();
-            policeVision.Configure(car.transform, profiles.Police, 1 << 8);
+            var policeVehicles = new PoliceVehicleController[3];
+            var policeVisions = new PoliceVisionSensor[3];
+            var policePositions = new[] { new Vector3(120f, 0.65f, 100f), new Vector3(-120f, 0.65f, 0f), new Vector3(120f, 0.65f, -100f) };
+            var policeRotations = new[] { 180f, 0f, 180f };
+            for (var i = 0; i < policeVehicles.Length; i++)
+            {
+                var policeCar = (GameObject)PrefabUtility.InstantiatePrefab(policePrefab, scene);
+                policeCar.name = i == 0 ? "PoliceCar" : $"PoliceCar_{i + 1:00}";
+                policeCar.transform.SetPositionAndRotation(policePositions[i], Quaternion.Euler(0f, policeRotations[i], 0f));
+                policeVehicles[i] = policeCar.GetComponent<PoliceVehicleController>();
+                policeVisions[i] = policeCar.GetComponent<PoliceVisionSensor>();
+                policeVisions[i].Configure(car.transform, profiles.Police, 1 << 8);
+                policeVehicles[i].SetOperational(i == 0);
+            }
 
             var cameraObject = new GameObject("ChaseCamera");
             cameraObject.tag = "MainCamera";
@@ -481,7 +490,8 @@ namespace Sideways.Editor
             var recklessDriving = systems.AddComponent<RecklessDrivingTracker>();
             recklessDriving.Configure(controller, collisionSensor, profiles.Police);
             var policeDirector = systems.AddComponent<PoliceDirector>();
-            policeDirector.Configure(car.transform, controller, recovery, policeVehicle, policeVision, recklessDriving, profiles.Police);
+            var roadblock = BuildPoliceRoadblock(environment.transform, materials, physicsMaterial);
+            policeDirector.Configure(car.transform, controller, recovery, policeVehicles, policeVisions, recklessDriving, profiles.Police, scoring, roadblock);
             var trafficScore = systems.AddComponent<TrafficScoreController>();
             trafficScore.Configure(scoring);
             var challengeController = systems.AddComponent<ChallengeController>();
@@ -585,6 +595,19 @@ namespace Sideways.Editor
             }
         }
 
+        private static PoliceRoadblockController BuildPoliceRoadblock(Transform parent, Materials materials, PhysicsMaterial physicsMaterial)
+        {
+            var root = new GameObject("PoliceRoadblock");
+            root.transform.SetParent(parent, false);
+            var left = CreateBox("BarrierLeft", root.transform, new Vector3(-6.5f, 0.55f, -100f), new Vector3(7f, 1.1f, 1.4f), materials.Police, physicsMaterial, 8);
+            var right = CreateBox("BarrierRight", root.transform, new Vector3(6.5f, 0.55f, -100f), new Vector3(7f, 1.1f, 1.4f), materials.Police, physicsMaterial, 8);
+            CreateVisualBox("LeftLights", left.transform, left.transform.position + Vector3.up * 0.75f, new Vector3(5.5f, 0.18f, 0.3f), materials.PoliceLight);
+            CreateVisualBox("RightLights", right.transform, right.transform.position + Vector3.up * 0.75f, new Vector3(5.5f, 0.18f, 0.3f), materials.PoliceLight);
+            var controller = root.AddComponent<PoliceRoadblockController>();
+            controller.Configure(root);
+            return controller;
+        }
+
         private static void BuildCollectibles(Transform environment, RideResourceController resources, FuelProfile profile, Materials materials)
         {
             var root = new GameObject("Collectibles").transform;
@@ -654,7 +677,7 @@ namespace Sideways.Editor
             scoreHud.Configure(scoring, totalScoreText, comboText, graceFill);
 
             var policePanelObject = CreateUiImage("PolicePanel", safeArea.transform, new Vector2(0.5f, 1f), new Vector2(0.5f, 1f), new Color(0.08f, 0.12f, 0.18f, 0.8f));
-            SetRect(policePanelObject.GetComponent<RectTransform>(), new Vector2(0f, -154f), new Vector2(360f, 54f), new Vector2(0.5f, 1f));
+            SetRect(policePanelObject.GetComponent<RectTransform>(), new Vector2(0f, -154f), new Vector2(620f, 54f), new Vector2(0.5f, 1f));
             policePanelObject.GetComponent<Image>().raycastTarget = false;
             var policeText = CreateText("PoliceState", policePanelObject.transform, "PATROL", 26, TextAnchor.MiddleCenter);
             Stretch(policeText.rectTransform, 4f);

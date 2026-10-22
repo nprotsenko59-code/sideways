@@ -35,6 +35,15 @@ namespace Sideways.Configuration
         [Min(0.1f)] public float routeReplanInterval = 0.8f;
         [Min(0f)] public float interceptLeadTime = 1.1f;
 
+        [Header("Wanted escalation")]
+        [Min(0.1f)] public float heatTwoExposure = 4f;
+        [Min(0.2f)] public float heatThreeExposure = 10f;
+        [Range(1, 3)] public int heatOneUnits = 1;
+        [Range(1, 3)] public int heatTwoUnits = 2;
+        [Range(1, 3)] public int heatThreeUnits = 3;
+        [Range(1, 3)] public int roadblockHeatLevel = 3;
+        [Min(0)] public int escapeRewardPerHeat = 500;
+
         [Header("Busted")]
         [Min(0.5f)] public float bustedDistance = 4.5f;
         [Min(0f)] public float bustedMaximumPlayerSpeed = 6f;
@@ -63,6 +72,12 @@ namespace Sideways.Configuration
             if (patrolSpeed <= 0f || pursuitSpeed < patrolSpeed || searchSpeed <= 0f || acceleration <= 0f || turnRate <= 0f)
             {
                 error = "Police navigation speeds and response values are invalid.";
+                return false;
+            }
+
+            if (heatTwoExposure <= 0f || heatThreeExposure <= heatTwoExposure || heatOneUnits < 1 || heatTwoUnits < heatOneUnits || heatThreeUnits < heatTwoUnits || roadblockHeatLevel < 1 || escapeRewardPerHeat < 0)
+            {
+                error = "Wanted heat thresholds and unit counts must increase by level, and rewards cannot be negative.";
                 return false;
             }
 

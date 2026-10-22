@@ -22,6 +22,11 @@ namespace Sideways.Configuration
         [Min(0f)] public float laneOffset = 2.7f;
         [Min(0.5f)] public float waypointTolerance = 2.5f;
         [Min(1f)] public float obstacleLookAhead = 9f;
+        [Min(1f)] public float intersectionYieldDistance = 8f;
+
+        [Header("Damage")]
+        [Min(1f)] public float destructionImpactSpeed = 12f;
+        [Min(0.5f)] public float wreckRespawnDelay = 8f;
 
         [Header("Near miss")]
         [Min(1f)] public float nearMissRadius = 3.4f;
@@ -38,6 +43,11 @@ namespace Sideways.Configuration
             if (minimumSpeed <= 0f || maximumSpeed < minimumSpeed || turnRate <= 0f)
             {
                 error = "Traffic speed and steering values are invalid.";
+                return false;
+            }
+            if (intersectionYieldDistance <= 0f || destructionImpactSpeed <= 0f || wreckRespawnDelay <= 0f)
+            {
+                error = "Traffic yielding and damage values must be positive.";
                 return false;
             }
             if (nearMissRadius <= 0f || nearMissRelativeSpeed <= 0f || nearMissPoints <= 0)

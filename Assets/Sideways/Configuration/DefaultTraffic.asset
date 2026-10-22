@@ -26,6 +26,9 @@ MonoBehaviour:
   laneOffset: 2.7
   waypointTolerance: 2.5
   obstacleLookAhead: 9
+  intersectionYieldDistance: 8
+  destructionImpactSpeed: 12
+  wreckRespawnDelay: 8
   nearMissRadius: 3.4
   nearMissRelativeSpeed: 9
   nearMissPoints: 250

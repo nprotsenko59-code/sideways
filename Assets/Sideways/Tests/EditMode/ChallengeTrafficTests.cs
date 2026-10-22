@@ -115,6 +115,51 @@ namespace Sideways.Tests
             Object.DestroyImmediate(profile);
         }
 
+        [Test]
+        public void JunctionClaimAllowsOnlyOneTrafficVehicleAtATime()
+        {
+            TrafficJunctionCoordinator.Clear();
+            Assert.That(TrafficJunctionCoordinator.TryClaim("G_C", 10), Is.True);
+            Assert.That(TrafficJunctionCoordinator.TryClaim("G_C", 20), Is.False);
+            TrafficJunctionCoordinator.Release("G_C", 10);
+            Assert.That(TrafficJunctionCoordinator.TryClaim("G_C", 20), Is.True);
+            TrafficJunctionCoordinator.Clear();
+        }
+
+        [Test]
+        public void InvalidTrafficDamageSettingsAreRejected()
+        {
+            var profile = ScriptableObject.CreateInstance<TrafficProfile>();
+            profile.destructionImpactSpeed = 0f;
+
+            Assert.That(profile.IsValid(out _), Is.False);
+            Object.DestroyImmediate(profile);
+        }
+
+        [Test]
+        public void SeverePlayerImpactTemporarilyWrecksTrafficVehicle()
+        {
+            var profile = ScriptableObject.CreateInstance<TrafficProfile>();
+            profile.destructionImpactSpeed = 10f;
+            var trafficObject = new GameObject("DamageableTraffic");
+            var body = trafficObject.AddComponent<Rigidbody>();
+            var vehicle = trafficObject.AddComponent<TrafficVehicle>();
+            vehicle.Configure(body, null, profile, null);
+            var eventRaised = false;
+            System.Action<TrafficVehicleDestroyedEvent> handler = destroyed => eventRaised = destroyed.VehicleId == "DamageableTraffic";
+            TrafficEvents.VehicleDestroyed += handler;
+
+            Assert.That(vehicle.DestroyByImpact(9f), Is.False);
+            Assert.That(vehicle.DestroyByImpact(12f), Is.True);
+            Assert.That(vehicle.IsWrecked, Is.True);
+            Assert.That(trafficObject.activeSelf, Is.False);
+            Assert.That(eventRaised, Is.True);
+
+            TrafficEvents.VehicleDestroyed -= handler;
+            Object.DestroyImmediate(trafficObject);
+            Object.DestroyImmediate(profile);
+        }
+
         private static ChallengeDefinition CreateChallenge(ChallengeType type, int target, float duration)
         {
             var definition = ScriptableObject.CreateInstance<ChallengeDefinition>();

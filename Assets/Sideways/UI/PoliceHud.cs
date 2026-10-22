@@ -12,9 +12,16 @@ namespace Sideways.UI
 
         private float spottedRemaining;
         private float bustedRemaining;
-        private readonly string[] searchLabels = new string[21];
+        private readonly string[] searchLabels = new string[31];
+        private readonly string[] heatLabels = { string.Empty, "★", "★★", "★★★" };
         private string lastValue;
         private Color lastColor;
+        private PoliceState lastState = (PoliceState)(-1);
+        private int lastHeat = -1;
+        private int lastUnits = -1;
+        private int lastSearchSeconds = -1;
+        private bool lastRoadblock;
+        private bool lastSpotted;
 
         private void Awake()
         {
@@ -71,14 +78,26 @@ namespace Sideways.UI
         private void HandleStatus(PoliceStatusSnapshot status)
         {
             if (bustedRemaining > 0f) return;
+            var seconds = status.State == PoliceState.Search ? Mathf.Clamp(Mathf.CeilToInt(status.SearchRemaining), 0, searchLabels.Length - 1) : -1;
+            var spotted = status.State == PoliceState.Pursuit && spottedRemaining > 0f;
+            if (status.State == lastState && status.HeatLevel == lastHeat && status.ActiveUnits == lastUnits && seconds == lastSearchSeconds && status.RoadblockDeployed == lastRoadblock && spotted == lastSpotted) return;
+            lastState = status.State;
+            lastHeat = status.HeatLevel;
+            lastUnits = status.ActiveUnits;
+            lastSearchSeconds = seconds;
+            lastRoadblock = status.RoadblockDeployed;
+            lastSpotted = spotted;
             switch (status.State)
             {
                 case PoliceState.Pursuit:
-                    Render(spottedRemaining > 0f ? "SPOTTED" : "PURSUED", new Color(0.70f, 0.06f, 0.04f, 0.9f));
+                    var pursuitPrefix = spotted ? "SPOTTED" : "PURSUED";
+                    var heat = heatLabels[Mathf.Clamp(status.HeatLevel, 0, heatLabels.Length - 1)];
+                    var roadblock = status.RoadblockDeployed ? "  •  ROADBLOCK" : string.Empty;
+                    Render($"{pursuitPrefix}  {heat}  •  {status.ActiveUnits} UNIT{(status.ActiveUnits == 1 ? string.Empty : "S")}{roadblock}", new Color(0.70f, 0.06f, 0.04f, 0.9f));
                     break;
                 case PoliceState.Search:
-                    var seconds = Mathf.Clamp(Mathf.CeilToInt(status.SearchRemaining), 0, searchLabels.Length - 1);
-                    Render(searchLabels[seconds], new Color(0.75f, 0.42f, 0.03f, 0.9f));
+                    var searchHeat = heatLabels[Mathf.Clamp(status.HeatLevel, 0, heatLabels.Length - 1)];
+                    Render($"{searchLabels[seconds]}  {searchHeat}", new Color(0.75f, 0.42f, 0.03f, 0.9f));
                     break;
                 case PoliceState.Escaped:
                     Render("ESCAPED", new Color(0.03f, 0.55f, 0.30f, 0.9f));

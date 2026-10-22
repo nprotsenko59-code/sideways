@@ -25,7 +25,7 @@
 
 ## Ambient traffic
 
-- The default profile caps the scene at four traffic vehicles.
+- The default profile maintains an eight-vehicle local pool.
 - Cars spawn on road-graph centerlines, choose a travel direction, keep to that direction's lane offset, and continue through connected edges.
 - Traffic speed derives from the active edge's speed limit and remains inside profile limits.
 - Kinematic vehicle bodies have solid colliders and slow for vehicles, police, the player, and obstacles ahead.
@@ -35,7 +35,7 @@
 
 - Candidates must be between the configured minimum and maximum distance from the player.
 - Candidates inside the forward exclusion cone are rejected, preventing repeated pop-in directly ahead.
-- A bounded number of attempts is used; if no safe candidate exists, that traffic car remains inactive until a later reposition opportunity.
+- A bounded number of attempts is used; if no safe candidate exists, that pooled traffic car remains inactive until a later reposition opportunity.
 - Traffic can be disabled independently on `TrafficSpawner` for debugging.
 
 ## Near misses
@@ -48,4 +48,4 @@
 
 ## Deferred
 
-Intersection priority, signals, overtaking, lane changes, traffic pooling, traffic damage, pedestrians, richer challenge discovery, persistent rewards, and additional challenge types remain future work.
+Signals, directional intersection priority, overtaking, lane changes, pedestrians, richer challenge discovery, persistent rewards, and additional challenge types remain future work.

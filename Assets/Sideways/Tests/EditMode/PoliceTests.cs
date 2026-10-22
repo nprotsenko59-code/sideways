@@ -37,6 +37,44 @@ namespace Sideways.Tests
         }
 
         [Test]
+        public void WantedHeatEscalatesAndDeploysMoreUnits()
+        {
+            profile.heatTwoExposure = 2f;
+            profile.heatThreeExposure = 5f;
+            profile.heatOneUnits = 1;
+            profile.heatTwoUnits = 2;
+            profile.heatThreeUnits = 3;
+            var heat = new WantedHeatModel(profile);
+
+            Assert.That(heat.ReportInitialOffense(), Is.True);
+            Assert.That(heat.Level, Is.EqualTo(1));
+            Assert.That(heat.ActiveUnitCount, Is.EqualTo(1));
+            Assert.That(heat.Tick(true, 2.1f), Is.True);
+            Assert.That(heat.Level, Is.EqualTo(2));
+            Assert.That(heat.ActiveUnitCount, Is.EqualTo(2));
+            Assert.That(heat.Tick(true, 3f), Is.True);
+            Assert.That(heat.Level, Is.EqualTo(3));
+            Assert.That(heat.ActiveUnitCount, Is.EqualTo(3));
+            Assert.That(heat.RoadblockRequired, Is.True);
+        }
+
+        [Test]
+        public void EscapeRewardScalesWithHeatAndResetClearsIt()
+        {
+            profile.heatTwoExposure = 1f;
+            profile.heatThreeExposure = 2f;
+            profile.escapeRewardPerHeat = 400;
+            var heat = new WantedHeatModel(profile);
+            heat.ReportInitialOffense();
+            heat.Tick(true, 2.1f);
+
+            Assert.That(heat.EscapeReward, Is.EqualTo(1200));
+            heat.Reset();
+            Assert.That(heat.Level, Is.Zero);
+            Assert.That(heat.EscapeReward, Is.Zero);
+        }
+
+        [Test]
         public void VisionUsesRangeAndForwardCone()
         {
             Assert.That(PoliceMath.IsWithinVision(Vector3.zero, Vector3.forward, new Vector3(0f, 0f, 20f), 30f, 90f), Is.True);

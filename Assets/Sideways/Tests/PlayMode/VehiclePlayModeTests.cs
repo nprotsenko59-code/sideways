@@ -29,7 +29,8 @@ namespace Sideways.Tests
             var scoreHud = Object.FindFirstObjectByType<ScoreHud>();
             var roadGraph = Object.FindFirstObjectByType<RoadGraphComponent>();
             var police = Object.FindFirstObjectByType<PoliceDirector>();
-            var policeVehicle = Object.FindFirstObjectByType<PoliceVehicleController>();
+            var policeVehicles = Object.FindObjectsByType<PoliceVehicleController>(FindObjectsSortMode.None);
+            var policeVehicle = System.Array.Find(policeVehicles, unit => unit.IsOperational);
             var policeHud = Object.FindFirstObjectByType<PoliceHud>();
             var traffic = Object.FindFirstObjectByType<TrafficSpawner>();
             var challenges = Object.FindFirstObjectByType<ChallengeController>();
@@ -48,6 +49,9 @@ namespace Sideways.Tests
             Assert.That(policeVehicle, Is.Not.Null);
             Assert.That(policeHud, Is.Not.Null);
             Assert.That(police.State, Is.EqualTo(PoliceState.Patrol));
+            Assert.That(policeVehicles.Length, Is.EqualTo(3));
+            Assert.That(police.ActiveUnitCount, Is.EqualTo(1));
+            Assert.That(police.RoadblockDeployed, Is.False);
             Assert.That(traffic, Is.Not.Null);
             Assert.That(challenges, Is.Not.Null);
             Assert.That(challengeHud, Is.Not.Null);

@@ -54,6 +54,8 @@ namespace Sideways.Tests
             Assert.That(Object.FindFirstObjectByType<PoliceDirector>(), Is.Not.Null);
             Assert.That(Object.FindFirstObjectByType<PoliceVehicleController>(), Is.Not.Null);
             Assert.That(Object.FindFirstObjectByType<PoliceVisionSensor>(), Is.Not.Null);
+            Assert.That(Object.FindObjectsByType<PoliceVehicleController>(FindObjectsSortMode.None).Length, Is.EqualTo(3));
+            Assert.That(Object.FindFirstObjectByType<PoliceRoadblockController>(), Is.Not.Null);
             Assert.That(Object.FindFirstObjectByType<PoliceHud>(), Is.Not.Null);
             Assert.That(Object.FindFirstObjectByType<TrafficSpawner>(), Is.Not.Null);
             Assert.That(Object.FindFirstObjectByType<TrafficScoreController>(), Is.Not.Null);

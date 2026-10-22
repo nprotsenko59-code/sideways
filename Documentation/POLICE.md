@@ -10,7 +10,7 @@ Police pressure is readable and escapable. A unit can react only to reckless dri
 - A severe obstacle collision is immediately reckless for the same window.
 - Reckless behavior starts pursuit only while the police vision sensor has unobstructed visual contact.
 - Ordinary driving, hidden drifting, and hidden collisions do not create heat.
-- Milestone 4 has one unit and one heat level; escalation is deferred.
+- Milestone 4 established the single-unit pursuit lifecycle; Milestone 7 layers three-level heat and reinforcement deployment over that lifecycle.
 
 ## Sighting and search
 
@@ -45,4 +45,4 @@ Police pressure is readable and escapable. A unit can react only to reckless dri
 
 ## Deferred
 
-Multiple police units, heat escalation, radio dispatch, roadblocks, vehicle damage, arrest cinematics, and score bonuses for escapes remain later work.
+Radio dispatch presentation, dynamic roadblock placement, specialist police vehicles, arrest cinematics, and persistent police damage remain later work.

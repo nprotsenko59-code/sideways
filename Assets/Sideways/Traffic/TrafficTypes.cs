@@ -20,12 +20,32 @@ namespace Sideways.Traffic
         public Vector3 Position { get; }
     }
 
+    public readonly struct TrafficVehicleDestroyedEvent
+    {
+        public TrafficVehicleDestroyedEvent(string vehicleId, float impactSpeed, Vector3 position)
+        {
+            VehicleId = vehicleId;
+            ImpactSpeed = impactSpeed;
+            Position = position;
+        }
+
+        public string VehicleId { get; }
+        public float ImpactSpeed { get; }
+        public Vector3 Position { get; }
+    }
+
     public static class TrafficEvents
     {
         public static event System.Action<NearMissEvent> NearMiss;
+        public static event System.Action<TrafficVehicleDestroyedEvent> VehicleDestroyed;
 
         internal static void RaiseNearMiss(NearMissEvent nearMiss) => NearMiss?.Invoke(nearMiss);
+        internal static void RaiseVehicleDestroyed(TrafficVehicleDestroyedEvent destroyed) => VehicleDestroyed?.Invoke(destroyed);
 
-        public static void ClearAllListeners() => NearMiss = null;
+        public static void ClearAllListeners()
+        {
+            NearMiss = null;
+            VehicleDestroyed = null;
+        }
     }
 }

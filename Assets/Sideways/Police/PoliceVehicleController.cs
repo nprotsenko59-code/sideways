@@ -13,6 +13,7 @@ namespace Sideways.Police
         [SerializeField] private RoadGraphAsset roadGraph;
         [SerializeField] private PoliceProfile profile;
         [SerializeField] private string[] patrolNodeIds = { "G_NE", "G_E", "G_SE", "B_SE", "G_SC", "G_C", "G_NC" };
+        [SerializeField] private bool operational = true;
 
         private readonly List<RoadGraphEdge> routeEdges = new();
         private readonly List<Vector3> waypoints = new();
@@ -24,18 +25,23 @@ namespace Sideways.Police
         private float speed;
         private float nextReplanTime;
         private bool hasDestination;
+        private Renderer[] cachedRenderers;
+        private Collider[] cachedColliders;
 
         public PoliceState State => state;
         public int WaypointCount => waypoints.Count;
+        public bool IsOperational => operational;
 
         private void Awake()
         {
             body ??= GetComponent<Rigidbody>();
+            EnsurePresentationCache();
+            ApplyOperationalPresentation();
         }
 
         private void FixedUpdate()
         {
-            if (body == null || roadGraph == null || profile == null) return;
+            if (!operational || body == null || roadGraph == null || profile == null) return;
 
             if (state == PoliceState.Patrol && (!hasDestination || waypointIndex >= waypoints.Count))
             {
@@ -89,6 +95,17 @@ namespace Sideways.Police
             state = newState;
             hasDestination = false;
             nextReplanTime = 0f;
+        }
+
+        public void SetOperational(bool value)
+        {
+            if (operational == value) return;
+            operational = value;
+            speed = 0f;
+            hasDestination = false;
+            nextReplanTime = 0f;
+            EnsurePresentationCache();
+            ApplyOperationalPresentation();
         }
 
         public void SetDestination(Vector3 destination, bool force = false)
@@ -166,6 +183,24 @@ namespace Sideways.Police
 
             if (waypoints.Count == 0 || Vector3.Distance(waypoints[^1], destination) > profile.waypointTolerance) waypoints.Add(destination);
             hasDestination = true;
+        }
+
+        private void EnsurePresentationCache()
+        {
+            cachedRenderers ??= GetComponentsInChildren<Renderer>(true);
+            cachedColliders ??= GetComponentsInChildren<Collider>(true);
+        }
+
+        private void ApplyOperationalPresentation()
+        {
+            if (cachedRenderers != null)
+            {
+                for (var i = 0; i < cachedRenderers.Length; i++) cachedRenderers[i].enabled = operational;
+            }
+            if (cachedColliders != null)
+            {
+                for (var i = 0; i < cachedColliders.Length; i++) cachedColliders[i].enabled = operational;
+            }
         }
     }
 }
