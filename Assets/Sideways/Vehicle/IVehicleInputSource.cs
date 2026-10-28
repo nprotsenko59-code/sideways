@@ -3,7 +3,8 @@ namespace Sideways.Vehicle
     public interface IVehicleInputSource
     {
         float Steering { get; }
-        bool Handbrake { get; }
+        float DriftStrength { get; }
+        bool Brake { get; }
         bool ConsumeResetRequest();
     }
 }

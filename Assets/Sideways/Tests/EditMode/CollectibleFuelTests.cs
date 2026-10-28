@@ -56,6 +56,25 @@ namespace Sideways.Tests
         }
 
         [Test]
+        public void RoadResetRestoresEmergencyFuelOnlyWhenTankIsEmpty()
+        {
+            var profile = CreateProfile();
+            profile.startingFuel = 0f;
+            profile.emergencyResetFuel = 15f;
+            var gameObject = new GameObject("Resources");
+            var controller = gameObject.AddComponent<RideResourceController>();
+            controller.Configure(null, null, profile);
+
+            Assert.That(controller.Snapshot.IsEmpty, Is.True);
+            Assert.That(controller.RestoreEmergencyFuel(), Is.True);
+            Assert.That(controller.Snapshot.Fuel, Is.EqualTo(15f));
+            Assert.That(controller.RestoreEmergencyFuel(), Is.False, "Reset fuel is a rescue, not a repeatable refill exploit.");
+
+            Object.DestroyImmediate(gameObject);
+            Object.DestroyImmediate(profile);
+        }
+
+        [Test]
         public void FuelProfileDefaultsAreValid()
         {
             var profile = CreateProfile();
@@ -71,6 +90,7 @@ namespace Sideways.Tests
             profile.baseConsumptionPerSecond = 0.22f;
             profile.speedConsumptionPerMeter = 0.008f;
             profile.minimumConsumptionSpeed = 0.5f;
+            profile.emergencyResetFuel = 15f;
             profile.coinPoints = 100;
             profile.canisterFuel = 35f;
             profile.coinRespawnDelay = 20f;

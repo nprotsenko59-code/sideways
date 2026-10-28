@@ -14,6 +14,7 @@ namespace Sideways.Core
         private float graceRemaining;
         private float collisionLockoutRemaining;
         private bool scoring;
+        private bool comboGraceHeld;
 
         public DriftScoringModel(ScoringProfile scoringProfile)
         {
@@ -45,7 +46,7 @@ namespace Sideways.Core
                 graceRemaining = profile.comboGraceDuration;
                 activeComboScore += CalculatePointsPerSecond(telemetry) * CurrentMultiplier * safeDelta;
             }
-            else if (activeComboScore > 0f)
+            else if (activeComboScore > 0f && !comboGraceHeld)
             {
                 graceRemaining = Mathf.Max(0f, graceRemaining - safeDelta);
                 if (graceRemaining <= 0f) BankCombo();
@@ -84,6 +85,11 @@ namespace Sideways.Core
             return true;
         }
 
+        public void SetComboGraceHeld(bool held)
+        {
+            comboGraceHeld = held && activeComboScore > 0f;
+        }
+
         public bool IsEligible(VehicleTelemetry telemetry)
         {
             var slip = Mathf.Abs(telemetry.SlipAngle);
@@ -114,6 +120,7 @@ namespace Sideways.Core
             comboDriftTime = 0f;
             graceRemaining = 0f;
             scoring = false;
+            comboGraceHeld = false;
         }
     }
 }

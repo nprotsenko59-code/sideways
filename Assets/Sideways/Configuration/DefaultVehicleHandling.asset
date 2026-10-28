@@ -12,23 +12,58 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 7554a03c2f934487f990d94df78736c7, type: 3}
   m_Name: DefaultVehicleHandling
   m_EditorClassIdentifier: Sideways.Runtime::Sideways.Configuration.VehicleHandlingProfile
-  acceleration: 11
+  acceleration: 16
   maxSpeed: 28
   overspeedBraking: 8
   downforce: 12
-  steeringAcceleration: 7.5
-  yawDamping: 3.5
-  minimumSteeringAtMaxSpeed: 0.35
+  wheelbase: 2.6
+  frontAxleOffset: 1.25
+  rearAxleOffset: 1.35
+  centerOfMassHeight: 0.55
+  lowSpeedSteeringAngle: 38
+  highSpeedSteeringAngle: 20
+  fullSteeringReductionSpeed: 32
   inputResponse: 4.5
-  normalLateralGrip: 8
-  driftLateralGrip: 2.1
+  initialSteeringStrength: 0.38
+  fullDriftHoldDuration: 1.1
+  countersteerAssist: 0.18
+  maximumCountersteerAssistAngle: 5
+  countersteerMinimumYawRate: 4
+  frontPeakGrip: 12
+  rearPeakGrip: 8.8
+  rearLongitudinalGrip: 18.5
+  frontPeakSlipAngle: 9
+  rearPeakSlipAngle: 8
+  slidingSlipAngle: 35
+  slidingGripRetention: 0.68
+  lowSpeedGripFadeSpeed: 2
+  maximumLongitudinalLoadTransfer: 0.18
+  lateralLoadSensitivity: 0.12
+  accelerationSmoothing: 7
   driftMinimumSpeed: 8
   driftEnterAngle: 12
   driftExitAngle: 6
-  driftInputThreshold: 0.55
-  handbrakeLateralGrip: 0.32
-  handbrakeYawMultiplier: 2.75
-  handbrakeDeceleration: 2.2
+  fullDriftIntensityAngle: 32
+  steeringDriftRearGripMultiplier: 0.42
+  steeringDriftYawAcceleration: 2.4
+  steeringDriftEngageRate: 3.5
+  steeringDriftReleaseRate: 5
+  brakeDeceleration: 18
+  brakeEngageRate: 9
+  brakeReleaseRate: 12
+  maximumYawRate: 175
+  yawLimitStrength: 5
+  recoveryYawDamping: 0.55
+  antiSpinSoftAngle: 55
+  antiSpinHardAngle: 78
+  antiSpinYawAcceleration: 14
+  antiSpinMinimumSpeed: 4
+  effectMinimumSpeed: 6
+  skidSlipAngle: 8
+  smokeSlipAngle: 12
+  maximumBodyRoll: 5
+  maximumBodyPitch: 2.5
+  visualResponse: 7
   groundProbeLength: 1.1
   groundProbeRadius: 0.18
   groundProbeHeight: 0.35

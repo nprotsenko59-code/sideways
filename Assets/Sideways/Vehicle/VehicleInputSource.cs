@@ -1,4 +1,3 @@
-using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.InputSystem;
 
@@ -7,26 +6,46 @@ namespace Sideways.Vehicle
     public sealed class VehicleInputSource : MonoBehaviour, IVehicleInputSource
     {
         [SerializeField, Min(0.1f)] private float response = 4.5f;
-        [SerializeField, Min(0f)] private float touchHandbrakeReleasePulse = 0.25f;
+        [SerializeField, Range(0.1f, 1f)] private float initialSteeringStrength = 0.38f;
+        [SerializeField, Min(0.1f)] private float fullDriftHoldDuration = 1.1f;
 
         private bool leftHeld;
         private bool rightHeld;
+        private bool touchBrakeHeld;
         private bool resetRequested;
         private float steering;
-        private float touchHandbrakeUntil;
-        private readonly HashSet<int> touchHandbrakePointers = new();
+        private float steeringHoldDuration;
+        private int lastDirection;
 
         public float Steering => steering;
-        public bool Handbrake =>
-            (Keyboard.current != null && Keyboard.current.spaceKey.isPressed) ||
-            touchHandbrakePointers.Count > 0 ||
-            Time.unscaledTime < touchHandbrakeUntil;
+        public float DriftStrength { get; private set; }
+        public bool Brake => touchBrakeHeld || (Keyboard.current != null && Keyboard.current.spaceKey.isPressed);
 
         private void Update()
         {
-            var keyboardTarget = ReadKeyboardTarget();
-            var touchTarget = leftHeld == rightHeld ? 0f : leftHeld ? -1f : 1f;
-            var target = Mathf.Abs(keyboardTarget) > 0.01f ? keyboardTarget : touchTarget;
+            var keyboardDirection = ReadKeyboardDirection();
+            var touchDirection = leftHeld == rightHeld ? 0 : leftHeld ? -1 : 1;
+            var direction = keyboardDirection != 0 ? keyboardDirection : touchDirection;
+            if (direction == 0)
+            {
+                steeringHoldDuration = 0f;
+                lastDirection = 0;
+                DriftStrength = Mathf.MoveTowards(DriftStrength, 0f, Time.unscaledDeltaTime * 5f);
+            }
+            else
+            {
+                if (lastDirection != 0 && direction != lastDirection)
+                {
+                    steeringHoldDuration = 0f;
+                }
+
+                lastDirection = direction;
+                steeringHoldDuration += Time.unscaledDeltaTime;
+                DriftStrength = VehicleMath.HoldDriftStrength(steeringHoldDuration, fullDriftHoldDuration);
+            }
+
+            var steeringMagnitude = direction == 0 ? 0f : Mathf.Lerp(initialSteeringStrength, 1f, DriftStrength);
+            var target = direction * steeringMagnitude;
             steering = VehicleMath.MoveSteering(steering, target, response, Time.unscaledDeltaTime);
 
             if (Keyboard.current != null && Keyboard.current.rKey.wasPressedThisFrame)
@@ -35,7 +54,12 @@ namespace Sideways.Vehicle
             }
         }
 
-        public void Configure(float inputResponse) => response = Mathf.Max(0.1f, inputResponse);
+        public void Configure(float inputResponse, float initialStrength = 0.38f, float holdDuration = 1.1f)
+        {
+            response = Mathf.Max(0.1f, inputResponse);
+            initialSteeringStrength = Mathf.Clamp(initialStrength, 0.1f, 1f);
+            fullDriftHoldDuration = Mathf.Max(0.1f, holdDuration);
+        }
 
         public void SetTouchSteering(int direction, bool held)
         {
@@ -43,20 +67,7 @@ namespace Sideways.Vehicle
             if (direction > 0) rightHeld = held;
         }
 
-        public void SetTouchHandbrake(int pointerId, bool held)
-        {
-            if (held)
-            {
-                touchHandbrakePointers.Add(pointerId);
-                touchHandbrakeUntil = 0f;
-                return;
-            }
-
-            if (touchHandbrakePointers.Remove(pointerId))
-            {
-                touchHandbrakeUntil = Time.unscaledTime + touchHandbrakeReleasePulse;
-            }
-        }
+        public void SetTouchBrake(bool held) => touchBrakeHeld = held;
 
         public void RequestReset() => resetRequested = true;
 
@@ -71,17 +82,19 @@ namespace Sideways.Vehicle
         {
             leftHeld = false;
             rightHeld = false;
-            touchHandbrakePointers.Clear();
-            touchHandbrakeUntil = 0f;
+            touchBrakeHeld = false;
+            steeringHoldDuration = 0f;
+            lastDirection = 0;
+            DriftStrength = 0f;
         }
 
-        private static float ReadKeyboardTarget()
+        private static int ReadKeyboardDirection()
         {
-            if (Keyboard.current == null) return 0f;
+            if (Keyboard.current == null) return 0;
             var left = Keyboard.current.aKey.isPressed || Keyboard.current.leftArrowKey.isPressed;
             var right = Keyboard.current.dKey.isPressed || Keyboard.current.rightArrowKey.isPressed;
-            if (left == right) return 0f;
-            return left ? -1f : 1f;
+            if (left == right) return 0;
+            return left ? -1 : 1;
         }
     }
 }

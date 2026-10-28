@@ -4,11 +4,12 @@ using UnityEngine.EventSystems;
 
 namespace Sideways.UI
 {
-    public sealed class TouchSteeringZone : MonoBehaviour, IPointerDownHandler, IPointerUpHandler, IPointerExitHandler
+    public sealed class TouchSteeringZone : MonoBehaviour, IPointerDownHandler, IPointerUpHandler, IDragHandler, IEndDragHandler
     {
         [SerializeField] private VehicleInputSource inputSource;
         [SerializeField, Range(-1, 1)] private int direction;
         private int activePointer = int.MinValue;
+        private int activeDirection;
 
         public void Configure(VehicleInputSource source, int steeringDirection)
         {
@@ -19,7 +20,7 @@ namespace Sideways.UI
         public void OnPointerDown(PointerEventData eventData)
         {
             activePointer = eventData.pointerId;
-            inputSource?.SetTouchSteering(direction, true);
+            SetPointerDirection(direction);
         }
 
         public void OnPointerUp(PointerEventData eventData)
@@ -28,18 +29,33 @@ namespace Sideways.UI
             Release();
         }
 
-        public void OnPointerExit(PointerEventData eventData)
+        public void OnDrag(PointerEventData eventData)
         {
             if (eventData.pointerId != activePointer) return;
-            Release();
+            SetPointerDirection(eventData.position.x < Screen.width * 0.5f ? -1 : 1);
+        }
+
+        public void OnEndDrag(PointerEventData eventData)
+        {
+            if (eventData.pointerId == activePointer) Release();
         }
 
         private void OnDisable() => Release();
 
         private void Release()
         {
-            inputSource?.SetTouchSteering(direction, false);
+            if (activeDirection != 0) inputSource?.SetTouchSteering(activeDirection, false);
+            activeDirection = 0;
             activePointer = int.MinValue;
+        }
+
+        private void SetPointerDirection(int nextDirection)
+        {
+            nextDirection = nextDirection < 0 ? -1 : 1;
+            if (activeDirection == nextDirection) return;
+            if (activeDirection != 0) inputSource?.SetTouchSteering(activeDirection, false);
+            activeDirection = nextDirection;
+            inputSource?.SetTouchSteering(activeDirection, true);
         }
     }
 }

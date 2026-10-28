@@ -57,8 +57,16 @@ namespace Sideways.CameraSystem
             }
             var framingForward = overhead ? smoothedOverheadForward : flatForward;
             var baseLookAhead = overhead ? profile.overheadLookAheadDistance : profile.lookAheadDistance;
-            var lookAheadDistance = baseLookAhead * (reducedMotion ? 0.25f : 1f);
-            var lookAhead = velocity.sqrMagnitude > 0.1f ? velocity.normalized * lookAheadDistance : framingForward * lookAheadDistance;
+            // TOP view needs a stable forward composition even when reduced motion
+            // is enabled. Reduced motion removes velocity-led panning, but must not
+            // recenter the car and turn the view back into a near-vertical camera.
+            var lookDirection = velocity.sqrMagnitude > 0.1f && !(overhead && reducedMotion)
+                ? velocity.normalized
+                : framingForward;
+            var lookAheadDistance = overhead
+                ? baseLookAhead
+                : baseLookAhead * (reducedMotion ? 0.25f : 1f);
+            var lookAhead = lookDirection * lookAheadDistance;
             var lookPoint = target.position + Vector3.up * profile.lookHeight + lookAhead;
             var desired = overhead
                 ? target.position - framingForward * profile.overheadBackOffset + Vector3.up * profile.overheadHeight
@@ -66,9 +74,11 @@ namespace Sideways.CameraSystem
 
             var castDirection = desired - lookPoint;
             var castDistance = castDirection.magnitude;
-            if (!overhead && castDistance > 0.01f && Physics.SphereCast(lookPoint, profile.obstructionRadius, castDirection.normalized, out var hit, castDistance, obstructionMask, QueryTriggerInteraction.Ignore))
+            if (castDistance > 0.01f && Physics.SphereCast(lookPoint, profile.obstructionRadius, castDirection.normalized, out var hit, castDistance, obstructionMask, QueryTriggerInteraction.Ignore))
             {
-                desired = lookPoint + castDirection.normalized * Mathf.Max(0.5f, hit.distance - profile.obstructionPadding);
+                desired = lookPoint + castDirection.normalized * Mathf.Max(
+                    0.5f,
+                    hit.distance - profile.obstructionPadding - profile.obstructionRadius);
             }
 
             var dampingMultiplier = reducedMotion ? 2.5f : 1f;

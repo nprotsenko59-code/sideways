@@ -1,0 +1,239 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: d6396e09f93024beca3a68c043e6fb39, type: 3}
+  m_Name: PortraitDriftCourse
+  m_EditorClassIdentifier: Sideways.Runtime::Sideways.EnvironmentSystem.RoadGraphAsset
+  graphId: portrait-drift-run
+  driveableSize: {x: 320, y: 720}
+  nodes:
+  - Id: COURSE_START
+    Position: {x: 0, y: 0, z: -340}
+    Role: 1
+    AllowsDeadEnd: 1
+  - Id: COURSE_01
+    Position: {x: 0, y: 0, z: -260}
+    Role: 0
+    AllowsDeadEnd: 0
+  - Id: COURSE_02
+    Position: {x: -90, y: 0, z: -150}
+    Role: 0
+    AllowsDeadEnd: 0
+  - Id: COURSE_03
+    Position: {x: -90, y: 0, z: -55}
+    Role: 0
+    AllowsDeadEnd: 0
+  - Id: COURSE_04
+    Position: {x: 90, y: 0, z: 65}
+    Role: 0
+    AllowsDeadEnd: 0
+  - Id: COURSE_05
+    Position: {x: 90, y: 0, z: 165}
+    Role: 0
+    AllowsDeadEnd: 0
+  - Id: COURSE_06
+    Position: {x: -75, y: 0, z: 275}
+    Role: 0
+    AllowsDeadEnd: 0
+  - Id: COURSE_FINISH
+    Position: {x: 0, y: 0, z: 350}
+    Role: 1
+    AllowsDeadEnd: 1
+  edges:
+  - Id: Course_Straight
+    FromNodeId: COURSE_START
+    ToNodeId: COURSE_01
+    Kind: 1
+    Bidirectional: 1
+    Width: 22
+    SpeedLimitMps: 22
+    Access: 7
+    Features: 1344
+    Centerline:
+    - {x: 0, y: 0, z: -340}
+    - {x: 0, y: 0, z: -316.8}
+    - {x: 0, y: 0, z: -311.2}
+    - {x: 0, y: 0, z: -305.59998}
+    - {x: 0, y: 0, z: -300}
+    - {x: 0, y: 0, z: -294.40002}
+    - {x: 0, y: 0, z: -288.8}
+    - {x: 0, y: 0, z: -283.2}
+    - {x: 0, y: 0, z: -260}
+  - Id: Course_LeftEntry
+    FromNodeId: COURSE_01
+    ToNodeId: COURSE_02
+    Kind: 1
+    Bidirectional: 1
+    Width: 22
+    SpeedLimitMps: 21
+    Access: 7
+    Features: 1344
+    Centerline:
+    - {x: 0, y: 0, z: -260}
+    - {x: -2.9, y: 0, z: -242.6}
+    - {x: -3.7803497, y: 0, z: -238.48744}
+    - {x: -5.021399, y: 0, z: -234.5498}
+    - {x: -6.623147, y: 0, z: -230.78705}
+    - {x: -8.585595, y: 0, z: -227.19919}
+    - {x: -10.908742, y: 0, z: -223.78622}
+    - {x: -13.592588, y: 0, z: -220.54816}
+    - {x: -42.848244, y: 0, z: -188.36693}
+    - {x: -46.969612, y: 0, z: -183.99092}
+    - {x: -51.23255, y: 0, z: -179.77419}
+    - {x: -55.637062, y: 0, z: -175.71674}
+    - {x: -60.183136, y: 0, z: -171.81854}
+    - {x: -64.87078, y: 0, z: -168.07964}
+    - {x: -69.7, y: 0, z: -164.5}
+    - {x: -90, y: 0, z: -150}
+  - Id: Course_LeftArc
+    FromNodeId: COURSE_02
+    ToNodeId: COURSE_03
+    Kind: 1
+    Bidirectional: 1
+    Width: 22
+    SpeedLimitMps: 20
+    Access: 7
+    Features: 1344
+    Centerline:
+    - {x: -90, y: 0, z: -150}
+    - {x: -101.6, y: 0, z: -135.5}
+    - {x: -104.166664, y: 0, z: -131.91815}
+    - {x: -106.26667, y: 0, z: -128.1726}
+    - {x: -107.9, y: 0, z: -124.26336}
+    - {x: -109.066666, y: 0, z: -120.190414}
+    - {x: -109.76666, y: 0, z: -115.95378}
+    - {x: -110, y: 0, z: -111.55344}
+    - {x: -110, y: 0, z: -96.11225}
+    - {x: -109.76666, y: 0, z: -91.485176}
+    - {x: -109.066666, y: 0, z: -87.01211}
+    - {x: -107.9, y: 0, z: -82.69306}
+    - {x: -106.26667, y: 0, z: -78.52803}
+    - {x: -104.166664, y: 0, z: -74.51701}
+    - {x: -101.6, y: 0, z: -70.66}
+    - {x: -90, y: 0, z: -55}
+  - Id: Course_Crossover
+    FromNodeId: COURSE_03
+    ToNodeId: COURSE_04
+    Kind: 1
+    Bidirectional: 1
+    Width: 22
+    SpeedLimitMps: 22
+    Access: 7
+    Features: 1344
+    Centerline:
+    - {x: -90, y: 0, z: -55}
+    - {x: -75.5, y: 0, z: -37.6}
+    - {x: -71.92321, y: 0, z: -33.48203}
+    - {x: -68.19283, y: 0, z: -29.52812}
+    - {x: -64.308876, y: 0, z: -25.738272}
+    - {x: -60.27133, y: 0, z: -22.112484}
+    - {x: -56.080208, y: 0, z: -18.650757}
+    - {x: -51.735497, y: 0, z: -15.353088}
+    - {x: -33.1, y: 0, z: -1.7999992}
+    - {x: -25.3342, y: 0, z: 3.6925087}
+    - {x: -17.436804, y: 0, z: 8.970033}
+    - {x: -9.40781, y: 0, z: 14.032573}
+    - {x: -1.2472186, y: 0, z: 18.880129}
+    - {x: 7.0449686, y: 0, z: 23.512701}
+    - {x: 15.468756, y: 0, z: 27.93029}
+    - {x: 40.428146, y: 0, z: 40.601982}
+    - {x: 45.28899, y: 0, z: 43.06082}
+    - {x: 50.15695, y: 0, z: 45.505325}
+    - {x: 55.032036, y: 0, z: 47.935493}
+    - {x: 59.914234, y: 0, z: 50.35133}
+    - {x: 64.80356, y: 0, z: 52.752834}
+    - {x: 69.7, y: 0, z: 55.14}
+    - {x: 90, y: 0, z: 65}
+  - Id: Course_RightArc
+    FromNodeId: COURSE_04
+    ToNodeId: COURSE_05
+    Kind: 1
+    Bidirectional: 1
+    Width: 22
+    SpeedLimitMps: 20
+    Access: 7
+    Features: 1344
+    Centerline:
+    - {x: 90, y: 0, z: 65}
+    - {x: 101.6, y: 0, z: 79.5}
+    - {x: 104.166664, y: 0, z: 83.08185}
+    - {x: 106.26667, y: 0, z: 86.82739}
+    - {x: 107.9, y: 0, z: 90.73664}
+    - {x: 109.066666, y: 0, z: 94.809586}
+    - {x: 109.76666, y: 0, z: 99.04622}
+    - {x: 110, y: 0, z: 103.44656}
+    - {x: 110, y: 0, z: 123.88775}
+    - {x: 109.76666, y: 0, z: 128.51483}
+    - {x: 109.066666, y: 0, z: 132.98788}
+    - {x: 107.9, y: 0, z: 137.30695}
+    - {x: 106.26667, y: 0, z: 141.47197}
+    - {x: 104.166664, y: 0, z: 145.48299}
+    - {x: 101.6, y: 0, z: 149.34}
+    - {x: 90, y: 0, z: 165}
+  - Id: Course_NorthSweep
+    FromNodeId: COURSE_05
+    ToNodeId: COURSE_06
+    Kind: 1
+    Bidirectional: 1
+    Width: 22
+    SpeedLimitMps: 22
+    Access: 7
+    Features: 1344
+    Centerline:
+    - {x: 90, y: 0, z: 165}
+    - {x: 75.5, y: 0, z: 182.4}
+    - {x: 71.90099, y: 0, z: 186.4844}
+    - {x: 68.10398, y: 0, z: 190.3376}
+    - {x: 64.10895, y: 0, z: 193.95963}
+    - {x: 59.915916, y: 0, z: 197.35045}
+    - {x: 55.524868, y: 0, z: 200.51007}
+    - {x: 50.93581, y: 0, z: 203.4385}
+    - {x: 36, y: 0, z: 212.4}
+    - {x: 28.974874, y: 0, z: 216.55423}
+    - {x: 21.899498, y: 0, z: 220.61691}
+    - {x: 14.77387, y: 0, z: 224.58807}
+    - {x: 7.5979905, y: 0, z: 228.46767}
+    - {x: 0.37186185, y: 0, z: 232.25572}
+    - {x: -6.90452, y: 0, z: 235.95226}
+    - {x: -31.455408, y: 0, z: 248.2277}
+    - {x: -35.944035, y: 0, z: 250.53036}
+    - {x: -40.38018, y: 0, z: 252.92342}
+    - {x: -44.76385, y: 0, z: 255.40694}
+    - {x: -49.095043, y: 0, z: 257.98087}
+    - {x: -53.37376, y: 0, z: 260.6452}
+    - {x: -57.6, y: 0, z: 263.4}
+    - {x: -75, y: 0, z: 275}
+  - Id: Course_Finish
+    FromNodeId: COURSE_06
+    ToNodeId: COURSE_FINISH
+    Kind: 1
+    Bidirectional: 1
+    Width: 22
+    SpeedLimitMps: 22
+    Access: 7
+    Features: 1344
+    Centerline:
+    - {x: -75, y: 0, z: 275}
+    - {x: -57.6, y: 0, z: 292.4}
+    - {x: -53.34722, y: 0, z: 296.5377}
+    - {x: -48.988888, y: 0, z: 300.5508}
+    - {x: -44.525, y: 0, z: 304.4393}
+    - {x: -39.95556, y: 0, z: 308.20316}
+    - {x: -35.280563, y: 0, z: 311.84247}
+    - {x: -30.500011, y: 0, z: 315.35715}
+    - {x: -17.642166, y: 0, z: 324.54132}
+    - {x: -15.1903925, y: 0, z: 326.4426}
+    - {x: -12.929852, y: 0, z: 328.50723}
+    - {x: -10.860541, y: 0, z: 330.73535}
+    - {x: -8.982463, y: 0, z: 333.12683}
+    - {x: -7.295616, y: 0, z: 335.6817}
+    - {x: -5.8, y: 0, z: 338.4}
+    - {x: 0, y: 0, z: 350}

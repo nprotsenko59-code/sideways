@@ -11,6 +11,7 @@ namespace Sideways.Configuration
         [Min(0f)] public float baseConsumptionPerSecond = 0.22f;
         [Min(0f)] public float speedConsumptionPerMeter = 0.008f;
         [Min(0f)] public float minimumConsumptionSpeed = 0.5f;
+        [Min(1f)] public float emergencyResetFuel = 15f;
 
         [Header("Pickups")]
         [Min(1)] public int coinPoints = 100;
@@ -25,9 +26,9 @@ namespace Sideways.Configuration
                 error = "Starting fuel must be between zero and the tank maximum.";
                 return false;
             }
-            if (baseConsumptionPerSecond < 0f || speedConsumptionPerMeter < 0f || minimumConsumptionSpeed < 0f)
+            if (baseConsumptionPerSecond < 0f || speedConsumptionPerMeter < 0f || minimumConsumptionSpeed < 0f || emergencyResetFuel <= 0f)
             {
-                error = "Fuel consumption values cannot be negative.";
+                error = "Fuel consumption values cannot be negative and emergency reset fuel must be positive.";
                 return false;
             }
             if (coinPoints <= 0 || canisterFuel <= 0f || coinRespawnDelay <= 0f || canisterRespawnDelay <= 0f)

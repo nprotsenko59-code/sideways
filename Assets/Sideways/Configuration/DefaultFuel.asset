@@ -17,6 +17,7 @@ MonoBehaviour:
   baseConsumptionPerSecond: 0.22
   speedConsumptionPerMeter: 0.008
   minimumConsumptionSpeed: 0.5
+  emergencyResetFuel: 15
   coinPoints: 100
   canisterFuel: 35
   coinRespawnDelay: 20

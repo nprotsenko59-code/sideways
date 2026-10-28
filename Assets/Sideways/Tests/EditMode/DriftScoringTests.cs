@@ -52,6 +52,22 @@ namespace Sideways.Tests
         }
 
         [Test]
+        public void ComboGraceCanBeHeldDuringAQualifyingJump()
+        {
+            var model = new DriftScoringModel(profile);
+            for (var i = 0; i < 5; i++) model.Tick(EligibleTelemetry(), 0.1f);
+            var activeScore = model.Snapshot.ActiveComboScore;
+
+            model.SetComboGraceHeld(true);
+            for (var i = 0; i < 25; i++) model.Tick(IneligibleTelemetry(), 0.1f);
+
+            Assert.That(model.Snapshot.ActiveComboScore, Is.EqualTo(activeScore));
+            model.SetComboGraceHeld(false);
+            for (var i = 0; i < 16; i++) model.Tick(IneligibleTelemetry(), 0.1f);
+            Assert.That(model.Snapshot.ActiveComboScore, Is.Zero);
+        }
+
+        [Test]
         public void ComboCancellationNeverDeductsBankedScore()
         {
             var model = new DriftScoringModel(profile);

@@ -90,6 +90,7 @@ namespace Sideways.Traffic
             for (var attempt = 0; attempt < profile.spawnAttempts; attempt++)
             {
                 var edge = roadGraph.Edges[Random.Range(0, roadGraph.Edges.Count)];
+                if (!edge.Supports(RoadAccess.Traffic)) continue;
                 var segment = Random.Range(0, edge.Centerline.Count - 1);
                 var t = Random.Range(0.15f, 0.85f);
                 var position = Vector3.Lerp(edge.Centerline[segment], edge.Centerline[segment + 1], t);

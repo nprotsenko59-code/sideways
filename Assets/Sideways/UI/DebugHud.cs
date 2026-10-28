@@ -46,11 +46,12 @@ namespace Sideways.UI
             var telemetry = vehicle.Telemetry;
             text.text =
                 $"SPEED  {telemetry.Speed * 3.6f,5:0.0} km/h\n" +
-                $"STEER  {telemetry.Steering,5:0.00}\n" +
-                $"SLIP   {telemetry.SlipAngle,5:0.0}°\n" +
+                $"STEER  {telemetry.Steering,5:0.00}  {telemetry.SteeringAngleDegrees,5:0.0}°\n" +
+                $"SLIP   {telemetry.SlipAngle,5:0.0}°  F {telemetry.FrontSlipAngle,5:0.0}°  R {telemetry.RearSlipAngle,5:0.0}°\n" +
+                $"GRIP   F {telemetry.FrontGripUtilization,4:0.00}  R {telemetry.RearGripUtilization,4:0.00}\n" +
+                $"DRIFT  {(telemetry.Drifting ? "YES" : "NO ")}  {telemetry.DriftIntensity,4:0.00}  HOLD {telemetry.ControlDriftStrength,4:0.00}\n" +
                 $"GROUND {(telemetry.Grounded ? "YES" : "NO ")}\n" +
-                $"DRIFT  {(telemetry.Drifting ? "YES" : "NO ")}\n" +
-                $"BRAKE  {(telemetry.Handbrake ? "ON " : "OFF")}\n" +
+                $"BRAKE  {(telemetry.Brake ? "ON " : "OFF")}\n" +
                 $"YAW    {telemetry.YawRateDegrees,5:0.0}°/s\n" +
                 $"TILT   {telemetry.AngleFromUpright,5:0.0}°\n" +
                 $"RESET  {(recovery != null && recovery.CanReset ? "READY" : "WAIT ")}\n" +

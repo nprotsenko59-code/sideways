@@ -1,6 +1,6 @@
 %YAML 1.1
 %TAG !u! tag:unity3d.com,2011:
---- !u!1 &5811500989479660888
+--- !u!1 &668871944880052253
 GameObject:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
@@ -8,9 +8,9 @@ GameObject:
   m_PrefabAsset: {fileID: 0}
   serializedVersion: 6
   m_Component:
-  - component: {fileID: 5489032061157023047}
-  - component: {fileID: 3564224046658809721}
-  - component: {fileID: 4803968233459594768}
+  - component: {fileID: 7175941057615432751}
+  - component: {fileID: 1132532696169299367}
+  - component: {fileID: 5217510764008046899}
   m_Layer: 0
   m_Name: Cabin
   m_TagString: Untagged
@@ -18,36 +18,36 @@ GameObject:
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
   m_IsActive: 1
---- !u!4 &5489032061157023047
+--- !u!4 &7175941057615432751
 Transform:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 5811500989479660888}
+  m_GameObject: {fileID: 668871944880052253}
   serializedVersion: 2
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
   m_LocalPosition: {x: 0, y: 0.75, z: -0.1}
   m_LocalScale: {x: 0.82, y: 0.72, z: 0.48}
   m_ConstrainProportionsScale: 0
   m_Children: []
-  m_Father: {fileID: 3697267836835951576}
+  m_Father: {fileID: 7184503837220172725}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
---- !u!33 &3564224046658809721
+--- !u!33 &1132532696169299367
 MeshFilter:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 5811500989479660888}
+  m_GameObject: {fileID: 668871944880052253}
   m_Mesh: {fileID: 10202, guid: 0000000000000000e000000000000000, type: 0}
---- !u!23 &4803968233459594768
+--- !u!23 &5217510764008046899
 MeshRenderer:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 5811500989479660888}
+  m_GameObject: {fileID: 668871944880052253}
   m_Enabled: 1
   m_CastShadows: 1
   m_ReceiveShadows: 1
@@ -90,7 +90,7 @@ MeshRenderer:
   m_SortingOrder: 0
   m_MaskInteraction: 0
   m_AdditionalVertexStreams: {fileID: 0}
---- !u!1 &8388619840866097789
+--- !u!1 &2781819175151617786
 GameObject:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
@@ -98,9 +98,9 @@ GameObject:
   m_PrefabAsset: {fileID: 0}
   serializedVersion: 6
   m_Component:
-  - component: {fileID: 3697267836835951576}
-  - component: {fileID: 1203525887507854834}
-  - component: {fileID: 4886073995748242043}
+  - component: {fileID: 7184503837220172725}
+  - component: {fileID: 4511365544178514352}
+  - component: {fileID: 2929377798886362860}
   m_Layer: 0
   m_Name: Visual
   m_TagString: Untagged
@@ -108,37 +108,37 @@ GameObject:
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
   m_IsActive: 1
---- !u!4 &3697267836835951576
+--- !u!4 &7184503837220172725
 Transform:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 8388619840866097789}
+  m_GameObject: {fileID: 2781819175151617786}
   serializedVersion: 2
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
   m_LocalPosition: {x: 0, y: 0.58, z: 0}
   m_LocalScale: {x: 1.85, y: 0.85, z: 4}
   m_ConstrainProportionsScale: 0
   m_Children:
-  - {fileID: 5489032061157023047}
-  m_Father: {fileID: 3875747115793486098}
+  - {fileID: 7175941057615432751}
+  m_Father: {fileID: 665634838480713035}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
---- !u!33 &1203525887507854834
+--- !u!33 &4511365544178514352
 MeshFilter:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 8388619840866097789}
+  m_GameObject: {fileID: 2781819175151617786}
   m_Mesh: {fileID: 10202, guid: 0000000000000000e000000000000000, type: 0}
---- !u!23 &4886073995748242043
+--- !u!23 &2929377798886362860
 MeshRenderer:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 8388619840866097789}
+  m_GameObject: {fileID: 2781819175151617786}
   m_Enabled: 1
   m_CastShadows: 1
   m_ReceiveShadows: 1
@@ -181,7 +181,7 @@ MeshRenderer:
   m_SortingOrder: 0
   m_MaskInteraction: 0
   m_AdditionalVertexStreams: {fileID: 0}
---- !u!1 &9128243235614417365
+--- !u!1 &7636595037403695601
 GameObject:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
@@ -189,13 +189,14 @@ GameObject:
   m_PrefabAsset: {fileID: 0}
   serializedVersion: 6
   m_Component:
-  - component: {fileID: 3875747115793486098}
-  - component: {fileID: 1367892083219679065}
-  - component: {fileID: 5840186928546778403}
-  - component: {fileID: 7964999596608459881}
-  - component: {fileID: 8240201437824583921}
-  - component: {fileID: 4609673178392222623}
-  - component: {fileID: 205875265390317532}
+  - component: {fileID: 665634838480713035}
+  - component: {fileID: 6744119139325352994}
+  - component: {fileID: 8741433699593323501}
+  - component: {fileID: 6481676972577950285}
+  - component: {fileID: 8963122422831673552}
+  - component: {fileID: 2186686772964182380}
+  - component: {fileID: 3951287159816950342}
+  - component: {fileID: 8471362623445904539}
   m_Layer: 6
   m_Name: PlayerCar
   m_TagString: Untagged
@@ -203,29 +204,29 @@ GameObject:
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
   m_IsActive: 1
---- !u!4 &3875747115793486098
+--- !u!4 &665634838480713035
 Transform:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 9128243235614417365}
+  m_GameObject: {fileID: 7636595037403695601}
   serializedVersion: 2
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
   m_LocalPosition: {x: 0, y: 0, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children:
-  - {fileID: 3697267836835951576}
+  - {fileID: 7184503837220172725}
   m_Father: {fileID: 0}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
---- !u!54 &1367892083219679065
+--- !u!54 &6744119139325352994
 Rigidbody:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 9128243235614417365}
+  m_GameObject: {fileID: 7636595037403695601}
   serializedVersion: 5
   m_Mass: 1100
   m_LinearDamping: 0.08
@@ -246,13 +247,13 @@ Rigidbody:
   m_Interpolate: 1
   m_Constraints: 0
   m_CollisionDetection: 2
---- !u!65 &5840186928546778403
+--- !u!65 &8741433699593323501
 BoxCollider:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 9128243235614417365}
+  m_GameObject: {fileID: 7636595037403695601}
   m_Material: {fileID: 13400000, guid: 03d73b8925f874746a4def0dff327daf, type: 2}
   m_IncludeLayers:
     serializedVersion: 2
@@ -267,53 +268,68 @@ BoxCollider:
   serializedVersion: 3
   m_Size: {x: 2, y: 1.1, z: 4.2}
   m_Center: {x: 0, y: 0.55, z: 0}
---- !u!114 &7964999596608459881
+--- !u!114 &6481676972577950285
 MonoBehaviour:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 9128243235614417365}
+  m_GameObject: {fileID: 7636595037403695601}
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: 272d06319a100405ba2b78523a2034d6, type: 3}
-  m_Name:
+  m_Name: 
   m_EditorClassIdentifier: Sideways.Runtime::Sideways.Vehicle.VehicleInputSource
   response: 4.5
-  touchHandbrakeReleasePulse: 0.25
---- !u!114 &8240201437824583921
+  initialSteeringStrength: 0.38
+  fullDriftHoldDuration: 1.1
+--- !u!114 &8963122422831673552
 MonoBehaviour:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 9128243235614417365}
+  m_GameObject: {fileID: 7636595037403695601}
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: ce6f037312a0145a48439b3ed3db05f1, type: 3}
-  m_Name:
+  m_Name: 
   m_EditorClassIdentifier: Sideways.Runtime::Sideways.Vehicle.VehicleController
-  body: {fileID: 1367892083219679065}
-  inputSourceBehaviour: {fileID: 7964999596608459881}
+  body: {fileID: 6744119139325352994}
+  inputSourceBehaviour: {fileID: 6481676972577950285}
   profile: {fileID: 11400000, guid: 6e752ff219fdd4127a285a0a279fc272, type: 2}
   groundMask:
     serializedVersion: 2
     m_Bits: 129
   centerOfMass: {x: 0, y: -0.35, z: 0}
---- !u!114 &4609673178392222623
+--- !u!114 &2186686772964182380
 MonoBehaviour:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 9128243235614417365}
+  m_GameObject: {fileID: 7636595037403695601}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 54b911e9328d4e0eb7fe55bc7265ca91, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Sideways.Runtime::Sideways.Vehicle.VehicleDriftEffects
+  vehicle: {fileID: 8963122422831673552}
+  bodyVisual: {fileID: 7184503837220172725}
+--- !u!114 &3951287159816950342
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 7636595037403695601}
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: a5d1cd78bc73a466783f563c988b9fc4, type: 3}
-  m_Name:
+  m_Name: 
   m_EditorClassIdentifier: Sideways.Runtime::Sideways.Vehicle.VehicleRecovery
-  controller: {fileID: 8240201437824583921}
-  inputSource: {fileID: 7964999596608459881}
+  controller: {fileID: 8963122422831673552}
+  inputSource: {fileID: 6481676972577950285}
   rules: {fileID: 11400000, guid: 9e082b7e9b49946a4bf4032310c5d324, type: 2}
   roadMask:
     serializedVersion: 2
@@ -322,17 +338,17 @@ MonoBehaviour:
     serializedVersion: 2
     m_Bits: 1792
   clearanceHalfExtents: {x: 1.2, y: 0.6, z: 2.2}
---- !u!114 &205875265390317532
+--- !u!114 &8471362623445904539
 MonoBehaviour:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 9128243235614417365}
+  m_GameObject: {fileID: 7636595037403695601}
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: 5378da89a666a4326b45f0a9d061522f, type: 3}
-  m_Name:
+  m_Name: 
   m_EditorClassIdentifier: Sideways.Runtime::Sideways.Vehicle.VehicleCollisionSensor
   obstacleMask:
     serializedVersion: 2

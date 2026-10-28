@@ -55,7 +55,6 @@ namespace Sideways.Police
             }
 
             var target = waypoints[waypointIndex];
-            target.y = body.position.y;
             var delta = target - body.position;
             if (delta.sqrMagnitude <= profile.waypointTolerance * profile.waypointTolerance)
             {
@@ -66,11 +65,10 @@ namespace Sideways.Police
                     return;
                 }
                 target = waypoints[waypointIndex];
-                target.y = body.position.y;
                 delta = target - body.position;
             }
 
-            var desiredDirection = Vector3.ProjectOnPlane(delta, Vector3.up).normalized;
+            var desiredDirection = delta.normalized;
             if (desiredDirection.sqrMagnitude < 0.001f) return;
             var desiredRotation = Quaternion.LookRotation(desiredDirection, Vector3.up);
             var rotation = Quaternion.RotateTowards(body.rotation, desiredRotation, profile.turnRate * Time.fixedDeltaTime);
@@ -118,7 +116,7 @@ namespace Sideways.Police
         public void SetSearchDestination(Vector3 estimatedPosition, int searchIndex)
         {
             if (roadGraph == null || profile == null) return;
-            var anchor = roadGraph.FindNearestNode(estimatedPosition);
+            var anchor = roadGraph.FindNearestNode(estimatedPosition, RoadAccess.Police);
             if (anchor == null) return;
 
             searchNodes.Clear();
@@ -126,7 +124,7 @@ namespace Sideways.Police
             for (var i = 0; i < roadGraph.Nodes.Count; i++)
             {
                 var node = roadGraph.Nodes[i];
-                if ((node.Position - anchor.Position).sqrMagnitude <= radiusSquared) searchNodes.Add(node);
+                if ((node.Position - anchor.Position).sqrMagnitude <= radiusSquared && roadGraph.FindNearestNode(node.Position, RoadAccess.Police) == node) searchNodes.Add(node);
             }
 
             searchNodes.Sort((left, right) =>
@@ -150,14 +148,14 @@ namespace Sideways.Police
 
         private void BuildRoute(Vector3 destination, bool force)
         {
-            var start = roadGraph.FindNearestNode(body.position);
-            var goal = roadGraph.FindNearestNode(destination);
+            var start = roadGraph.FindNearestNode(body.position, RoadAccess.Police);
+            var goal = roadGraph.FindNearestNode(destination, RoadAccess.Police);
             if (!force && goal != null && goal.Id == currentGoalNodeId && hasDestination && waypointIndex < waypoints.Count) return;
 
             waypoints.Clear();
             waypointIndex = 0;
             currentGoalNodeId = goal?.Id;
-            if (start == null || goal == null || !roadGraph.TryFindRoute(start.Id, goal.Id, routeEdges))
+            if (start == null || goal == null || !roadGraph.TryFindRoute(start.Id, goal.Id, routeEdges, RoadAccess.Police))
             {
                 waypoints.Add(destination);
                 hasDestination = true;
@@ -171,17 +169,17 @@ namespace Sideways.Police
                 var forward = string.Equals(edge.FromNodeId, currentNodeId, StringComparison.Ordinal);
                 if (forward)
                 {
-                    for (var i = 1; i < edge.Centerline.Count; i++) waypoints.Add(edge.Centerline[i]);
+                    for (var i = 1; i < edge.Centerline.Count; i++) waypoints.Add(edge.Centerline[i] + Vector3.up * 0.65f);
                     currentNodeId = edge.ToNodeId;
                 }
                 else
                 {
-                    for (var i = edge.Centerline.Count - 2; i >= 0; i--) waypoints.Add(edge.Centerline[i]);
+                    for (var i = edge.Centerline.Count - 2; i >= 0; i--) waypoints.Add(edge.Centerline[i] + Vector3.up * 0.65f);
                     currentNodeId = edge.FromNodeId;
                 }
             }
 
-            if (waypoints.Count == 0 || Vector3.Distance(waypoints[^1], destination) > profile.waypointTolerance) waypoints.Add(destination);
+            if (waypoints.Count == 0) waypoints.Add(goal.Position + Vector3.up * 0.65f);
             hasDestination = true;
         }
 

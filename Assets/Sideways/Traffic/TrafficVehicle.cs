@@ -1,5 +1,6 @@
 using Sideways.Configuration;
 using Sideways.EnvironmentSystem;
+using System.Collections.Generic;
 using UnityEngine;
 
 namespace Sideways.Traffic
@@ -21,6 +22,7 @@ namespace Sideways.Traffic
         private Vector3 claimedJunctionPosition;
         private float respawnAvailableTime;
         private bool wrecked;
+        private readonly List<RoadGraphEdge> junctionChoices = new();
 
         public Vector3 Velocity => velocity;
         public bool IsWrecked => wrecked;
@@ -33,17 +35,15 @@ namespace Sideways.Traffic
             if (body == null || edge == null || profile == null) return;
             ReleaseClearedJunction();
             var target = GetLanePoint(waypointIndex);
-            target.y = body.position.y;
             var delta = target - body.position;
             if (delta.sqrMagnitude <= profile.waypointTolerance * profile.waypointTolerance)
             {
                 if (!AdvanceWaypoint()) return;
                 target = GetLanePoint(waypointIndex);
-                target.y = body.position.y;
                 delta = target - body.position;
             }
 
-            var direction = Vector3.ProjectOnPlane(delta, Vector3.up).normalized;
+            var direction = delta.normalized;
             if (direction.sqrMagnitude < 0.001f) return;
             var blocked = Physics.SphereCast(body.position + Vector3.up * 0.6f, 0.8f, transform.forward, out _, profile.obstacleLookAhead, (1 << 6) | (1 << 8) | (1 << 9) | (1 << 10), QueryTriggerInteraction.Ignore);
             if (!HasJunctionPriority()) blocked = true;
@@ -85,8 +85,9 @@ namespace Sideways.Traffic
             var direction = forward ? (b - a).normalized : (a - b).normalized;
             var center = Vector3.Lerp(a, b, segmentT);
             var right = Vector3.Cross(Vector3.up, direction).normalized;
-            body.position = center + right * profile.laneOffset + Vector3.up * 0.65f;
-            body.rotation = Quaternion.LookRotation(direction, Vector3.up);
+            var roadUp = Vector3.Cross(direction, right).normalized;
+            body.position = center + right * profile.laneOffset + roadUp * 0.65f;
+            body.rotation = Quaternion.LookRotation(direction, roadUp);
             waypointIndex = forward ? segmentIndex + 1 : segmentIndex;
             speed = Random.Range(profile.minimumSpeed, profile.maximumSpeed);
             velocity = direction * speed;
@@ -113,17 +114,17 @@ namespace Sideways.Traffic
             if (waypointIndex >= 0 && waypointIndex < edge.Centerline.Count) return true;
 
             var nodeId = forward ? edge.ToNodeId : edge.FromNodeId;
-            RoadGraphEdge next = null;
+            junctionChoices.Clear();
             for (var i = 0; i < roadGraph.Edges.Count; i++)
             {
                 var candidate = roadGraph.Edges[i];
-                if (candidate == edge) continue;
+                if (candidate == edge || !candidate.Supports(RoadAccess.Traffic)) continue;
                 if (candidate.FromNodeId == nodeId || (candidate.Bidirectional && candidate.ToNodeId == nodeId))
                 {
-                    next = candidate;
-                    break;
+                    junctionChoices.Add(candidate);
                 }
             }
+            var next = junctionChoices.Count > 0 ? junctionChoices[Random.Range(0, junctionChoices.Count)] : null;
             if (next == null) return false;
             edge = next;
             forward = edge.FromNodeId == nodeId;
@@ -140,7 +141,9 @@ namespace Sideways.Traffic
                 : edge.Centerline[Mathf.Min(edge.Centerline.Count - 1, index + 1)];
             var direction = forward ? (point - adjacent).normalized : (point - adjacent).normalized;
             if (direction.sqrMagnitude < 0.001f) direction = transform.forward;
-            return point + Vector3.Cross(Vector3.up, direction).normalized * profile.laneOffset;
+            var right = Vector3.Cross(Vector3.up, direction).normalized;
+            var roadUp = Vector3.Cross(direction, right).normalized;
+            return point + right * profile.laneOffset + roadUp * 0.65f;
         }
 
         private bool HasJunctionPriority()
@@ -148,7 +151,7 @@ namespace Sideways.Traffic
             var finalWaypoint = forward ? edge.Centerline.Count - 1 : 0;
             if (waypointIndex != finalWaypoint) return true;
             var junctionId = forward ? edge.ToNodeId : edge.FromNodeId;
-            var junctionPosition = edge.Centerline[finalWaypoint];
+            var junctionPosition = GetLanePoint(finalWaypoint);
             if ((body.position - junctionPosition).sqrMagnitude > profile.intersectionYieldDistance * profile.intersectionYieldDistance) return true;
             if (!TrafficJunctionCoordinator.TryClaim(junctionId, GetHashCode())) return false;
             claimedJunctionId = junctionId;

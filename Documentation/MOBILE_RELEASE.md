@@ -5,7 +5,7 @@
 - Unity `6000.6.6f1`, URP and IL2CPP.
 - iOS 15.0 or newer.
 - iPhone is the primary device family.
-- Landscape left and landscape right are supported; portrait is disabled.
+- Portrait is the only supported gameplay orientation; upside-down portrait and both landscape orientations are disabled.
 - The performance target is 60 FPS on iPhone 15-class hardware or newer.
 
 ## Player-facing polish
@@ -34,8 +34,8 @@
 
 The following cannot be accepted from the Editor or Simulator:
 
-1. Safe-area layout in both landscape orientations.
-2. Touch steering, downward-swipe handbrake and settings interaction.
+1. Portrait safe-area layout across supported iPhone aspect ratios.
+2. Left/right hold-to-drift steering, service-brake input and settings interaction.
 3. Audio routing and haptic feel on hardware.
 4. Ten-minute thermal/performance capture at 60 FPS.
 5. Zero recurring managed allocations during steady-state driving.

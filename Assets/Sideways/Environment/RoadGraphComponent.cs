@@ -12,13 +12,13 @@ namespace Sideways.EnvironmentSystem
 
         private void Awake()
         {
-            // The terrain is the continuous driving surface. Road boxes only mark
-            // where recovery is allowed; keeping them solid creates internal faces
-            // at segment joins that fast-moving vehicles can hit like invisible walls.
+            // Layer-7 road volumes identify recovery/navigation surfaces and stay
+            // non-solid so their joins cannot catch a fast vehicle. Elevated ribbon
+            // MeshColliders are physical support and must remain solid.
             var roadVolumes = GetComponentsInChildren<Collider>(true);
             for (var i = 0; i < roadVolumes.Length; i++)
             {
-                roadVolumes[i].isTrigger = true;
+                if (roadVolumes[i].gameObject.layer == 7) roadVolumes[i].isTrigger = true;
             }
         }
 

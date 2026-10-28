@@ -22,6 +22,10 @@ namespace Sideways.Collectibles
 
         private void Awake() => EnsureModel();
 
+        private void OnEnable() => GameplayEvents.RoadReset += HandleRoadReset;
+
+        private void OnDisable() => GameplayEvents.RoadReset -= HandleRoadReset;
+
         private void Update()
         {
             EnsureModel();
@@ -74,6 +78,18 @@ namespace Sideways.Collectibles
         private void EnsureModel()
         {
             if (fuel == null && profile != null) fuel = new FuelModel(profile);
+        }
+
+        private void HandleRoadReset() => RestoreEmergencyFuel();
+
+        public bool RestoreEmergencyFuel()
+        {
+            EnsureModel();
+            if (fuel == null || profile == null || !fuel.IsEmpty) return false;
+            if (fuel.Refuel(profile.emergencyResetFuel) <= 0f) return false;
+            vehicle?.SetPropulsionEnabled(true);
+            ResourcesUpdated?.Invoke(Snapshot);
+            return true;
         }
     }
 }

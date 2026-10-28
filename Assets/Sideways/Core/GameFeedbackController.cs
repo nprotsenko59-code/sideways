@@ -18,28 +18,36 @@ namespace Sideways.Core
 
         private AudioSource engineSource;
         private AudioSource effectsSource;
+        private AudioSource tireSource;
         private AudioClip pickupClip;
         private AudioClip rewardClip;
         private AudioClip impactClip;
         private AudioClip resetClip;
         private float nextHapticTime;
         private bool subscribed;
+        private bool wasDrifting;
 
         private void Awake()
         {
             engineSource = gameObject.AddComponent<AudioSource>();
             effectsSource = gameObject.AddComponent<AudioSource>();
+            tireSource = gameObject.AddComponent<AudioSource>();
             engineSource.loop = true;
+            tireSource.loop = true;
             engineSource.playOnAwake = false;
+            tireSource.playOnAwake = false;
             engineSource.spatialBlend = 0f;
             effectsSource.playOnAwake = false;
             effectsSource.spatialBlend = 0f;
+            tireSource.spatialBlend = 0f;
             engineSource.clip = CreateTone("EngineLoop", 78f, 1f, 0.12f, false);
+            tireSource.clip = CreateLoopNoise("TireLoop", 1f, 0.24f);
             pickupClip = CreateTone("Pickup", 660f, 0.12f, 0.26f, true);
             rewardClip = CreateTone("Reward", 440f, 0.3f, 0.28f, true);
             impactClip = CreateNoise("Impact", 0.16f, 0.34f);
             resetClip = CreateTone("Reset", 180f, 0.2f, 0.22f, true);
             engineSource.Play();
+            tireSource.Play();
         }
 
         private void OnEnable() => Subscribe();
@@ -51,6 +59,16 @@ namespace Sideways.Core
             var speed = vehicle.Telemetry.Speed;
             engineSource.pitch = Mathf.Lerp(0.72f, 1.55f, Mathf.Clamp01(speed / 30f));
             engineSource.volume = Mathf.Lerp(0.05f, 0.22f, Mathf.Clamp01(speed / 24f));
+            var telemetry = vehicle.Telemetry;
+            if (tireSource != null)
+            {
+                var speedFactor = Mathf.InverseLerp(4f, 18f, telemetry.Speed);
+                tireSource.volume = telemetry.Grounded ? telemetry.DriftIntensity * speedFactor * 0.3f : 0f;
+                tireSource.pitch = Mathf.Lerp(0.78f, 1.22f, Mathf.Clamp01(Mathf.Abs(telemetry.RearSlipAngle) / 40f));
+            }
+
+            if (telemetry.Drifting && !wasDrifting) Vibrate();
+            wasDrifting = telemetry.Drifting;
         }
 
         public void Configure(
@@ -121,6 +139,7 @@ namespace Sideways.Core
         private void HandleRideEnded(RideEndReason reason)
         {
             engineSource?.Stop();
+            tireSource?.Stop();
             Play(impactClip, 0.7f);
             Vibrate();
         }
@@ -167,6 +186,32 @@ namespace Sideways.Core
                 var envelope = 1f - i / (float)sampleCount;
                 samples[i] = ((float)random.NextDouble() * 2f - 1f) * amplitude * envelope;
             }
+            var clip = AudioClip.Create(name, sampleCount, 1, sampleRate, false);
+            clip.SetData(samples, 0);
+            return clip;
+        }
+
+        private static AudioClip CreateLoopNoise(string name, float duration, float amplitude)
+        {
+            const int sampleRate = 24000;
+            var sampleCount = Mathf.CeilToInt(sampleRate * duration);
+            var samples = new float[sampleCount];
+            var random = new System.Random(9323);
+            var filtered = 0f;
+            for (var i = 0; i < sampleCount; i++)
+            {
+                var noise = (float)random.NextDouble() * 2f - 1f;
+                filtered = Mathf.Lerp(filtered, noise, 0.18f);
+                samples[i] = filtered * amplitude;
+            }
+
+            var seam = Mathf.Min(256, sampleCount / 4);
+            for (var i = 0; i < seam; i++)
+            {
+                var blend = i / (float)seam;
+                samples[i] = Mathf.Lerp(samples[sampleCount - seam + i], samples[i], blend);
+            }
+
             var clip = AudioClip.Create(name, sampleCount, 1, sampleRate, false);
             clip.SetData(samples, 0);
             return clip;

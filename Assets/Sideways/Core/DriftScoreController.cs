@@ -105,6 +105,12 @@ namespace Sideways.Core
             return true;
         }
 
+        public void SetComboGraceHeld(bool held)
+        {
+            EnsureModel();
+            model?.SetComboGraceHeld(held);
+        }
+
         private void Publish() => ScoreUpdated?.Invoke(Snapshot);
     }
 }

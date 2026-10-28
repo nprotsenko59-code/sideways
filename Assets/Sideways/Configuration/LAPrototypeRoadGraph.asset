@@ -12,84 +12,208 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: d6396e09f93024beca3a68c043e6fb39, type: 3}
   m_Name: LAPrototypeRoadGraph
   m_EditorClassIdentifier: Sideways.Runtime::Sideways.EnvironmentSystem.RoadGraphAsset
-  graphId: sunset-basin
-  driveableSize: {x: 520, y: 420}
+  graphId: sunset-basin-schema
+  driveableSize: {x: 900, y: 720}
   nodes:
   - Id: G_NW
-    Position: {x: -120, y: 0, z: 100}
+    Position: {x: -245, y: 0, z: 10}
     Role: 0
     AllowsDeadEnd: 0
   - Id: G_NC
-    Position: {x: 0, y: 0, z: 100}
+    Position: {x: -65, y: 0, z: 25}
     Role: 1
     AllowsDeadEnd: 0
   - Id: G_NE
-    Position: {x: 120, y: 0, z: 100}
+    Position: {x: 115, y: 0, z: 20}
     Role: 0
     AllowsDeadEnd: 0
   - Id: G_W
-    Position: {x: -120, y: 0, z: 0}
+    Position: {x: -255, y: 0, z: -85}
     Role: 0
     AllowsDeadEnd: 0
   - Id: G_C
-    Position: {x: 0, y: 0, z: 0}
+    Position: {x: -45, y: 0, z: -75}
     Role: 1
     AllowsDeadEnd: 0
   - Id: G_E
-    Position: {x: 120, y: 0, z: 0}
+    Position: {x: 155, y: 0, z: -70}
     Role: 0
     AllowsDeadEnd: 0
   - Id: G_SW
-    Position: {x: -120, y: 0, z: -100}
+    Position: {x: -175, y: 0, z: -185}
     Role: 0
     AllowsDeadEnd: 0
   - Id: G_SC
-    Position: {x: 0, y: 0, z: -100}
+    Position: {x: 0, y: 0, z: -225}
     Role: 0
     AllowsDeadEnd: 0
   - Id: G_SE
-    Position: {x: 120, y: 0, z: -100}
+    Position: {x: 165, y: 0, z: -210}
     Role: 0
     AllowsDeadEnd: 0
   - Id: B_W
-    Position: {x: -220, y: 0, z: -165}
+    Position: {x: -355, y: 0, z: -285}
     Role: 2
     AllowsDeadEnd: 0
   - Id: B_SW
-    Position: {x: -120, y: 0, z: -165}
+    Position: {x: -185, y: 0, z: -285}
     Role: 0
     AllowsDeadEnd: 0
   - Id: B_SC
-    Position: {x: 0, y: 0, z: -165}
+    Position: {x: 0, y: 0, z: -330}
     Role: 1
     AllowsDeadEnd: 0
   - Id: B_SE
-    Position: {x: 120, y: 0, z: -165}
+    Position: {x: 190, y: 0, z: -300}
     Role: 0
     AllowsDeadEnd: 0
   - Id: B_E
-    Position: {x: 220, y: 0, z: -165}
+    Position: {x: 315, y: 0, z: -270}
     Role: 2
     AllowsDeadEnd: 0
   - Id: O_W
-    Position: {x: -225, y: 0, z: -40}
+    Position: {x: -390, y: 0, z: -135}
     Role: 2
     AllowsDeadEnd: 0
   - Id: O_NW
-    Position: {x: -190, y: 0, z: 145}
+    Position: {x: -335, y: 0, z: 15}
     Role: 2
     AllowsDeadEnd: 0
   - Id: O_N
-    Position: {x: 0, y: 0, z: 195}
+    Position: {x: 0, y: 0, z: 335}
     Role: 2
     AllowsDeadEnd: 0
   - Id: O_NE
-    Position: {x: 190, y: 0, z: 145}
+    Position: {x: 390, y: 0, z: 275}
     Role: 2
     AllowsDeadEnd: 0
   - Id: O_E
-    Position: {x: 225, y: 0, z: -40}
+    Position: {x: 405, y: 0, z: -70}
     Role: 2
+    AllowsDeadEnd: 0
+  - Id: U_W
+    Position: {x: -105, y: 8, z: 190}
+    Role: 0
+    AllowsDeadEnd: 0
+  - Id: U_C
+    Position: {x: 35, y: 8, z: 180}
+    Role: 1
+    AllowsDeadEnd: 0
+  - Id: U_E
+    Position: {x: 180, y: 8, z: 175}
+    Role: 0
+    AllowsDeadEnd: 0
+  - Id: R_W
+    Position: {x: -95, y: 6, z: -20}
+    Role: 0
+    AllowsDeadEnd: 0
+  - Id: R_C
+    Position: {x: 0, y: 6, z: -5}
+    Role: 1
+    AllowsDeadEnd: 0
+  - Id: R_E
+    Position: {x: 70, y: 6, z: -55}
+    Role: 0
+    AllowsDeadEnd: 0
+  - Id: H_W
+    Position: {x: -25, y: 3, z: 255}
+    Role: 0
+    AllowsDeadEnd: 0
+  - Id: H_C
+    Position: {x: 0, y: 6, z: 300}
+    Role: 1
+    AllowsDeadEnd: 0
+  - Id: H_E
+    Position: {x: 90, y: 4, z: 260}
+    Role: 0
+    AllowsDeadEnd: 0
+  - Id: E_RN
+    Position: {x: 180, y: 0, z: -125}
+    Role: 0
+    AllowsDeadEnd: 0
+  - Id: E_RE
+    Position: {x: 235, y: 0, z: -155}
+    Role: 1
+    AllowsDeadEnd: 0
+  - Id: E_RS
+    Position: {x: 205, y: 0, z: -205}
+    Role: 0
+    AllowsDeadEnd: 0
+  - Id: P_LOW
+    Position: {x: -20, y: 2.5, z: -35}
+    Role: 0
+    AllowsDeadEnd: 0
+  - Id: P_N
+    Position: {x: 25, y: 5, z: -12}
+    Role: 0
+    AllowsDeadEnd: 0
+  - Id: P_S
+    Position: {x: 55, y: 5, z: -55}
+    Role: 0
+    AllowsDeadEnd: 0
+  - Id: I_W
+    Position: {x: -305, y: 0, z: -320}
+    Role: 0
+    AllowsDeadEnd: 0
+  - Id: I_C
+    Position: {x: -120, y: 0, z: -320}
+    Role: 1
+    AllowsDeadEnd: 0
+  - Id: I_E
+    Position: {x: 95, y: 0, z: -320}
+    Role: 0
+    AllowsDeadEnd: 0
+  - Id: D_W
+    Position: {x: -125, y: 0, z: -185}
+    Role: 0
+    AllowsDeadEnd: 0
+  - Id: D_E
+    Position: {x: -35, y: 0, z: -175}
+    Role: 0
+    AllowsDeadEnd: 0
+  - Id: L_S
+    Position: {x: -260, y: 8, z: 85}
+    Role: 0
+    AllowsDeadEnd: 0
+  - Id: L_E
+    Position: {x: -115, y: 8, z: 190}
+    Role: 0
+    AllowsDeadEnd: 0
+  - Id: L_N
+    Position: {x: -260, y: 8, z: 300}
+    Role: 1
+    AllowsDeadEnd: 0
+  - Id: L_W
+    Position: {x: -410, y: 8, z: 190}
+    Role: 0
+    AllowsDeadEnd: 0
+  - Id: J_W
+    Position: {x: 180, y: 8, z: 165}
+    Role: 0
+    AllowsDeadEnd: 0
+  - Id: J_N
+    Position: {x: 285, y: 8, z: 235}
+    Role: 0
+    AllowsDeadEnd: 0
+  - Id: J_E
+    Position: {x: 375, y: 8, z: 155}
+    Role: 0
+    AllowsDeadEnd: 0
+  - Id: J_S
+    Position: {x: 285, y: 8, z: 60}
+    Role: 1
+    AllowsDeadEnd: 0
+  - Id: C_M
+    Position: {x: 410, y: 8, z: -55}
+    Role: 0
+    AllowsDeadEnd: 0
+  - Id: C_S
+    Position: {x: 300, y: 8, z: -260}
+    Role: 0
+    AllowsDeadEnd: 0
+  - Id: ESC_W
+    Position: {x: -405, y: 3, z: -245}
+    Role: 0
     AllowsDeadEnd: 0
   edges:
   - Id: Grid_N_WC
@@ -97,338 +221,1732 @@ MonoBehaviour:
     ToNodeId: G_NC
     Kind: 0
     Bidirectional: 1
-    Width: 14
-    SpeedLimitMps: 16
+    Width: 19
+    SpeedLimitMps: 17
+    Access: 7
+    Features: 512
     Centerline:
-    - {x: -120, y: 0, z: 100}
-    - {x: 0, y: 0, z: 100}
+    - {x: -245, y: 0, z: 10}
+    - {x: -201.53307, y: 0, z: 25.523905}
+    - {x: -192.72574, y: 0, z: 28.06938}
+    - {x: -183.99248, y: 0, z: 29.388403}
+    - {x: -175.33327, y: 0, z: 29.480976}
+    - {x: -166.74812, y: 0, z: 28.347101}
+    - {x: -158.23703, y: 0, z: 25.986776}
+    - {x: -149.8, y: 0, z: 22.400002}
+    - {x: -135.22987, y: 0, z: 15.114939}
+    - {x: -128.4652, y: 0, z: 12.257596}
+    - {x: -121.65772, y: 0, z: 10.428862}
+    - {x: -114.807465, y: 0, z: 9.628735}
+    - {x: -107.91443, y: 0, z: 9.857216}
+    - {x: -100.97861, y: 0, z: 11.114304}
+    - {x: -94, y: 0, z: 13.400001}
+    - {x: -65, y: 0, z: 25}
   - Id: Grid_N_CE
     FromNodeId: G_NC
     ToNodeId: G_NE
     Kind: 0
     Bidirectional: 1
-    Width: 14
-    SpeedLimitMps: 16
+    Width: 19
+    SpeedLimitMps: 17
+    Access: 7
+    Features: 512
     Centerline:
-    - {x: 0, y: 0, z: 100}
-    - {x: 120, y: 0, z: 100}
+    - {x: -65, y: 0, z: 25}
+    - {x: -30.199999, y: 0, z: 44.14}
+    - {x: -21.704027, y: 0, z: 48.306774}
+    - {x: -13.016114, y: 0, z: 51.567093}
+    - {x: -4.136259, y: 0, z: 53.920967}
+    - {x: 4.9355392, y: 0, z: 55.368385}
+    - {x: 14.199277, y: 0, z: 55.909348}
+    - {x: 23.65496, y: 0, z: 55.54386}
+    - {x: 40.15851, y: 0, z: 54.129272}
+    - {x: 48.3323, y: 0, z: 53.105328}
+    - {x: 56.29267, y: 0, z: 51.45301}
+    - {x: 64.03963, y: 0, z: 49.172318}
+    - {x: 71.573166, y: 0, z: 46.263252}
+    - {x: 78.893295, y: 0, z: 42.725815}
+    - {x: 86, y: 0, z: 38.56}
+    - {x: 115, y: 0, z: 20}
   - Id: Grid_M_WC
     FromNodeId: G_W
     ToNodeId: G_C
     Kind: 0
     Bidirectional: 1
-    Width: 16
+    Width: 20
     SpeedLimitMps: 18
+    Access: 7
+    Features: 1280
     Centerline:
-    - {x: -120, y: 0, z: 0}
-    - {x: 0, y: 0, z: 0}
+    - {x: -255, y: 0, z: -85}
+    - {x: -217.3, y: 0, z: -90.8}
+    - {x: -208.25311, y: 0, z: -91.7811}
+    - {x: -199.31245, y: 0, z: -91.92439}
+    - {x: -190.47803, y: 0, z: -91.22987}
+    - {x: -181.74983, y: 0, z: -89.69755}
+    - {x: -173.12785, y: 0, z: -87.32742}
+    - {x: -164.61212, y: 0, z: -84.119484}
+    - {x: -149.20929, y: 0, z: -77.518265}
+    - {x: -139.40923, y: 0, z: -73.809906}
+    - {x: -129.4819, y: 0, z: -71.03034}
+    - {x: -119.42732, y: 0, z: -69.179565}
+    - {x: -109.245476, y: 0, z: -68.25758}
+    - {x: -98.93637, y: 0, z: -68.2644}
+    - {x: -88.5, y: 0, z: -69.2}
+    - {x: -45, y: 0, z: -75}
   - Id: Grid_M_CE
     FromNodeId: G_C
     ToNodeId: G_E
     Kind: 0
     Bidirectional: 1
-    Width: 16
+    Width: 20
     SpeedLimitMps: 18
+    Access: 7
+    Features: 1280
     Centerline:
-    - {x: 0, y: 0, z: 0}
-    - {x: 120, y: 0, z: 0}
+    - {x: -45, y: 0, z: -75}
+    - {x: -7.299999, y: 0, z: -59.34}
+    - {x: 1.7070901, y: 0, z: -56.35615}
+    - {x: 10.5283575, y: 0, z: -54.964607}
+    - {x: 19.163803, y: 0, z: -55.165367}
+    - {x: 27.613428, y: 0, z: -56.958427}
+    - {x: 35.87723, y: 0, z: -60.343796}
+    - {x: 43.955215, y: 0, z: -65.321465}
+    - {x: 59.70188, y: 0, z: -76.70751}
+    - {x: 68.24853, y: 0, z: -82.00522}
+    - {x: 77.02306, y: 0, z: -85.70334}
+    - {x: 86.02547, y: 0, z: -87.80188}
+    - {x: 95.25576, y: 0, z: -88.300835}
+    - {x: 104.71394, y: 0, z: -87.20021}
+    - {x: 114.4, y: 0, z: -84.5}
+    - {x: 155, y: 0, z: -70}
   - Id: Grid_S_WC
     FromNodeId: G_SW
     ToNodeId: G_SC
     Kind: 0
     Bidirectional: 1
-    Width: 14
-    SpeedLimitMps: 16
+    Width: 19
+    SpeedLimitMps: 17
+    Access: 7
+    Features: 1280
     Centerline:
-    - {x: -120, y: 0, z: -100}
-    - {x: 0, y: 0, z: -100}
+    - {x: -175, y: 0, z: -185}
+    - {x: -143.1, y: 0, z: -196.6}
+    - {x: -135.38065, y: 0, z: -198.99571}
+    - {x: -127.622574, y: 0, z: -200.58286}
+    - {x: -119.825775, y: 0, z: -201.36142}
+    - {x: -111.99026, y: 0, z: -201.33139}
+    - {x: -104.11603, y: 0, z: -200.4928}
+    - {x: -96.20308, y: 0, z: -198.84563}
+    - {x: -86.36, y: 0, z: -196.3}
+    - {x: -78.30802, y: 0, z: -194.71858}
+    - {x: -70.39208, y: 0, z: -194.17436}
+    - {x: -62.612194, y: 0, z: -194.6673}
+    - {x: -54.96835, y: 0, z: -196.19743}
+    - {x: -47.46054, y: 0, z: -198.76474}
+    - {x: -40.08878, y: 0, z: -202.36923}
+    - {x: 0, y: 0, z: -225}
   - Id: Grid_S_CE
     FromNodeId: G_SC
     ToNodeId: G_SE
     Kind: 0
     Bidirectional: 1
-    Width: 14
-    SpeedLimitMps: 16
+    Width: 19
+    SpeedLimitMps: 17
+    Access: 7
+    Features: 1280
     Centerline:
-    - {x: 0, y: 0, z: -100}
-    - {x: 120, y: 0, z: -100}
+    - {x: 0, y: 0, z: -225}
+    - {x: 38.901115, y: 0, z: -237.96704}
+    - {x: 45.954662, y: 0, z: -239.99934}
+    - {x: 53.049385, y: 0, z: -241.40758}
+    - {x: 60.18528, y: 0, z: -242.19176}
+    - {x: 67.36234, y: 0, z: -242.3519}
+    - {x: 74.58058, y: 0, z: -241.88797}
+    - {x: 81.84, y: 0, z: -240.8}
+    - {x: 90.16, y: 0, z: -239.2}
+    - {x: 97.39208, y: 0, z: -237.6531}
+    - {x: 104.528305, y: 0, z: -235.81244}
+    - {x: 111.56868, y: 0, z: -233.67798}
+    - {x: 118.51321, y: 0, z: -231.24974}
+    - {x: 125.36189, y: 0, z: -228.52773}
+    - {x: 132.11472, y: 0, z: -225.51193}
+    - {x: 165, y: 0, z: -210}
   - Id: Grid_W_NS
     FromNodeId: G_NW
     ToNodeId: G_W
     Kind: 0
     Bidirectional: 1
-    Width: 14
-    SpeedLimitMps: 16
+    Width: 18
+    SpeedLimitMps: 15
+    Access: 7
+    Features: 512
     Centerline:
-    - {x: -120, y: 0, z: 100}
-    - {x: -120, y: 0, z: 0}
+    - {x: -245, y: 0, z: 10}
+    - {x: -265.3, y: 0, z: -13.200001}
+    - {x: -269.53506, y: 0, z: -18.897844}
+    - {x: -272.44028, y: 0, z: -24.791376}
+    - {x: -274.01562, y: 0, z: -30.880596}
+    - {x: -274.26114, y: 0, z: -37.16551}
+    - {x: -273.17676, y: 0, z: -43.6461}
+    - {x: -270.76254, y: 0, z: -50.322388}
+    - {x: -255, y: 0, z: -85}
   - Id: Grid_W_SS
     FromNodeId: G_W
     ToNodeId: G_SW
     Kind: 0
     Bidirectional: 1
-    Width: 14
-    SpeedLimitMps: 16
+    Width: 18
+    SpeedLimitMps: 15
+    Access: 7
+    Features: 1280
     Centerline:
-    - {x: -120, y: 0, z: 0}
-    - {x: -120, y: 0, z: -100}
+    - {x: -255, y: 0, z: -85}
+    - {x: -237.6, y: 0, z: -116.9}
+    - {x: -233.20671, y: 0, z: -124.44729}
+    - {x: -228.42686, y: 0, z: -131.68916}
+    - {x: -223.26044, y: 0, z: -138.62561}
+    - {x: -217.70744, y: 0, z: -145.25662}
+    - {x: -211.76788, y: 0, z: -151.58223}
+    - {x: -205.44176, y: 0, z: -157.60242}
+    - {x: -175, y: 0, z: -185}
   - Id: Grid_C_NS
     FromNodeId: G_NC
     ToNodeId: G_C
     Kind: 0
     Bidirectional: 1
-    Width: 16
-    SpeedLimitMps: 18
+    Width: 18
+    SpeedLimitMps: 15
+    Access: 7
+    Features: 512
     Centerline:
-    - {x: 0, y: 0, z: 100}
-    - {x: 0, y: 0, z: 0}
+    - {x: -65, y: 0, z: 25}
+    - {x: -85.3, y: 0, z: 3.539999}
+    - {x: -89.40089, y: 0, z: -1.6559542}
+    - {x: -91.90355, y: 0, z: -6.8838143}
+    - {x: -92.80798, y: 0, z: -12.143581}
+    - {x: -92.1142, y: 0, z: -17.435255}
+    - {x: -89.82218, y: 0, z: -22.758835}
+    - {x: -85.93194, y: 0, z: -28.114323}
+    - {x: -45, y: 0, z: -75}
   - Id: Grid_C_SS
     FromNodeId: G_C
     ToNodeId: G_SC
     Kind: 0
     Bidirectional: 1
-    Width: 16
-    SpeedLimitMps: 18
+    Width: 18
+    SpeedLimitMps: 16
+    Access: 7
+    Features: 512
     Centerline:
-    - {x: 0, y: 0, z: 0}
-    - {x: 0, y: 0, z: -100}
+    - {x: -45, y: 0, z: -75}
+    - {x: -22.398727, y: 0, z: -107.28753}
+    - {x: -18.901894, y: 0, z: -113.22467}
+    - {x: -16.677212, y: 0, z: -119.22779}
+    - {x: -15.724682, y: 0, z: -125.29688}
+    - {x: -16.044304, y: 0, z: -131.43195}
+    - {x: -17.636076, y: 0, z: -137.63298}
+    - {x: -20.5, y: 0, z: -143.9}
+    - {x: -24.5, y: 0, z: -151.1}
+    - {x: -27.385897, y: 0, z: -157.38168}
+    - {x: -29.04359, y: 0, z: -163.62674}
+    - {x: -29.473078, y: 0, z: -169.83517}
+    - {x: -28.67436, y: 0, z: -176.00696}
+    - {x: -26.647438, y: 0, z: -182.14212}
+    - {x: -23.392311, y: 0, z: -188.24066}
+    - {x: 0, y: 0, z: -225}
   - Id: Grid_E_NS
     FromNodeId: G_NE
     ToNodeId: G_E
     Kind: 0
     Bidirectional: 1
-    Width: 14
+    Width: 18
     SpeedLimitMps: 16
+    Access: 7
+    Features: 1280
     Centerline:
-    - {x: 120, y: 0, z: 100}
-    - {x: 120, y: 0, z: 0}
+    - {x: 115, y: 0, z: 20}
+    - {x: 132.4, y: 0, z: -3.1999989}
+    - {x: 136.3644, y: 0, z: -8.905338}
+    - {x: 139.8576, y: 0, z: -14.821355}
+    - {x: 142.87961, y: 0, z: -20.948048}
+    - {x: 145.43042, y: 0, z: -27.285421}
+    - {x: 147.51003, y: 0, z: -33.833466}
+    - {x: 149.11844, y: 0, z: -40.592194}
+    - {x: 155, y: 0, z: -70}
   - Id: Grid_E_SS
     FromNodeId: G_E
     ToNodeId: G_SE
     Kind: 0
     Bidirectional: 1
-    Width: 14
+    Width: 18
     SpeedLimitMps: 16
+    Access: 7
+    Features: 1280
     Centerline:
-    - {x: 120, y: 0, z: 0}
-    - {x: 120, y: 0, z: -100}
+    - {x: 155, y: 0, z: -70}
+    - {x: 175.48851, y: 0, z: -105.12317}
+    - {x: 179.68396, y: 0, z: -113.488014}
+    - {x: 182.59596, y: 0, z: -121.99796}
+    - {x: 184.22455, y: 0, z: -130.65305}
+    - {x: 184.56969, y: 0, z: -139.45326}
+    - {x: 183.63141, y: 0, z: -148.39857}
+    - {x: 181.40968, y: 0, z: -157.48903}
+    - {x: 165, y: 0, z: -210}
   - Id: Boulevard_W0
     FromNodeId: B_W
     ToNodeId: B_SW
     Kind: 1
     Bidirectional: 1
-    Width: 22
+    Width: 26
     SpeedLimitMps: 24
+    Access: 7
+    Features: 512
     Centerline:
-    - {x: -220, y: 0, z: -165}
-    - {x: -120, y: 0, z: -165}
+    - {x: -355, y: 0, z: -285}
+    - {x: -308.6, y: 0, z: -299.5}
+    - {x: -297.39117, y: 0, z: -302.44662}
+    - {x: -286.16464, y: 0, z: -304.28647}
+    - {x: -274.92047, y: 0, z: -305.01956}
+    - {x: -263.6586, y: 0, z: -304.6459}
+    - {x: -252.37907, y: 0, z: -303.16547}
+    - {x: -241.08185, y: 0, z: -300.57828}
+    - {x: -185, y: 0, z: -285}
   - Id: Boulevard_W1
     FromNodeId: B_SW
     ToNodeId: B_SC
     Kind: 1
     Bidirectional: 1
-    Width: 22
+    Width: 26
     SpeedLimitMps: 24
+    Access: 7
+    Features: 1280
     Centerline:
-    - {x: -120, y: 0, z: -165}
-    - {x: 0, y: 0, z: -165}
+    - {x: -185, y: 0, z: -285}
+    - {x: -130.68764, y: 0, z: -312.1562}
+    - {x: -118.67475, y: 0, z: -317.60846}
+    - {x: -106.42783, y: 0, z: -322.06943}
+    - {x: -93.946915, y: 0, z: -325.53906}
+    - {x: -81.231964, y: 0, z: -328.01736}
+    - {x: -68.283, y: 0, z: -329.50433}
+    - {x: -55.100002, y: 0, z: -330}
+    - {x: 0, y: 0, z: -330}
   - Id: Boulevard_E1
     FromNodeId: B_SC
     ToNodeId: B_SE
     Kind: 1
     Bidirectional: 1
-    Width: 22
+    Width: 26
     SpeedLimitMps: 24
+    Access: 7
+    Features: 1280
     Centerline:
-    - {x: 0, y: 0, z: -165}
-    - {x: 120, y: 0, z: -165}
+    - {x: 0, y: 0, z: -330}
+    - {x: 55.100002, y: 0, z: -330}
+    - {x: 68.34856, y: 0, z: -329.66623}
+    - {x: 81.49422, y: 0, z: -328.66498}
+    - {x: 94.53699, y: 0, z: -326.99622}
+    - {x: 107.47687, y: 0, z: -324.65994}
+    - {x: 120.31385, y: 0, z: -321.65616}
+    - {x: 133.04794, y: 0, z: -317.98486}
+    - {x: 190, y: 0, z: -300}
   - Id: Boulevard_E0
     FromNodeId: B_SE
     ToNodeId: B_E
     Kind: 1
     Bidirectional: 1
-    Width: 22
+    Width: 26
     SpeedLimitMps: 24
+    Access: 7
+    Features: 512
     Centerline:
-    - {x: 120, y: 0, z: -165}
-    - {x: 220, y: 0, z: -165}
+    - {x: 190, y: 0, z: -300}
+    - {x: 235.66718, y: 0, z: -293.4761}
+    - {x: 243.74387, y: 0, z: -292.18063}
+    - {x: 251.75209, y: 0, z: -290.6116}
+    - {x: 259.69177, y: 0, z: -288.769}
+    - {x: 267.56302, y: 0, z: -286.6529}
+    - {x: 275.36575, y: 0, z: -284.2632}
+    - {x: 283.1, y: 0, z: -281.6}
+    - {x: 315, y: 0, z: -270}
   - Id: BoulevardLink_W
     FromNodeId: B_SW
     ToNodeId: G_SW
     Kind: 0
     Bidirectional: 1
-    Width: 16
-    SpeedLimitMps: 18
+    Width: 19
+    SpeedLimitMps: 17
+    Access: 7
+    Features: 1280
     Centerline:
-    - {x: -120, y: 0, z: -165}
-    - {x: -120, y: 0, z: -100}
+    - {x: -185, y: 0, z: -285}
+    - {x: -196.6, y: 0, z: -256}
+    - {x: -198.84343, y: 0, z: -249.0446}
+    - {x: -199.97371, y: 0, z: -242.17839}
+    - {x: -199.99081, y: 0, z: -235.40137}
+    - {x: -198.8948, y: 0, z: -228.71355}
+    - {x: -196.68562, y: 0, z: -222.11493}
+    - {x: -193.3633, y: 0, z: -215.60548}
+    - {x: -175, y: 0, z: -185}
   - Id: BoulevardLink_C
     FromNodeId: B_SC
     ToNodeId: G_SC
     Kind: 0
     Bidirectional: 1
-    Width: 16
+    Width: 20
     SpeedLimitMps: 18
+    Access: 7
+    Features: 1280
     Centerline:
-    - {x: 0, y: 0, z: -165}
-    - {x: 0, y: 0, z: -100}
+    - {x: 0, y: 0, z: -330}
+    - {x: -5.8, y: 0, z: -301}
+    - {x: -6.976917, y: 0, z: -293.99805}
+    - {x: -7.707668, y: 0, z: -286.9922}
+    - {x: -7.9922523, y: 0, z: -279.9824}
+    - {x: -7.8306713, y: 0, z: -272.9687}
+    - {x: -7.2229238, y: 0, z: -265.9511}
+    - {x: -6.16901, y: 0, z: -258.92957}
+    - {x: 0, y: 0, z: -225}
   - Id: BoulevardLink_E
     FromNodeId: B_SE
     ToNodeId: G_SE
     Kind: 0
     Bidirectional: 1
-    Width: 16
-    SpeedLimitMps: 18
+    Width: 19
+    SpeedLimitMps: 17
+    Access: 7
+    Features: 1280
     Centerline:
-    - {x: 120, y: 0, z: -165}
-    - {x: 120, y: 0, z: -100}
+    - {x: 190, y: 0, z: -300}
+    - {x: 198.7, y: 0, z: -273.9}
+    - {x: 200.25734, y: 0, z: -267.7114}
+    - {x: 200.72937, y: 0, z: -261.74554}
+    - {x: 200.11609, y: 0, z: -256.00247}
+    - {x: 198.41747, y: 0, z: -250.48215}
+    - {x: 195.63354, y: 0, z: -245.18462}
+    - {x: 191.76431, y: 0, z: -240.10985}
+    - {x: 165, y: 0, z: -210}
   - Id: Scenic_SW
     FromNodeId: B_W
     ToNodeId: O_W
     Kind: 3
     Bidirectional: 1
-    Width: 15
+    Width: 19
     SpeedLimitMps: 18
+    Access: 7
+    Features: 512
     Centerline:
-    - {x: -220, y: 0, z: -165}
-    - {x: -230, y: 0, z: -130}
-    - {x: -232, y: 0, z: -85}
-    - {x: -225, y: 0, z: -40}
+    - {x: -355, y: 0, z: -285}
+    - {x: -389.45798, y: 0, z: -247.40948}
+    - {x: -395.5515, y: 0, z: -239.73781}
+    - {x: -400.13748, y: 0, z: -231.66243}
+    - {x: -403.21582, y: 0, z: -223.18335}
+    - {x: -404.7866, y: 0, z: -214.30057}
+    - {x: -404.84973, y: 0, z: -205.0141}
+    - {x: -403.4053, y: 0, z: -195.32391}
+    - {x: -390, y: 0, z: -135}
   - Id: Scenic_W
     FromNodeId: O_W
     ToNodeId: O_NW
     Kind: 3
     Bidirectional: 1
-    Width: 15
+    Width: 19
     SpeedLimitMps: 18
+    Access: 7
+    Features: 512
     Centerline:
-    - {x: -225, y: 0, z: -40}
-    - {x: -232, y: 0, z: 20}
-    - {x: -220, y: 0, z: 82}
-    - {x: -190, y: 0, z: 145}
+    - {x: -390, y: 0, z: -135}
+    - {x: -386.96603, y: 0, z: -95.55826}
+    - {x: -385.95697, y: 0, z: -87.16545}
+    - {x: -384.24048, y: 0, z: -79.025894}
+    - {x: -381.81653, y: 0, z: -71.139565}
+    - {x: -378.6851, y: 0, z: -63.506474}
+    - {x: -374.84628, y: 0, z: -56.126617}
+    - {x: -370.3, y: 0, z: -49}
+    - {x: -359.17145, y: 0, z: -33.102077}
+    - {x: -356.19406, y: 0, z: -28.69033}
+    - {x: -353.3762, y: 0, z: -24.189812}
+    - {x: -350.71786, y: 0, z: -19.60052}
+    - {x: -348.21906, y: 0, z: -14.922453}
+    - {x: -345.87976, y: 0, z: -10.155614}
+    - {x: -343.7, y: 0, z: -5.3}
+    - {x: -335, y: 0, z: 15}
   - Id: Scenic_NW
     FromNodeId: O_NW
     ToNodeId: O_N
     Kind: 3
     Bidirectional: 1
-    Width: 15
+    Width: 19
     SpeedLimitMps: 18
+    Access: 7
+    Features: 512
     Centerline:
-    - {x: -190, y: 0, z: 145}
-    - {x: -142, y: 0, z: 176}
-    - {x: -72, y: 0, z: 192}
-    - {x: 0, y: 0, z: 195}
+    - {x: -335, y: 0, z: 15}
+    - {x: -306, y: 0, z: -8.199999}
+    - {x: -298.84497, y: 0, z: -13.446924}
+    - {x: -291.37994, y: 0, z: -17.9877}
+    - {x: -283.6049, y: 0, z: -21.822323}
+    - {x: -275.5198, y: 0, z: -24.950796}
+    - {x: -267.12473, y: 0, z: -27.37312}
+    - {x: -258.4196, y: 0, z: -29.089293}
+    - {x: -247.3, y: 0, z: -30.8}
+    - {x: -238.2206, y: 0, z: -31.872553}
+    - {x: -229.18239, y: 0, z: -32.29021}
+    - {x: -220.1854, y: 0, z: -32.05297}
+    - {x: -211.2296, y: 0, z: -31.160833}
+    - {x: -202.31499, y: 0, z: -29.613802}
+    - {x: -193.44157, y: 0, z: -27.411877}
+    - {x: -179.23033, y: 0, z: -23.35152}
+    - {x: -169.62329, y: 0, z: -20.293001}
+    - {x: -160.28903, y: 0, z: -16.68512}
+    - {x: -151.22758, y: 0, z: -12.52788}
+    - {x: -142.43892, y: 0, z: -7.8212795}
+    - {x: -133.92307, y: 0, z: -2.5653207}
+    - {x: -125.68, y: 0, z: 3.2399998}
+    - {x: -94.32, y: 0, z: 26.76}
+    - {x: -86.62185, y: 0, z: 33.134445}
+    - {x: -79.74074, y: 0, z: 40.097775}
+    - {x: -73.67667, y: 0, z: 47.649994}
+    - {x: -68.429634, y: 0, z: 55.7911}
+    - {x: -63.999638, y: 0, z: 64.52109}
+    - {x: -60.386677, y: 0, z: 73.83997}
+    - {x: -34.613323, y: 0, z: 151.16003}
+    - {x: -31.541454, y: 0, z: 160.80591}
+    - {x: -28.734735, y: 0, z: 170.51692}
+    - {x: -26.193165, y: 0, z: 180.29305}
+    - {x: -23.91674, y: 0, z: 190.13428}
+    - {x: -21.905464, y: 0, z: 200.04063}
+    - {x: -20.159334, y: 0, z: 210.01213}
+    - {x: 0, y: 0, z: 335}
   - Id: Scenic_NE
     FromNodeId: O_N
     ToNodeId: O_NE
     Kind: 3
     Bidirectional: 1
-    Width: 15
-    SpeedLimitMps: 18
+    Width: 19
+    SpeedLimitMps: 19
+    Access: 7
+    Features: 512
     Centerline:
-    - {x: 0, y: 0, z: 195}
-    - {x: 72, y: 0, z: 192}
-    - {x: 142, y: 0, z: 176}
-    - {x: 190, y: 0, z: 145}
+    - {x: 0, y: 0, z: 335}
+    - {x: 64.64201, y: 0, z: 331.59778}
+    - {x: 74.748886, y: 0, z: 330.9585}
+    - {x: 84.83086, y: 0, z: 330.1059}
+    - {x: 94.88791, y: 0, z: 329.03992}
+    - {x: 104.92007, y: 0, z: 327.7606}
+    - {x: 114.92731, y: 0, z: 326.2679}
+    - {x: 124.909645, y: 0, z: 324.5619}
+    - {x: 175.09036, y: 0, z: 315.4381}
+    - {x: 185.04607, y: 0, z: 313.56155}
+    - {x: 194.97339, y: 0, z: 311.5573}
+    - {x: 204.87234, y: 0, z: 309.42538}
+    - {x: 214.74297, y: 0, z: 307.16574}
+    - {x: 224.58519, y: 0, z: 304.7784}
+    - {x: 234.39906, y: 0, z: 302.2634}
+    - {x: 270.60092, y: 0, z: 292.7366}
+    - {x: 280.42325, y: 0, z: 290.2794}
+    - {x: 290.29086, y: 0, z: 288.0655}
+    - {x: 300.20377, y: 0, z: 286.09485}
+    - {x: 310.16193, y: 0, z: 284.36758}
+    - {x: 320.16537, y: 0, z: 282.88358}
+    - {x: 330.21408, y: 0, z: 281.64288}
+    - {x: 390, y: 0, z: 275}
   - Id: Scenic_E
     FromNodeId: O_NE
     ToNodeId: O_E
     Kind: 3
     Bidirectional: 1
-    Width: 15
-    SpeedLimitMps: 18
+    Width: 19
+    SpeedLimitMps: 19
+    Access: 7
+    Features: 512
     Centerline:
-    - {x: 190, y: 0, z: 145}
-    - {x: 220, y: 0, z: 82}
-    - {x: 232, y: 0, z: 20}
-    - {x: 225, y: 0, z: -40}
+    - {x: 390, y: 0, z: 275}
+    - {x: 413.98163, y: 0, z: 213.33295}
+    - {x: 417.34836, y: 0, z: 203.83122}
+    - {x: 420.10294, y: 0, z: 194.21465}
+    - {x: 422.24542, y: 0, z: 184.48325}
+    - {x: 423.77573, y: 0, z: 174.637}
+    - {x: 424.69394, y: 0, z: 164.67592}
+    - {x: 425, y: 0, z: 154.6}
+    - {x: 425, y: 0, z: 95.4}
+    - {x: 424.87625, y: 0, z: 85.27579}
+    - {x: 424.505, y: 0, z: 75.1698}
+    - {x: 423.88623, y: 0, z: 65.082054}
+    - {x: 423.01996, y: 0, z: 55.01254}
+    - {x: 421.90622, y: 0, z: 44.961258}
+    - {x: 420.54492, y: 0, z: 34.928215}
+    - {x: 405, y: 0, z: -70}
   - Id: Scenic_SE
     FromNodeId: O_E
     ToNodeId: B_E
     Kind: 3
     Bidirectional: 1
-    Width: 15
+    Width: 19
     SpeedLimitMps: 18
+    Access: 7
+    Features: 512
     Centerline:
-    - {x: 225, y: 0, z: -40}
-    - {x: 232, y: 0, z: -85}
-    - {x: 230, y: 0, z: -130}
-    - {x: 220, y: 0, z: -165}
+    - {x: 405, y: 0, z: -70}
+    - {x: 401.78516, y: 0, z: -124.65246}
+    - {x: 400.83936, y: 0, z: -134.66884}
+    - {x: 399.192, y: 0, z: -144.48624}
+    - {x: 396.84314, y: 0, z: -154.1047}
+    - {x: 393.79272, y: 0, z: -163.5242}
+    - {x: 390.0408, y: 0, z: -172.74474}
+    - {x: 385.58737, y: 0, z: -181.76633}
+    - {x: 379.08005, y: 0, z: -193.85135}
+    - {x: 374.19446, y: 0, z: -202.42455}
+    - {x: 368.92447, y: 0, z: -210.71172}
+    - {x: 363.27002, y: 0, z: -218.71283}
+    - {x: 357.2311, y: 0, z: -226.42793}
+    - {x: 350.80777, y: 0, z: -233.85698}
+    - {x: 344, y: 0, z: -241}
+    - {x: 315, y: 0, z: -270}
   - Id: HillLink_W
     FromNodeId: O_NW
     ToNodeId: G_NW
     Kind: 0
     Bidirectional: 1
-    Width: 14
+    Width: 17
     SpeedLimitMps: 15
+    Access: 7
+    Features: 0
     Centerline:
-    - {x: -190, y: 0, z: 145}
-    - {x: -120, y: 0, z: 100}
+    - {x: -335, y: 0, z: 15}
+    - {x: -308.9, y: 0, z: 23.7}
+    - {x: -302.6193, y: 0, z: 25.400244}
+    - {x: -296.3772, y: 0, z: 26.300976}
+    - {x: -290.1737, y: 0, z: 26.402191}
+    - {x: -284.00876, y: 0, z: 25.703896}
+    - {x: -277.88245, y: 0, z: 24.206089}
+    - {x: -271.79474, y: 0, z: 21.908768}
+    - {x: -245, y: 0, z: 10}
   - Id: HillLink_C
     FromNodeId: O_N
     ToNodeId: G_NC
     Kind: 0
     Bidirectional: 1
-    Width: 14
+    Width: 17
     SpeedLimitMps: 15
+    Access: 7
+    Features: 0
     Centerline:
-    - {x: 0, y: 0, z: 195}
-    - {x: 0, y: 0, z: 100}
+    - {x: 0, y: 0, z: 335}
+    - {x: -19.221912, y: 0, z: 246.5792}
+    - {x: -20.95313, y: 0, z: 237.70299}
+    - {x: -22.29473, y: 0, z: 228.79387}
+    - {x: -23.246706, y: 0, z: 219.8518}
+    - {x: -23.809061, y: 0, z: 210.87682}
+    - {x: -23.981798, y: 0, z: 201.8689}
+    - {x: -23.764912, y: 0, z: 192.82805}
+    - {x: -21.235088, y: 0, z: 137.17195}
+    - {x: -21.211216, y: 0, z: 128.20166}
+    - {x: -21.96299, y: 0, z: 119.405426}
+    - {x: -23.49041, y: 0, z: 110.78323}
+    - {x: -25.793476, y: 0, z: 102.33509}
+    - {x: -28.872187, y: 0, z: 94.061005}
+    - {x: -32.726547, y: 0, z: 85.96097}
+    - {x: -65, y: 0, z: 25}
   - Id: HillLink_E
     FromNodeId: O_NE
     ToNodeId: G_NE
     Kind: 0
     Bidirectional: 1
-    Width: 14
+    Width: 17
     SpeedLimitMps: 15
+    Access: 7
+    Features: 0
     Centerline:
-    - {x: 190, y: 0, z: 145}
-    - {x: 120, y: 0, z: 100}
+    - {x: 390, y: 0, z: 275}
+    - {x: 322.05048, y: 0, z: 225.92534}
+    - {x: 314.84085, y: 0, z: 220.46927}
+    - {x: 307.91223, y: 0, z: 214.71797}
+    - {x: 301.2647, y: 0, z: 208.67143}
+    - {x: 294.8982, y: 0, z: 202.32964}
+    - {x: 288.8127, y: 0, z: 195.69263}
+    - {x: 283.0083, y: 0, z: 188.76036}
+    - {x: 236.9917, y: 0, z: 131.23964}
+    - {x: 231.22612, y: 0, z: 124.25804}
+    - {x: 225.25723, y: 0, z: 117.47301}
+    - {x: 219.08498, y: 0, z: 110.88453}
+    - {x: 212.7094, y: 0, z: 104.492615}
+    - {x: 206.1305, y: 0, z: 98.29727}
+    - {x: 199.34822, y: 0, z: 92.29848}
+    - {x: 115, y: 0, z: 20}
   - Id: Alley_NW
     FromNodeId: G_W
     ToNodeId: G_NC
     Kind: 2
     Bidirectional: 1
-    Width: 8
-    SpeedLimitMps: 11
+    Width: 11.5
+    SpeedLimitMps: 12
+    Access: 7
+    Features: 0
     Centerline:
-    - {x: -120, y: 0, z: 0}
-    - {x: -82, y: 0, z: 31}
-    - {x: -43, y: 0, z: 69}
-    - {x: 0, y: 0, z: 100}
+    - {x: -255, y: 0, z: -85}
+    - {x: -195.30972, y: 0, z: -45.206482}
+    - {x: -190.1786, y: 0, z: -41.85141}
+    - {x: -184.99174, y: 0, z: -38.590523}
+    - {x: -179.74915, y: 0, z: -35.423817}
+    - {x: -174.45079, y: 0, z: -32.35129}
+    - {x: -169.0967, y: 0, z: -29.372948}
+    - {x: -163.68684, y: 0, z: -26.488785}
+    - {x: -65, y: 0, z: 25}
   - Id: Alley_SE
     FromNodeId: G_SC
     ToNodeId: G_E
     Kind: 2
     Bidirectional: 1
-    Width: 8
-    SpeedLimitMps: 11
+    Width: 11.5
+    SpeedLimitMps: 12
+    Access: 7
+    Features: 0
     Centerline:
-    - {x: 0, y: 0, z: -100}
-    - {x: 43, y: 0, z: -69}
-    - {x: 82, y: 0, z: -31}
-    - {x: 120, y: 0, z: 0}
+    - {x: 0, y: 0, z: -225}
+    - {x: 43.114662, y: 0, z: -174.04631}
+    - {x: 47.126198, y: 0, z: -169.41246}
+    - {x: 51.23725, y: 0, z: -164.87515}
+    - {x: 55.44782, y: 0, z: -160.43434}
+    - {x: 59.757904, y: 0, z: -156.09006}
+    - {x: 64.1675, y: 0, z: -151.8423}
+    - {x: 68.67661, y: 0, z: -147.69106}
+    - {x: 155, y: 0, z: -70}
   - Id: Alley_Beach
     FromNodeId: B_W
     ToNodeId: G_SW
     Kind: 2
     Bidirectional: 1
-    Width: 9
-    SpeedLimitMps: 12
+    Width: 12.5
+    SpeedLimitMps: 13
+    Access: 7
+    Features: 0
     Centerline:
-    - {x: -220, y: 0, z: -165}
-    - {x: -178, y: 0, z: -141}
-    - {x: -148, y: 0, z: -114}
-    - {x: -120, y: 0, z: -100}
+    - {x: -355, y: 0, z: -285}
+    - {x: -302.88855, y: 0, z: -258.94427}
+    - {x: -296.92572, y: 0, z: -255.96284}
+    - {x: -290.96283, y: 0, z: -252.98141}
+    - {x: -285, y: 0, z: -250}
+    - {x: -279.03717, y: 0, z: -247.01859}
+    - {x: -273.07428, y: 0, z: -244.03714}
+    - {x: -267.11145, y: 0, z: -241.05573}
+    - {x: -242.88855, y: 0, z: -228.94427}
+    - {x: -236.96747, y: 0, z: -225.89272}
+    - {x: -231.12996, y: 0, z: -222.70087}
+    - {x: -225.37598, y: 0, z: -219.36876}
+    - {x: -219.70555, y: 0, z: -215.89636}
+    - {x: -214.11868, y: 0, z: -212.2837}
+    - {x: -208.61536, y: 0, z: -208.53076}
+    - {x: -175, y: 0, z: -185}
   - Id: Alley_Industrial
     FromNodeId: G_SE
     ToNodeId: B_E
     Kind: 2
     Bidirectional: 1
-    Width: 9
-    SpeedLimitMps: 12
+    Width: 12.5
+    SpeedLimitMps: 13
+    Access: 7
+    Features: 0
     Centerline:
-    - {x: 120, y: 0, z: -100}
-    - {x: 148, y: 0, z: -114}
-    - {x: 178, y: 0, z: -141}
-    - {x: 220, y: 0, z: -165}
+    - {x: 165, y: 0, z: -210}
+    - {x: 201.20413, y: 0, z: -223.16513}
+    - {x: 207.47945, y: 0, z: -225.41321}
+    - {x: 213.77478, y: 0, z: -227.60083}
+    - {x: 220.09016, y: 0, z: -229.72803}
+    - {x: 226.42558, y: 0, z: -231.79478}
+    - {x: 232.78104, y: 0, z: -233.80109}
+    - {x: 239.15652, y: 0, z: -235.74696}
+    - {x: 250.84348, y: 0, z: -239.25304}
+    - {x: 257.1825, y: 0, z: -241.27885}
+    - {x: 263.42856, y: 0, z: -243.525}
+    - {x: 269.58167, y: 0, z: -245.99149}
+    - {x: 275.64178, y: 0, z: -248.67827}
+    - {x: 281.60895, y: 0, z: -251.5854}
+    - {x: 287.48315, y: 0, z: -254.71286}
+    - {x: 315, y: 0, z: -270}
+  - Id: SignatureRamp_S
+    FromNodeId: O_NW
+    ToNodeId: L_S
+    Kind: 1
+    Bidirectional: 1
+    Width: 22
+    SpeedLimitMps: 18
+    Access: 7
+    Features: 67
+    Centerline:
+    - {x: -335, y: 0, z: 15}
+    - {x: -323.4, y: 1.45, z: 26.6}
+    - {x: -320.5796, y: 1.7962074, z: 29.378117}
+    - {x: -317.71838, y: 2.1348298, z: 32.11247}
+    - {x: -314.81635, y: 2.4658666, z: 34.803055}
+    - {x: -311.87347, y: 2.7893186, z: 37.449875}
+    - {x: -308.88983, y: 3.105185, z: 40.05293}
+    - {x: -305.86533, y: 3.4134667, z: 42.61222}
+    - {x: -296.4024, y: 4.359761, z: 50.49801}
+    - {x: -292.62668, y: 4.7373343, z: 53.69306}
+    - {x: -288.90106, y: 5.109894, z: 56.94356}
+    - {x: -285.2256, y: 5.4774404, z: 60.249504}
+    - {x: -281.60028, y: 5.8399734, z: 63.61089}
+    - {x: -278.02505, y: 6.1974936, z: 67.027725}
+    - {x: -274.5, y: 6.55, z: 70.5}
+    - {x: -260, y: 8, z: 85}
+  - Id: Signature_SW
+    FromNodeId: L_S
+    ToNodeId: L_W
+    Kind: 1
+    Bidirectional: 1
+    Width: 24
+    SpeedLimitMps: 24
+    Access: 7
+    Features: 65
+    Centerline:
+    - {x: -260, y: 8, z: 85}
+    - {x: -310.8827, y: 8, z: 88.18017}
+    - {x: -320.47964, y: 8, z: 89.14456}
+    - {x: -329.85898, y: 8, z: 90.824524}
+    - {x: -339.0207, y: 8, z: 93.22005}
+    - {x: -347.96475, y: 8, z: 96.33112}
+    - {x: -356.6912, y: 8, z: 100.15778}
+    - {x: -365.2, y: 8, z: 104.7}
+    - {x: -376.1414, y: 8, z: 111.08248}
+    - {x: -383.5482, y: 8, z: 116.09339}
+    - {x: -389.86285, y: 8, z: 121.84777}
+    - {x: -395.08533, y: 8, z: 128.34561}
+    - {x: -399.21573, y: 8, z: 135.58694}
+    - {x: -402.25394, y: 8, z: 143.57173}
+    - {x: -404.2, y: 8, z: 152.3}
+    - {x: -410, y: 8, z: 190}
+  - Id: Signature_NW
+    FromNodeId: L_W
+    ToNodeId: L_N
+    Kind: 1
+    Bidirectional: 1
+    Width: 24
+    SpeedLimitMps: 24
+    Access: 7
+    Features: 65
+    Centerline:
+    - {x: -410, y: 8, z: 190}
+    - {x: -407.1, y: 8, z: 227.7}
+    - {x: -405.833, y: 8, z: 236.4746}
+    - {x: -403.43198, y: 8, z: 244.59837}
+    - {x: -399.89697, y: 8, z: 252.07133}
+    - {x: -395.22794, y: 8, z: 258.8935}
+    - {x: -389.4249, y: 8, z: 265.0648}
+    - {x: -382.48785, y: 8, z: 270.58533}
+    - {x: -367.3, y: 8, z: 281.1}
+    - {x: -358.036, y: 8, z: 286.875}
+    - {x: -348.444, y: 8, z: 291.6}
+    - {x: -338.52402, y: 8, z: 295.275}
+    - {x: -328.27603, y: 8, z: 297.9}
+    - {x: -317.70007, y: 8, z: 299.475}
+    - {x: -306.79608, y: 8, z: 300}
+    - {x: -260, y: 8, z: 300}
+  - Id: Signature_NE
+    FromNodeId: L_N
+    ToNodeId: L_E
+    Kind: 1
+    Bidirectional: 1
+    Width: 24
+    SpeedLimitMps: 24
+    Access: 7
+    Features: 65
+    Centerline:
+    - {x: -260, y: 8, z: 300}
+    - {x: -211.5, y: 8, z: 300}
+    - {x: -201.175, y: 8, z: 299.475}
+    - {x: -191.2, y: 8, z: 297.9}
+    - {x: -181.575, y: 8, z: 295.275}
+    - {x: -172.3, y: 8, z: 291.6}
+    - {x: -163.375, y: 8, z: 286.875}
+    - {x: -154.8, y: 8, z: 281.1}
+    - {x: -141.90453, y: 8, z: 271.4284}
+    - {x: -135.15314, y: 8, z: 265.65027}
+    - {x: -129.50201, y: 8, z: 259.2682}
+    - {x: -124.95113, y: 8, z: 252.2821}
+    - {x: -121.5005, y: 8, z: 244.69205}
+    - {x: -119.15012, y: 8, z: 236.49802}
+    - {x: -117.9, y: 8, z: 227.7}
+    - {x: -115, y: 8, z: 190}
+  - Id: Signature_SE
+    FromNodeId: L_E
+    ToNodeId: L_S
+    Kind: 1
+    Bidirectional: 1
+    Width: 24
+    SpeedLimitMps: 24
+    Access: 7
+    Features: 65
+    Centerline:
+    - {x: -115, y: 8, z: 190}
+    - {x: -117.9, y: 8, z: 152.3}
+    - {x: -119.1745, y: 8, z: 143.53644}
+    - {x: -121.59801, y: 8, z: 135.44577}
+    - {x: -125.17052, y: 8, z: 128.02798}
+    - {x: -129.89203, y: 8, z: 121.28309}
+    - {x: -135.76256, y: 8, z: 115.211075}
+    - {x: -142.78207, y: 8, z: 109.81195}
+    - {x: -154.8, y: 8, z: 101.8}
+    - {x: -163.3413, y: 8, z: 96.666664}
+    - {x: -172.16518, y: 8, z: 92.46667}
+    - {x: -181.27165, y: 8, z: 89.2}
+    - {x: -190.66072, y: 8, z: 86.86667}
+    - {x: -200.33237, y: 8, z: 85.46667}
+    - {x: -210.28662, y: 8, z: 85}
+    - {x: -260, y: 8, z: 85}
+  - Id: SignatureRamp_E
+    FromNodeId: L_E
+    ToNodeId: U_W
+    Kind: 1
+    Bidirectional: 1
+    Width: 22
+    SpeedLimitMps: 22
+    Access: 7
+    Features: 67
+    Centerline:
+    - {x: -115, y: 8, z: 190}
+    - {x: -105, y: 8, z: 190}
+  - Id: UpperRamp_W
+    FromNodeId: G_NW
+    ToNodeId: U_W
+    Kind: 0
+    Bidirectional: 1
+    Width: 20
+    SpeedLimitMps: 17
+    Access: 7
+    Features: 3
+    Centerline:
+    - {x: -245, y: 0, z: 10}
+    - {x: -224.7, y: 1.45, z: 36.100002}
+    - {x: -219.79733, y: 1.7969874, z: 42.398083}
+    - {x: -214.88937, y: 2.1379495, z: 48.69232}
+    - {x: -209.97607, y: 2.4728863, z: 54.982727}
+    - {x: -205.05745, y: 2.8017979, z: 61.269287}
+    - {x: -200.13353, y: 3.1246839, z: 67.55202}
+    - {x: -195.20428, y: 3.441545, z: 73.8309}
+    - {x: -174.75504, y: 4.7428617, z: 99.85724}
+    - {x: -168.17697, y: 5.1486597, z: 108.244095}
+    - {x: -161.61281, y: 5.5279603, z: 116.64282}
+    - {x: -155.06253, y: 5.880765, z: 125.05342}
+    - {x: -148.52614, y: 6.2070723, z: 133.47588}
+    - {x: -142.00365, y: 6.506883, z: 141.91022}
+    - {x: -135.49506, y: 6.7801976, z: 150.35643}
+    - {x: -105, y: 8, z: 190}
+  - Id: Upper_Crosstown_W
+    FromNodeId: U_W
+    ToNodeId: U_C
+    Kind: 1
+    Bidirectional: 1
+    Width: 22
+    SpeedLimitMps: 23
+    Access: 7
+    Features: 1
+    Centerline:
+    - {x: -105, y: 8, z: 190}
+    - {x: -64.4, y: 8, z: 198.7}
+    - {x: -54.63012, y: 8, z: 200.34409}
+    - {x: -44.920475, y: 8, z: 201.07635}
+    - {x: -35.271065, y: 8, z: 200.89682}
+    - {x: -25.681887, y: 8, z: 199.80544}
+    - {x: -16.152952, y: 8, z: 197.80225}
+    - {x: -6.684248, y: 8, z: 194.88724}
+    - {x: 35, y: 8, z: 180}
+  - Id: Upper_Crosstown_E
+    FromNodeId: U_C
+    ToNodeId: U_E
+    Kind: 1
+    Bidirectional: 1
+    Width: 22
+    SpeedLimitMps: 23
+    Access: 7
+    Features: 1
+    Centerline:
+    - {x: 35, y: 8, z: 180}
+    - {x: 75.6, y: 8, z: 165.5}
+    - {x: 85.42124, y: 8, z: 162.5151}
+    - {x: 95.28496, y: 8, z: 160.56044}
+    - {x: 105.19116, y: 8, z: 159.63597}
+    - {x: 115.13984, y: 8, z: 159.74173}
+    - {x: 125.131004, y: 8, z: 160.8777}
+    - {x: 135.16464, y: 8, z: 163.0439}
+    - {x: 180, y: 8, z: 175}
+  - Id: UpperRamp_E
+    FromNodeId: U_E
+    ToNodeId: G_NE
+    Kind: 0
+    Bidirectional: 1
+    Width: 20
+    SpeedLimitMps: 17
+    Access: 7
+    Features: 3
+    Centerline:
+    - {x: 180, y: 8, z: 175}
+    - {x: 171.3, y: 6.55, z: 143.1}
+    - {x: 169.14778, y: 6.1950846, z: 135.41682}
+    - {x: 166.89114, y: 5.8303385, z: 127.76732}
+    - {x: 164.53006, y: 5.455761, z: 120.15145}
+    - {x: 162.06458, y: 5.071353, z: 112.569244}
+    - {x: 159.49464, y: 4.6771135, z: 105.02069}
+    - {x: 156.82028, y: 4.2730436, z: 97.5058}
+    - {x: 152.76079, y: 3.6641173, z: 86.342155}
+    - {x: 150.03943, y: 3.2792482, z: 79.29594}
+    - {x: 147.04924, y: 2.900719, z: 72.3854}
+    - {x: 143.79019, y: 2.5285294, z: 65.61054}
+    - {x: 140.2623, y: 2.1626797, z: 58.971348}
+    - {x: 136.46558, y: 1.8031701, z: 52.46784}
+    - {x: 132.4, y: 1.45, z: 46.1}
+    - {x: 115, y: 0, z: 20}
+  - Id: Hill_Hairpin_W
+    FromNodeId: U_C
+    ToNodeId: H_W
+    Kind: 3
+    Bidirectional: 1
+    Width: 18
+    SpeedLimitMps: 15
+    Access: 7
+    Features: 3
+    Centerline:
+    - {x: 35, y: 8, z: 180}
+    - {x: 11.902727, y: 6.350195, z: 206.39688}
+    - {x: 7.9741163, y: 6.0612464, z: 210.96172}
+    - {x: 4.123434, y: 5.761198, z: 215.58751}
+    - {x: 0.35068178, y: 5.4500484, z: 220.27423}
+    - {x: -3.3441417, y: 5.127799, z: 225.02188}
+    - {x: -6.9610353, y: 4.79445, z: 229.83047}
+    - {x: -10.5, y: 4.45, z: 234.7}
+    - {x: -25, y: 3, z: 255}
+  - Id: Hill_Hairpin_C
+    FromNodeId: H_W
+    ToNodeId: H_C
+    Kind: 3
+    Bidirectional: 1
+    Width: 18
+    SpeedLimitMps: 14
+    Access: 7
+    Features: 2
+    Centerline:
+    - {x: -25, y: 3, z: 255}
+    - {x: -25, y: 4.015029, z: 278.68402}
+    - {x: -24.708334, y: 4.1807146, z: 282.25833}
+    - {x: -23.833334, y: 4.3544574, z: 285.43735}
+    - {x: -22.375, y: 4.5362573, z: 288.221}
+    - {x: -20.333334, y: 4.7261143, z: 290.60934}
+    - {x: -17.708334, y: 4.9240284, z: 292.60233}
+    - {x: -14.5, y: 5.13, z: 294.2}
+    - {x: 0, y: 6, z: 300}
+  - Id: Hill_Hairpin_E
+    FromNodeId: H_C
+    ToNodeId: H_E
+    Kind: 3
+    Bidirectional: 1
+    Width: 18
+    SpeedLimitMps: 15
+    Access: 7
+    Features: 2
+    Centerline:
+    - {x: 0, y: 6, z: 300}
+    - {x: 26.1, y: 5.42, z: 311.6}
+    - {x: 32.21975, y: 5.2840056, z: 313.707}
+    - {x: 37.979004, y: 5.1560225, z: 314.42798}
+    - {x: 43.377754, y: 5.03605, z: 313.763}
+    - {x: 48.416008, y: 4.9240885, z: 311.712}
+    - {x: 53.093758, y: 4.820139, z: 308.27496}
+    - {x: 57.411015, y: 4.7242, z: 303.45197}
+    - {x: 90, y: 4, z: 260}
+  - Id: Hill_Return
+    FromNodeId: H_E
+    ToNodeId: O_N
+    Kind: 3
+    Bidirectional: 1
+    Width: 18
+    SpeedLimitMps: 16
+    Access: 7
+    Features: 2
+    Centerline:
+    - {x: 90, y: 4, z: 260}
+    - {x: 61.064957, y: 2.713998, z: 288.93506}
+    - {x: 55.631218, y: 2.4724987, z: 294.1938}
+    - {x: 50.03998, y: 2.223999, z: 299.26004}
+    - {x: 44.291237, y: 1.9684994, z: 304.13376}
+    - {x: 38.384995, y: 1.7059999, z: 308.815}
+    - {x: 32.32125, y: 1.4365001, z: 313.30374}
+    - {x: 26.1, y: 1.1600001, z: 317.6}
+    - {x: 0, y: 0, z: 335}
+  - Id: Interchange_Link
+    FromNodeId: U_E
+    ToNodeId: J_W
+    Kind: 1
+    Bidirectional: 1
+    Width: 22
+    SpeedLimitMps: 23
+    Access: 7
+    Features: 131
+    Centerline:
+    - {x: 180, y: 8, z: 175}
+    - {x: 180, y: 8, z: 165}
+  - Id: Interchange_NW
+    FromNodeId: J_W
+    ToNodeId: J_N
+    Kind: 1
+    Bidirectional: 1
+    Width: 22
+    SpeedLimitMps: 21
+    Access: 7
+    Features: 129
+    Centerline:
+    - {x: 180, y: 8, z: 165}
+    - {x: 196.05324, y: 8, z: 200.31712}
+    - {x: 199.31198, y: 8, z: 206.62302}
+    - {x: 203.12366, y: 8, z: 212.41872}
+    - {x: 207.48831, y: 8, z: 217.70428}
+    - {x: 212.40591, y: 8, z: 222.47968}
+    - {x: 217.87648, y: 8, z: 226.74492}
+    - {x: 223.9, y: 8, z: 230.5}
+    - {x: 236.63568, y: 8, z: 237.57538}
+    - {x: 241.12756, y: 8, z: 239.72736}
+    - {x: 245.69363, y: 8, z: 241.2335}
+    - {x: 250.33392, y: 8, z: 242.09384}
+    - {x: 255.04842, y: 8, z: 242.30838}
+    - {x: 259.8371, y: 8, z: 241.87709}
+    - {x: 264.7, y: 8, z: 240.8}
+    - {x: 285, y: 8, z: 235}
+  - Id: Interchange_NE
+    FromNodeId: J_N
+    ToNodeId: J_E
+    Kind: 1
+    Bidirectional: 1
+    Width: 22
+    SpeedLimitMps: 21
+    Access: 7
+    Features: 129
+    Centerline:
+    - {x: 285, y: 8, z: 235}
+    - {x: 324, y: 8, z: 235}
+    - {x: 330.88333, y: 8, z: 234.65}
+    - {x: 337.53333, y: 8, z: 233.6}
+    - {x: 343.95, y: 8, z: 231.85}
+    - {x: 350.13333, y: 8, z: 229.4}
+    - {x: 356.08334, y: 8, z: 226.25}
+    - {x: 361.8, y: 8, z: 222.4}
+    - {x: 368.2, y: 8, z: 217.6}
+    - {x: 373.21893, y: 8, z: 213.178}
+    - {x: 377.07574, y: 8, z: 208.31198}
+    - {x: 379.7704, y: 8, z: 203.00195}
+    - {x: 381.30292, y: 8, z: 197.24791}
+    - {x: 381.6733, y: 8, z: 191.04987}
+    - {x: 380.88156, y: 8, z: 184.4078}
+    - {x: 375, y: 8, z: 155}
+  - Id: Interchange_SE
+    FromNodeId: J_E
+    ToNodeId: J_S
+    Kind: 1
+    Bidirectional: 1
+    Width: 22
+    SpeedLimitMps: 21
+    Access: 7
+    Features: 129
+    Centerline:
+    - {x: 375, y: 8, z: 155}
+    - {x: 377.9, y: 8, z: 120.2}
+    - {x: 378.01666, y: 8, z: 112.03333}
+    - {x: 376.96667, y: 8, z: 104.33333}
+    - {x: 374.75, y: 8, z: 97.1}
+    - {x: 371.36667, y: 8, z: 90.33333}
+    - {x: 366.81668, y: 8, z: 84.03333}
+    - {x: 361.1, y: 8, z: 78.2}
+    - {x: 350.77386, y: 8, z: 69.021225}
+    - {x: 345.37076, y: 8, z: 64.795296}
+    - {x: 339.67728, y: 8, z: 61.46499}
+    - {x: 333.69348, y: 8, z: 59.030304}
+    - {x: 327.4193, y: 8, z: 57.491245}
+    - {x: 320.85483, y: 8, z: 56.847813}
+    - {x: 314, y: 8, z: 57.1}
+    - {x: 285, y: 8, z: 60}
+  - Id: Interchange_SW
+    FromNodeId: J_S
+    ToNodeId: J_W
+    Kind: 1
+    Bidirectional: 1
+    Width: 22
+    SpeedLimitMps: 21
+    Access: 7
+    Features: 129
+    Centerline:
+    - {x: 285, y: 8, z: 60}
+    - {x: 247.2462, y: 8, z: 63.14615}
+    - {x: 240.04042, y: 8, z: 64.17927}
+    - {x: 233.25386, y: 8, z: 66.04273}
+    - {x: 226.88655, y: 8, z: 68.73654}
+    - {x: 220.93846, y: 8, z: 72.26069}
+    - {x: 215.40962, y: 8, z: 76.61517}
+    - {x: 210.3, y: 8, z: 81.8}
+    - {x: 204.7, y: 8, z: 88.2}
+    - {x: 200.10638, y: 8, z: 93.94499}
+    - {x: 196.12556, y: 8, z: 99.97995}
+    - {x: 192.75752, y: 8, z: 106.30489}
+    - {x: 190.00226, y: 8, z: 112.919815}
+    - {x: 187.85977, y: 8, z: 119.82471}
+    - {x: 186.33008, y: 8, z: 127.01958}
+    - {x: 180, y: 8, z: 165}
+  - Id: CanalRamp_N
+    FromNodeId: J_N
+    ToNodeId: O_NE
+    Kind: 3
+    Bidirectional: 1
+    Width: 20
+    SpeedLimitMps: 20
+    Access: 7
+    Features: 131
+    Centerline:
+    - {x: 285, y: 8, z: 235}
+    - {x: 311.1, y: 6.26, z: 252.4}
+    - {x: 317.49625, y: 5.8232293, z: 256.35355}
+    - {x: 324.085, y: 5.3529177, z: 259.81418}
+    - {x: 330.8662, y: 4.849064, z: 262.78186}
+    - {x: 337.83997, y: 4.3116693, z: 265.25665}
+    - {x: 345.0062, y: 3.7407336, z: 267.23853}
+    - {x: 352.36493, y: 3.1362565, z: 268.72748}
+    - {x: 390, y: 0, z: 275}
+  - Id: Canal_North
+    FromNodeId: J_E
+    ToNodeId: C_M
+    Kind: 1
+    Bidirectional: 1
+    Width: 22
+    SpeedLimitMps: 24
+    Access: 7
+    Features: 1
+    Centerline:
+    - {x: 375, y: 8, z: 155}
+    - {x: 395.3, y: 8, z: 120.2}
+    - {x: 399.89218, y: 8, z: 111.69586}
+    - {x: 403.8687, y: 8, z: 102.98346}
+    - {x: 407.22964, y: 8, z: 94.06279}
+    - {x: 409.9749, y: 8, z: 84.933846}
+    - {x: 412.10458, y: 8, z: 75.596634}
+    - {x: 413.6186, y: 8, z: 66.051155}
+    - {x: 416.31635, y: 8, z: 44.46915}
+    - {x: 417.32526, y: 8, z: 34.64802}
+    - {x: 417.89615, y: 8, z: 24.830732}
+    - {x: 418.02908, y: 8, z: 15.017288}
+    - {x: 417.72403, y: 8, z: 5.207682}
+    - {x: 416.98102, y: 8, z: -4.598078}
+    - {x: 415.8, y: 8, z: -14.4}
+    - {x: 410, y: 8, z: -55}
+  - Id: Canal_South
+    FromNodeId: C_M
+    ToNodeId: C_S
+    Kind: 1
+    Bidirectional: 1
+    Width: 22
+    SpeedLimitMps: 24
+    Access: 7
+    Features: 1
+    Centerline:
+    - {x: 410, y: 8, z: -55}
+    - {x: 415.8, y: 8, z: -101.4}
+    - {x: 416.70633, y: 8, z: -112.528404}
+    - {x: 416.62527, y: 8, z: -123.5136}
+    - {x: 415.55692, y: 8, z: -134.35562}
+    - {x: 413.5012, y: 8, z: -145.05441}
+    - {x: 410.4581, y: 8, z: -155.61003}
+    - {x: 406.42767, y: 8, z: -166.02245}
+    - {x: 399.10883, y: 8, z: -182.75125}
+    - {x: 393.93365, y: 8, z: -193.06253}
+    - {x: 387.814, y: 8, z: -202.4972}
+    - {x: 380.74988, y: 8, z: -211.05524}
+    - {x: 372.74127, y: 8, z: -218.73665}
+    - {x: 363.7882, y: 8, z: -225.54146}
+    - {x: 353.89066, y: 8, z: -231.46965}
+    - {x: 300, y: 8, z: -260}
+  - Id: CanalRamp_S
+    FromNodeId: C_S
+    ToNodeId: B_SE
+    Kind: 1
+    Bidirectional: 1
+    Width: 22
+    SpeedLimitMps: 20
+    Access: 7
+    Features: 3
+    Centerline:
+    - {x: 300, y: 8, z: -260}
+    - {x: 274.99557, y: 6.4372234, z: -269.37665}
+    - {x: 270.00525, y: 6.1158495, z: -271.2699}
+    - {x: 265.03137, y: 5.7765436, z: -273.20074}
+    - {x: 260.0739, y: 5.419306, z: -275.16916}
+    - {x: 255.13284, y: 5.044136, z: -277.17517}
+    - {x: 250.2082, y: 4.6510344, z: -279.21878}
+    - {x: 245.3, y: 4.2400002, z: -281.3}
+    - {x: 239.04169, y: 3.7035737, z: -283.98212}
+    - {x: 234.34283, y: 3.3066485, z: -285.9376}
+    - {x: 229.60742, y: 2.918255, z: -287.79205}
+    - {x: 224.83542, y: 2.5383935, z: -289.54553}
+    - {x: 220.02686, y: 2.1670637, z: -291.19803}
+    - {x: 215.18172, y: 1.8042661, z: -292.7495}
+    - {x: 210.3, y: 1.45, z: -294.2}
+    - {x: 190, y: 0, z: -300}
+  - Id: ParkingRamp_In
+    FromNodeId: G_NC
+    ToNodeId: P_LOW
+    Kind: 2
+    Bidirectional: 1
+    Width: 13
+    SpeedLimitMps: 11
+    Access: 5
+    Features: 23
+    Centerline:
+    - {x: -65, y: 0, z: 25}
+    - {x: -53.4, y: 0.69600004, z: 13.400001}
+    - {x: -50.65835, y: 0.8590991, z: 10.553363}
+    - {x: -48.03341, y: 1.0123962, z: 7.613451}
+    - {x: -45.525166, y: 1.1558914, z: 4.580265}
+    - {x: -43.13363, y: 1.2895848, z: 1.4538035}
+    - {x: -40.85879, y: 1.4134761, z: -1.765931}
+    - {x: -38.70066, y: 1.5275656, z: -5.0789413}
+    - {x: -20, y: 2.5, z: -35}
+  - Id: ParkingSwitchback_Up
+    FromNodeId: P_LOW
+    ToNodeId: P_N
+    Kind: 2
+    Bidirectional: 1
+    Width: 13
+    SpeedLimitMps: 10
+    Access: 5
+    Features: 23
+    Centerline:
+    - {x: -20, y: 2.5, z: -35}
+    - {x: -5.499999, y: 3.254, z: -46.6}
+    - {x: -2.1340635, y: 3.4302895, z: -48.827824}
+    - {x: 0.96374327, y: 3.5951579, z: -49.911285}
+    - {x: 3.7934215, y: 3.7486053, z: -49.850395}
+    - {x: 6.3549714, y: 3.8906317, z: -48.645145}
+    - {x: 8.648393, y: 4.0212364, z: -46.295536}
+    - {x: 10.673685, y: 4.140421, z: -42.801575}
+    - {x: 25, y: 5, z: -12}
+  - Id: ParkingDeck_Run
+    FromNodeId: P_N
+    ToNodeId: P_S
+    Kind: 2
+    Bidirectional: 1
+    Width: 13
+    SpeedLimitMps: 12
+    Access: 5
+    Features: 21
+    Centerline:
+    - {x: 25, y: 5, z: -12}
+    - {x: 44.55211, y: 5, z: -13.955211}
+    - {x: 47.919518, y: 5, z: -14.507785}
+    - {x: 51.05649, y: 5, z: -15.468983}
+    - {x: 53.963028, y: 5, z: -16.838802}
+    - {x: 56.639122, y: 5, z: -18.617247}
+    - {x: 59.08478, y: 5, z: -20.804314}
+    - {x: 61.3, y: 5, z: -23.400002}
+    - {x: 63.7, y: 5, z: -26.599998}
+    - {x: 65.45, y: 5, z: -29.4}
+    - {x: 66.5, y: 5, z: -32.2}
+    - {x: 66.85, y: 5, z: -35}
+    - {x: 66.5, y: 5, z: -37.800003}
+    - {x: 65.45, y: 5, z: -40.6}
+    - {x: 63.7, y: 5, z: -43.4}
+    - {x: 55, y: 5, z: -55}
+  - Id: ParkingSwitchback_Out
+    FromNodeId: P_S
+    ToNodeId: G_C
+    Kind: 2
+    Bidirectional: 1
+    Width: 13
+    SpeedLimitMps: 10
+    Access: 5
+    Features: 23
+    Centerline:
+    - {x: 55, y: 5, z: -55}
+    - {x: 25.371609, y: 3.5185804, z: -60.92568}
+    - {x: 18.581074, y: 3.1790538, z: -62.283787}
+    - {x: 11.790536, y: 2.8395267, z: -63.641895}
+    - {x: 5, y: 2.5, z: -65}
+    - {x: -1.790537, y: 2.160473, z: -66.35811}
+    - {x: -8.581072, y: 1.8209465, z: -67.71622}
+    - {x: -15.371609, y: 1.4814196, z: -69.074326}
+    - {x: -45, y: 0, z: -75}
+  - Id: RoofRamp_W
+    FromNodeId: G_W
+    ToNodeId: R_W
+    Kind: 2
+    Bidirectional: 1
+    Width: 13
+    SpeedLimitMps: 13
+    Access: 5
+    Features: 22
+    Centerline:
+    - {x: -255, y: 0, z: -85}
+    - {x: -194.46365, y: 2.270113, z: -62.29887}
+    - {x: -187.9874, y: 2.5129724, z: -59.83721}
+    - {x: -181.53442, y: 2.7549593, z: -57.318153}
+    - {x: -175.1047, y: 2.9960737, z: -54.74169}
+    - {x: -168.69826, y: 3.2363155, z: -52.107822}
+    - {x: -162.31508, y: 3.4756846, z: -49.416557}
+    - {x: -155.95517, y: 3.7141814, z: -46.667885}
+    - {x: -95, y: 6, z: -20}
+  - Id: RoofRun_W
+    FromNodeId: R_W
+    ToNodeId: R_C
+    Kind: 2
+    Bidirectional: 1
+    Width: 13
+    SpeedLimitMps: 14
+    Access: 5
+    Features: 21
+    Centerline:
+    - {x: -95, y: 6, z: -20}
+    - {x: -62.31704, y: 6, z: -3.6585207}
+    - {x: -56.50072, y: 6, z: -1.1295282}
+    - {x: -50.596462, y: 6, z: 0.685102}
+    - {x: -44.60426, y: 6, z: 1.7853699}
+    - {x: -38.524117, y: 6, z: 2.1712756}
+    - {x: -32.35603, y: 6, z: 1.8428191}
+    - {x: -26.1, y: 6, z: 0.8000002}
+    - {x: 0, y: 6, z: -5}
+  - Id: RoofRun_E
+    FromNodeId: R_C
+    ToNodeId: R_E
+    Kind: 2
+    Bidirectional: 1
+    Width: 13
+    SpeedLimitMps: 14
+    Access: 5
+    Features: 21
+    Centerline:
+    - {x: 0, y: 6, z: -5}
+    - {x: 27.862148, y: 6, z: -14.287382}
+    - {x: 33.39038, y: 6, z: -16.441236}
+    - {x: 38.549843, y: 6, z: -19.09439}
+    - {x: 43.340538, y: 6, z: -22.246845}
+    - {x: 47.762463, y: 6, z: -25.898596}
+    - {x: 51.815617, y: 6, z: -30.049646}
+    - {x: 55.5, y: 6, z: -34.699997}
+    - {x: 70, y: 6, z: -55}
+  - Id: RoofRamp_E
+    FromNodeId: R_E
+    ToNodeId: G_E
+    Kind: 2
+    Bidirectional: 1
+    Width: 13
+    SpeedLimitMps: 13
+    Access: 5
+    Features: 22
+    Centerline:
+    - {x: 70, y: 6, z: -55}
+    - {x: 93.2, y: 4.2599998, z: -57.9}
+    - {x: 98.79273, y: 3.8443732, z: -58.643757}
+    - {x: 104.37092, y: 3.437494, z: -59.47502}
+    - {x: 109.93457, y: 3.0393617, z: -60.39379}
+    - {x: 115.48369, y: 2.6499765, z: -61.400078}
+    - {x: 121.01826, y: 2.2693384, z: -62.49387}
+    - {x: 126.53829, y: 1.8974472, z: -63.675175}
+    - {x: 155, y: 0, z: -70}
+  - Id: East_SCurve_N
+    FromNodeId: G_E
+    ToNodeId: E_RN
+    Kind: 3
+    Bidirectional: 1
+    Width: 18
+    SpeedLimitMps: 16
+    Access: 7
+    Features: 0
+    Centerline:
+    - {x: 155, y: 0, z: -70}
+    - {x: 183.05406, y: 0, z: -87.53378}
+    - {x: 186.52922, y: 0, z: -90.16513}
+    - {x: 188.99069, y: 0, z: -93.08168}
+    - {x: 190.43852, y: 0, z: -96.28345}
+    - {x: 190.87268, y: 0, z: -99.770424}
+    - {x: 190.29317, y: 0, z: -103.5426}
+    - {x: 188.7, y: 0, z: -107.6}
+    - {x: 180, y: 0, z: -125}
+  - Id: East_Roundabout_N
+    FromNodeId: E_RN
+    ToNodeId: E_RE
+    Kind: 0
+    Bidirectional: 1
+    Width: 18
+    SpeedLimitMps: 14
+    Access: 7
+    Features: 0
+    Centerline:
+    - {x: 180, y: 0, z: -125}
+    - {x: 208.09532, y: 0, z: -118.75659}
+    - {x: 213.3773, y: 0, z: -118.07541}
+    - {x: 217.95348, y: 0, z: -118.53626}
+    - {x: 221.82384, y: 0, z: -120.139145}
+    - {x: 224.98837, y: 0, z: -122.88407}
+    - {x: 227.4471, y: 0, z: -126.77102}
+    - {x: 229.2, y: 0, z: -131.8}
+    - {x: 235, y: 0, z: -155}
+  - Id: East_Roundabout_S
+    FromNodeId: E_RE
+    ToNodeId: E_RS
+    Kind: 0
+    Bidirectional: 1
+    Width: 18
+    SpeedLimitMps: 14
+    Access: 7
+    Features: 0
+    Centerline:
+    - {x: 235, y: 0, z: -155}
+    - {x: 240.8, y: 0, z: -178.2}
+    - {x: 241.61667, y: 0, z: -183.45}
+    - {x: 241.26666, y: 0, z: -188}
+    - {x: 239.75, y: 0, z: -191.85}
+    - {x: 237.06667, y: 0, z: -195}
+    - {x: 233.21667, y: 0, z: -197.45}
+    - {x: 228.2, y: 0, z: -199.2}
+    - {x: 205, y: 0, z: -205}
+  - Id: East_Return
+    FromNodeId: E_RS
+    ToNodeId: G_SE
+    Kind: 0
+    Bidirectional: 1
+    Width: 18
+    SpeedLimitMps: 16
+    Access: 7
+    Features: 0
+    Centerline:
+    - {x: 205, y: 0, z: -205}
+    - {x: 192.42462, y: 0, z: -217.57538}
+    - {x: 189.92265, y: 0, z: -219.66902}
+    - {x: 187.3665, y: 0, z: -221.00017}
+    - {x: 184.75616, y: 0, z: -221.56885}
+    - {x: 182.09163, y: 0, z: -221.37505}
+    - {x: 179.37291, y: 0, z: -220.41876}
+    - {x: 176.6, y: 0, z: -218.7}
+    - {x: 165, y: 0, z: -210}
+  - Id: GasStation_CutThrough
+    FromNodeId: G_SE
+    ToNodeId: E_RN
+    Kind: 2
+    Bidirectional: 1
+    Width: 12.5
+    SpeedLimitMps: 13
+    Access: 7
+    Features: 0
+    Centerline:
+    - {x: 165, y: 0, z: -210}
+    - {x: 156.3, y: 0, z: -183.9}
+    - {x: 154.70703, y: 0, z: -177.68228}
+    - {x: 154.12816, y: 0, z: -171.62912}
+    - {x: 154.56335, y: 0, z: -165.74054}
+    - {x: 156.01263, y: 0, z: -160.0165}
+    - {x: 158.47598, y: 0, z: -154.45703}
+    - {x: 161.95341, y: 0, z: -149.06212}
+    - {x: 180, y: 0, z: -125}
+  - Id: Industrial_W
+    FromNodeId: B_W
+    ToNodeId: I_W
+    Kind: 0
+    Bidirectional: 1
+    Width: 20
+    SpeedLimitMps: 18
+    Access: 7
+    Features: 0
+    Centerline:
+    - {x: -355, y: 0, z: -285}
+    - {x: -342.08563, y: 0, z: -304.37155}
+    - {x: -339.5706, y: 0, z: -307.6775}
+    - {x: -336.74918, y: 0, z: -310.50958}
+    - {x: -333.6214, y: 0, z: -312.8679}
+    - {x: -330.1873, y: 0, z: -314.75238}
+    - {x: -326.44684, y: 0, z: -316.1631}
+    - {x: -322.4, y: 0, z: -317.1}
+    - {x: -305, y: 0, z: -320}
+  - Id: Industrial_CW
+    FromNodeId: I_W
+    ToNodeId: I_C
+    Kind: 1
+    Bidirectional: 1
+    Width: 24
+    SpeedLimitMps: 22
+    Access: 7
+    Features: 0
+    Centerline:
+    - {x: -305, y: 0, z: -320}
+    - {x: -255.7, y: 0, z: -334.5}
+    - {x: -243.78886, y: 0, z: -337.45764}
+    - {x: -231.85544, y: 0, z: -339.33054}
+    - {x: -219.89975, y: 0, z: -340.11868}
+    - {x: -207.92177, y: 0, z: -339.8221}
+    - {x: -195.92151, y: 0, z: -338.4408}
+    - {x: -183.89897, y: 0, z: -335.97473}
+    - {x: -120, y: 0, z: -320}
+  - Id: Industrial_CE
+    FromNodeId: I_C
+    ToNodeId: I_E
+    Kind: 1
+    Bidirectional: 1
+    Width: 24
+    SpeedLimitMps: 22
+    Access: 7
+    Features: 0
+    Centerline:
+    - {x: -120, y: 0, z: -320}
+    - {x: -57.25347, y: 0, z: -335.68665}
+    - {x: -44.828144, y: 0, z: -338.3058}
+    - {x: -32.387814, y: 0, z: -339.95438}
+    - {x: -19.932474, y: 0, z: -340.63232}
+    - {x: -7.4621286, y: 0, z: -340.33972}
+    - {x: 5.0232177, y: 0, z: -339.07654}
+    - {x: 17.523575, y: 0, z: -336.8427}
+    - {x: 95, y: 0, z: -320}
+  - Id: Industrial_E
+    FromNodeId: I_E
+    ToNodeId: B_SC
+    Kind: 0
+    Bidirectional: 1
+    Width: 20
+    SpeedLimitMps: 18
+    Access: 7
+    Features: 0
+    Centerline:
+    - {x: 95, y: 0, z: -320}
+    - {x: 65.70899, y: 0, z: -311.2127}
+    - {x: 58.856243, y: 0, z: -309.60605}
+    - {x: 52.103996, y: 0, z: -308.9279}
+    - {x: 45.452248, y: 0, z: -309.17816}
+    - {x: 38.901, y: 0, z: -310.35696}
+    - {x: 32.45025, y: 0, z: -312.46423}
+    - {x: 26.1, y: 0, z: -315.5}
+    - {x: 0, y: 0, z: -330}
+  - Id: Drainage_Entry
+    FromNodeId: G_SW
+    ToNodeId: D_W
+    Kind: 2
+    Bidirectional: 1
+    Width: 12.5
+    SpeedLimitMps: 12
+    Access: 1
+    Features: 24
+    Centerline:
+    - {x: -175, y: 0, z: -185}
+    - {x: -160.5, y: 0, z: -196.6}
+    - {x: -157, y: 0, z: -198.93333}
+    - {x: -153.5, y: 0, z: -200.33334}
+    - {x: -150, y: 0, z: -200.8}
+    - {x: -146.5, y: 0, z: -200.33334}
+    - {x: -143, y: 0, z: -198.93333}
+    - {x: -139.5, y: 0, z: -196.6}
+    - {x: -125, y: 0, z: -185}
+  - Id: Drainage_Run
+    FromNodeId: D_W
+    ToNodeId: D_E
+    Kind: 2
+    Bidirectional: 1
+    Width: 12.5
+    SpeedLimitMps: 15
+    Access: 1
+    Features: 24
+    Centerline:
+    - {x: -125, y: 0, z: -185}
+    - {x: -107.6, y: 0, z: -167.6}
+    - {x: -103.49534, y: 0, z: -164.17444}
+    - {x: -99.58135, y: 0, z: -162.29776}
+    - {x: -95.85804, y: 0, z: -161.96994}
+    - {x: -92.3254, y: 0, z: -163.191}
+    - {x: -88.983444, y: 0, z: -165.96092}
+    - {x: -85.83215, y: 0, z: -170.27974}
+    - {x: -74.16785, y: 0, z: -189.72026}
+    - {x: -71.016556, y: 0, z: -194.03908}
+    - {x: -67.6746, y: 0, z: -196.809}
+    - {x: -64.14196, y: 0, z: -198.03006}
+    - {x: -60.41865, y: 0, z: -197.70224}
+    - {x: -56.50466, y: 0, z: -195.82556}
+    - {x: -52.4, y: 0, z: -192.4}
+    - {x: -35, y: 0, z: -175}
+  - Id: Drainage_Exit
+    FromNodeId: D_E
+    ToNodeId: G_SC
+    Kind: 2
+    Bidirectional: 1
+    Width: 12.5
+    SpeedLimitMps: 12
+    Access: 1
+    Features: 24
+    Centerline:
+    - {x: -35, y: 0, z: -175}
+    - {x: -15.628445, y: 0, z: -187.91437}
+    - {x: -12.322532, y: 0, z: -190.42943}
+    - {x: -9.490419, y: 0, z: -193.25082}
+    - {x: -7.132111, y: 0, z: -196.3786}
+    - {x: -5.2476044, y: 0, z: -199.81271}
+    - {x: -3.8369014, y: 0, z: -203.55318}
+    - {x: -2.9, y: 0, z: -207.6}
+    - {x: 0, y: 0, z: -225}
+  - Id: EscapeRamp_W
+    FromNodeId: B_SC
+    ToNodeId: ESC_W
+    Kind: 3
+    Bidirectional: 1
+    Width: 20
+    SpeedLimitMps: 19
+    Access: 5
+    Features: 34
+    Centerline:
+    - {x: 0, y: 0, z: -330}
+    - {x: -88.67367, y: 0.7389473, z: -348.4737}
+    - {x: -99.12063, y: 0.82496357, z: -350.31158}
+    - {x: -109.577286, y: 0.9089773, z: -351.4744}
+    - {x: -120.04365, y: 0.9909885, z: -351.96216}
+    - {x: -130.5197, y: 1.070997, z: -351.77478}
+    - {x: -141.00545, y: 1.149003, z: -350.91235}
+    - {x: -151.5009, y: 1.2250065, z: -349.37485}
+    - {x: -228.4991, y: 1.7749935, z: -335.62515}
+    - {x: -238.8912, y: 1.8490341, z: -333.45682}
+    - {x: -249.06691, y: 1.921151, z: -330.70197}
+    - {x: -259.02625, y: 1.9913446, z: -327.3606}
+    - {x: -268.76917, y: 2.059615, z: -323.4327}
+    - {x: -278.2957, y: 2.1259615, z: -318.91824}
+    - {x: -287.60583, y: 2.190385, z: -313.81726}
+    - {x: -405, y: 3, z: -245}
+  - Id: EscapeRamp_S
+    FromNodeId: ESC_W
+    ToNodeId: O_W
+    Kind: 3
+    Bidirectional: 1
+    Width: 20
+    SpeedLimitMps: 19
+    Access: 5
+    Features: 34
+    Centerline:
+    - {x: -405, y: 3, z: -245}
+    - {x: -420.82135, y: 2.367146, z: -219.68584}
+    - {x: -423.50928, y: 2.2432957, z: -214.73183}
+    - {x: -425.45392, y: 2.1165094, z: -209.66037}
+    - {x: -426.65533, y: 1.9867865, z: -204.47147}
+    - {x: -427.11346, y: 1.8541273, z: -199.1651}
+    - {x: -426.82837, y: 1.718532, z: -193.74127}
+    - {x: -425.8, y: 1.58, z: -188.2}
+    - {x: -424.2, y: 1.42, z: -181.8}
+    - {x: -422.5765, y: 1.2803284, z: -176.32652}
+    - {x: -420.5061, y: 1.141314, z: -171.1061}
+    - {x: -417.9887, y: 1.0029566, z: -166.1387}
+    - {x: -415.02435, y: 0.8652563, z: -161.42436}
+    - {x: -411.61304, y: 0.72821295, z: -156.96306}
+    - {x: -407.7548, y: 0.5918267, z: -152.7548}
+    - {x: -390, y: 0, z: -135}
+  - Id: Escape_Hillside
+    FromNodeId: J_N
+    ToNodeId: O_NE
+    Kind: 3
+    Bidirectional: 1
+    Width: 20
+    SpeedLimitMps: 21
+    Access: 5
+    Features: 33
+    Centerline:
+    - {x: 285, y: 8, z: 235}
+    - {x: 314, y: 6.84, z: 249.5}
+    - {x: 321.04282, y: 6.515026, z: 252.8791}
+    - {x: 328.17126, y: 6.1001043, z: 256.01642}
+    - {x: 335.38535, y: 5.5952344, z: 258.91193}
+    - {x: 342.6851, y: 5.0004168, z: 261.5656}
+    - {x: 350.07043, y: 4.315651, z: 263.97754}
+    - {x: 357.5414, y: 3.5409377, z: 266.14764}
+    - {x: 390, y: 0, z: 275}

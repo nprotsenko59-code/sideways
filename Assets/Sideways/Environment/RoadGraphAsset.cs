@@ -4,6 +4,33 @@ using UnityEngine;
 
 namespace Sideways.EnvironmentSystem
 {
+    [Flags]
+    public enum RoadAccess
+    {
+        None = 0,
+        Player = 1 << 0,
+        Traffic = 1 << 1,
+        Police = 1 << 2,
+        All = Player | Traffic | Police
+    }
+
+    [Flags]
+    public enum RoadFeature
+    {
+        Standard = 0,
+        Elevated = 1 << 0,
+        Ramp = 1 << 1,
+        Rooftop = 1 << 2,
+        Stunt = 1 << 3,
+        Shortcut = 1 << 4,
+        EscapeRoute = 1 << 5,
+        Signature = 1 << 6,
+        Interchange = 1 << 7,
+        MainRoute = 1 << 8,
+        ServiceRoute = 1 << 9,
+        ComboRoute = 1 << 10
+    }
+
     public enum RoadKind
     {
         Street,
@@ -59,7 +86,24 @@ namespace Sideways.EnvironmentSystem
         public bool Bidirectional = true;
         public float Width = 14f;
         public float SpeedLimitMps = 16f;
+        public RoadAccess Access = RoadAccess.All;
+        public RoadFeature Features = RoadFeature.Standard;
         public List<Vector3> Centerline = new();
+
+        public float Length
+        {
+            get
+            {
+                var length = 0f;
+                if (Centerline == null) return length;
+                for (var i = 1; i < Centerline.Count; i++) length += Vector3.Distance(Centerline[i - 1], Centerline[i]);
+                return length;
+            }
+        }
+
+        public float TravelTime => Length / Mathf.Max(0.1f, SpeedLimitMps);
+
+        public bool Supports(RoadAccess requiredAccess) => requiredAccess == RoadAccess.None || (Access & requiredAccess) == requiredAccess;
     }
 
     [CreateAssetMenu(menuName = "Sideways/Road Graph", fileName = "RoadGraph")]
@@ -98,10 +142,16 @@ namespace Sideways.EnvironmentSystem
 
         public RoadGraphNode FindNearestNode(Vector3 position)
         {
+            return FindNearestNode(position, RoadAccess.None);
+        }
+
+        public RoadGraphNode FindNearestNode(Vector3 position, RoadAccess requiredAccess)
+        {
             RoadGraphNode nearest = null;
             var nearestDistance = float.PositiveInfinity;
             for (var i = 0; i < nodes.Count; i++)
             {
+                if (requiredAccess != RoadAccess.None && !HasAccessibleEdge(nodes[i].Id, requiredAccess)) continue;
                 var distance = (nodes[i].Position - position).sqrMagnitude;
                 if (distance >= nearestDistance) continue;
                 nearestDistance = distance;
@@ -122,38 +172,61 @@ namespace Sideways.EnvironmentSystem
 
         public bool TryFindRoute(string startNodeId, string goalNodeId, List<RoadGraphEdge> route, ISet<string> blockedEdgeIds = null)
         {
+            return TryFindRoute(startNodeId, goalNodeId, route, RoadAccess.None, blockedEdgeIds);
+        }
+
+        public bool TryFindRoute(
+            string startNodeId,
+            string goalNodeId,
+            List<RoadGraphEdge> route,
+            RoadAccess requiredAccess,
+            ISet<string> blockedEdgeIds = null)
+        {
             if (route == null) throw new ArgumentNullException(nameof(route));
             route.Clear();
             if (!TryGetNode(startNodeId, out _) || !TryGetNode(goalNodeId, out _)) return false;
             if (startNodeId == goalNodeId) return true;
 
-            var frontier = new Queue<string>();
-            var visited = new HashSet<string>(StringComparer.Ordinal) { startNodeId };
+            var frontier = new HashSet<string>(StringComparer.Ordinal) { startNodeId };
+            var distances = new Dictionary<string, float>(StringComparer.Ordinal) { [startNodeId] = 0f };
             var previousNode = new Dictionary<string, string>(StringComparer.Ordinal);
             var previousEdge = new Dictionary<string, RoadGraphEdge>(StringComparer.Ordinal);
-            frontier.Enqueue(startNodeId);
 
             while (frontier.Count > 0)
             {
-                var current = frontier.Dequeue();
+                string current = null;
+                var currentDistance = float.PositiveInfinity;
+                foreach (var candidate in frontier)
+                {
+                    var candidateDistance = distances[candidate];
+                    if (candidateDistance >= currentDistance) continue;
+                    current = candidate;
+                    currentDistance = candidateDistance;
+                }
+                frontier.Remove(current);
+                if (current == goalNodeId)
+                {
+                    ReconstructRoute(startNodeId, goalNodeId, previousNode, previousEdge, route);
+                    return true;
+                }
+
                 for (var i = 0; i < edges.Count; i++)
                 {
                     var edge = edges[i];
                     if (blockedEdgeIds != null && blockedEdgeIds.Contains(edge.Id)) continue;
+                    if (!edge.Supports(requiredAccess)) continue;
 
                     string next = null;
                     if (edge.FromNodeId == current) next = edge.ToNodeId;
                     else if (edge.Bidirectional && edge.ToNodeId == current) next = edge.FromNodeId;
-                    if (next == null || !visited.Add(next)) continue;
+                    if (next == null) continue;
 
+                    var nextDistance = currentDistance + edge.TravelTime;
+                    if (distances.TryGetValue(next, out var knownDistance) && nextDistance >= knownDistance) continue;
+                    distances[next] = nextDistance;
                     previousNode[next] = current;
                     previousEdge[next] = edge;
-                    if (next == goalNodeId)
-                    {
-                        ReconstructRoute(startNodeId, goalNodeId, previousNode, previousEdge, route);
-                        return true;
-                    }
-                    frontier.Enqueue(next);
+                    frontier.Add(next);
                 }
             }
 
@@ -208,6 +281,25 @@ namespace Sideways.EnvironmentSystem
                     error = $"Edge {edge.Id} centerline does not meet its endpoint nodes.";
                     return false;
                 }
+
+                if (edge.Access == RoadAccess.None)
+                {
+                    error = $"Edge {edge.Id} must allow at least one road user.";
+                    return false;
+                }
+
+                var maximumGrade = (edge.Features & RoadFeature.Stunt) != 0
+                    ? 25f
+                    : (edge.Features & RoadFeature.Rooftop) != 0 ? 12f : 10f;
+                for (var point = 1; point < edge.Centerline.Count; point++)
+                {
+                    var delta = edge.Centerline[point] - edge.Centerline[point - 1];
+                    var horizontal = new Vector2(delta.x, delta.z).magnitude;
+                    var grade = Mathf.Atan2(Mathf.Abs(delta.y), Mathf.Max(0.001f, horizontal)) * Mathf.Rad2Deg;
+                    if (grade <= maximumGrade + 0.01f) continue;
+                    error = $"Edge {edge.Id} exceeds its {maximumGrade:0.#} degree grade limit.";
+                    return false;
+                }
             }
 
             for (var i = 0; i < nodes.Count; i++)
@@ -227,6 +319,17 @@ namespace Sideways.EnvironmentSystem
 
             error = string.Empty;
             return true;
+        }
+
+        private bool HasAccessibleEdge(string nodeId, RoadAccess requiredAccess)
+        {
+            for (var i = 0; i < edges.Count; i++)
+            {
+                var edge = edges[i];
+                if (!edge.Supports(requiredAccess)) continue;
+                if (edge.FromNodeId == nodeId || edge.ToNodeId == nodeId) return true;
+            }
+            return false;
         }
 
         private static void ReconstructRoute(

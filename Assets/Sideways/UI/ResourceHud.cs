@@ -18,6 +18,8 @@ namespace Sideways.UI
 
         private void OnEnable() => Subscribe();
 
+        private void Start() => Render(resources != null ? resources.Snapshot : default);
+
         private void OnDisable() => Unsubscribe();
 
         public void Configure(RideResourceController resourceController, Text coins, Text fuel, Image fill)

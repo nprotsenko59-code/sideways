@@ -15,6 +15,7 @@ namespace Sideways.Vehicle
 
         private Vector3 safePosition;
         private Quaternion safeRotation;
+        private Vector3 safeNormal = Vector3.up;
         private bool hasSafePose;
         private float nextSafePoseTime;
 
@@ -24,10 +25,13 @@ namespace Sideways.Vehicle
         {
             if (controller == null || rules == null) return;
 
-            if (Time.fixedTime >= nextSafePoseTime && IsSafePose())
+            if (Time.fixedTime >= nextSafePoseTime && IsSafePose(out var surfaceNormal))
             {
                 safePosition = transform.position;
-                safeRotation = Quaternion.LookRotation(Vector3.ProjectOnPlane(transform.forward, Vector3.up).normalized, Vector3.up);
+                safeNormal = surfaceNormal;
+                var forward = Vector3.ProjectOnPlane(transform.forward, safeNormal).normalized;
+                if (forward.sqrMagnitude < 0.001f) forward = Vector3.ProjectOnPlane(Vector3.forward, safeNormal).normalized;
+                safeRotation = Quaternion.LookRotation(forward, safeNormal);
                 hasSafePose = true;
                 nextSafePoseTime = Time.fixedTime + rules.safePoseInterval;
             }
@@ -51,7 +55,7 @@ namespace Sideways.Vehicle
         {
             if (!hasSafePose || controller == null || rules == null) return false;
             var body = controller.Body;
-            body.position = safePosition + Vector3.up * rules.resetVerticalOffset;
+            body.position = safePosition + safeNormal * rules.resetVerticalOffset;
             body.rotation = safeRotation;
             body.linearVelocity = Vector3.zero;
             body.angularVelocity = Vector3.zero;
@@ -64,15 +68,18 @@ namespace Sideways.Vehicle
         {
             safePosition = position;
             safeRotation = rotation;
+            safeNormal = rotation * Vector3.up;
             hasSafePose = true;
         }
 
-        private bool IsSafePose()
+        private bool IsSafePose(out Vector3 surfaceNormal)
         {
-            var rayOrigin = transform.position + Vector3.up * 0.5f;
+            surfaceNormal = Vector3.up;
+            var rayOrigin = transform.position + transform.up * 0.5f;
             // Roads are trigger volumes so their overlapping segment seams cannot
             // physically block the vehicle. They still identify valid recovery areas.
-            var roadBelow = Physics.Raycast(rayOrigin, Vector3.down, 2f, roadMask, QueryTriggerInteraction.Collide);
+            var roadBelow = Physics.Raycast(rayOrigin, -transform.up, out var roadHit, 2.5f, roadMask, QueryTriggerInteraction.Collide);
+            if (roadBelow) surfaceNormal = roadHit.normal;
             var obstacleFree = !Physics.CheckBox(transform.position, clearanceHalfExtents + Vector3.one * rules.safePoseClearance, transform.rotation, obstacleMask, QueryTriggerInteraction.Ignore);
             return SafePoseRules.IsEligible(
                 controller.Telemetry.Grounded,

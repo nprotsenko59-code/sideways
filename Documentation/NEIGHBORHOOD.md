@@ -1,40 +1,39 @@
-# SIDEWAYS Milestone 3 neighborhood contract
+# SIDEWAYS portrait drift-course contract
 
-## Scope and dimensions
+## Scope and layout
 
-The first fixed neighborhood is **Sunset Basin**, a fictional LA-inspired test district. Its navigable road envelope is approximately 520 × 420 metres inside a larger 900 × 800 metre ground plane. It is intentionally a compact gameplay slice, not a geographically accurate city or an infinite world.
+The directly playable location is a fixed **320 × 720 metre portrait drift run**. It is a focused northbound course rather than a free-roam city: the player starts near the south edge, auto-drives forward, follows one continuous road through broad S-curves, and reaches a marked finish near the north edge.
 
-The route mix contains a nine-junction urban grid, a 22-metre-wide southern boulevard, a curved scenic perimeter, three hill connectors, four narrow alley shortcuts, and several overlapping loops. Downtown (`G_C`), the boulevard (`B_SC`), the hillside (`O_N`), and the coastal route (`O_W`) act as navigation anchors. Key areas retain alternate routes if their most direct link is unavailable.
+The route uses seven stable edges:
 
-## Boundary fiction
+- `Course_Straight`
+- `Course_LeftEntry`
+- `Course_LeftArc`
+- `Course_Crossover`
+- `Course_RightArc`
+- `Course_NorthSweep`
+- `Course_Finish`
 
-Every public road joins another road and the network has no accidental dead-end nodes. The playable envelope is concealed by environment fiction rather than roads terminating at an exposed map edge:
+Every playable road is at least 22 metres wide. Curves use dense, rounded centerlines suitable for sustained drifting rather than right-angle intersections. Continuous red low-poly edge barriers are solid, visible, and placed on the dedicated `RoadBoundary` physics layer. Start/finish pylons, roadside buildings, signs, collectibles, and the `DriftRunTower` retain the shared low-poly visual language.
 
-- West: ocean water, an overlook, and a solid seawall.
-- North: a layered hillside ridge behind the scenic road.
-- East: a retaining wall and continued terrain beyond it.
-- South: rail/industrial walls and warehouse frontage.
+## Road graph
 
-These elements are still solid prototype geometry. They communicate why the player cannot continue while preserving a learnable loop inside the map.
+`PortraitDriftCourse.asset` is the active scene graph and uses graph id `portrait-drift-run`. It contains eight nodes from `COURSE_START` to `COURSE_FINISH` and seven bidirectional Boulevard edges. Player, civilian traffic, and police may use every course edge.
 
-## Road graph schema
+The graph remains the shared source for road rendering, safe-pose recovery, traffic, and police navigation. It preserves the existing `RoadAccess`, `RoadFeature`, travel-time routing, validation, and 3D centerline APIs. `LAPrototypeRoadGraph.asset` remains in the project as legacy test data, but it is not assigned to the directly playable scene.
 
-`LAPrototypeRoadGraph.asset` is the shared source for road surfaces and future navigation. Each node has a stable string id, position, semantic role, and explicit permission for a designed dead end. Each edge has a stable id, endpoint ids, road class, directionality, width, suggested speed, and an ordered world-space centerline that supports curved roads.
+## Camera and orientation
 
-The asset validates unique ids, valid endpoints, centerline continuity, dimensions, connectivity, and accidental dead ends. `TryFindRoute` provides a basic graph route for future police and traffic systems, including temporarily blocked edges. Scene rendering does not own or mutate graph data.
+Gameplay supports portrait orientation only. The Canvas reference resolution is 1080 × 1920. The default overhead camera uses an oblique forward-looking composition so the car remains low in frame and at least 35 metres of upcoming road stays visible. The chase view remains available through the camera toggle.
 
 ## Prototype content budget
 
-The directly playable scene is kept below these Milestone 3 soft caps, enforced by EditMode tests:
+The generated scene remains below the existing soft caps enforced by EditMode tests:
 
-- 220 environment renderers.
-- 180 environment colliders.
-- 90 generated road/marking objects.
+- 320 environment renderers.
+- 260 environment colliders.
+- 150 generated road/marking objects.
 - 48 primary building or landmark bodies.
-- One shared road graph asset; no runtime road generation.
+- One active shared road graph asset; no runtime road generation.
 
-Roads and buildings use primitive meshes, shared URP materials, and box colliders. There is no sector streaming, occlusion bake, final LOD setup, or device-specific quality tier yet. Those become necessary when the fixed city expands beyond this slice.
-
-## Deferred
-
-The graph has no lane-level traffic metadata, intersection priority, spawn sockets, police patrol weights, or district streaming information. Those additions must extend stable node/edge ids rather than replacing the graph.
+Roads and buildings use primitive meshes, shared URP materials, and combined colliders. Final art, pedestrians, minimap, reverse driving, streaming, and device-specific quality tiers remain out of scope.
